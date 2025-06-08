@@ -2,11 +2,12 @@ import React from 'react';
 import styles from '@/components/ui/Background/HolographicBackground.module.css'
 
 const HolographicBackground = () => {
+  console.log('HolographicBackground rendering!', styles); 
   return (
     <div className={styles.holographicBackground}>
       <svg 
         viewBox="0 0 1920 1080" 
-        className={styles.holographicBackground}
+        className={styles.backgroundSvg}
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
@@ -49,7 +50,7 @@ const HolographicBackground = () => {
         </defs>
         
         {/* Primary horizontal data streams */}
-        <g className={styles.dataStreams}>
+        <g className='data-streams'>
           {/* Top horizontal flows */}
           <path 
             d="M0 200 L500 200 L600 150 L1200 150 L1400 180 L1920 180" 
@@ -57,7 +58,7 @@ const HolographicBackground = () => {
             strokeWidth="2" 
             fill="none"
             filter="url(#dataGlow)"
-            className="animate-pulse-flow"
+            className={styles.animatePulseFlow}
           />
           
           <path 
@@ -113,16 +114,16 @@ const HolographicBackground = () => {
         {/* Circuit nodes and junctions */}
         <g className="circuit-nodes">
           {/* Primary nodes */}
-          <circle cx="600" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className="animate-node-pulse"/>
-          <circle cx="450" cy="300" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className="animate-node-pulse-delayed"/>
-          <circle cx="550" cy="850" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className="animate-node-pulse"/>
-          <circle cx="500" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className="animate-node-pulse-slow"/>
+          <circle cx="600" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="450" cy="300" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
+          <circle cx="550" cy="850" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="500" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseSlow}/>
           
           {/* Secondary junction points */}
-          <circle cx="300" cy="350" r="2" fill="#00ffff" opacity="0.8" className="animate-subtle-pulse"/>
-          <circle cx="1650" cy="350" r="2" fill="#00ffff" opacity="0.8" className="animate-subtle-pulse-delayed"/>
-          <circle cx="300" cy="750" r="2" fill="#00ffff" opacity="0.8" className="animate-subtle-pulse"/>
-          <circle cx="1650" cy="650" r="2" fill="#00ffff" opacity="0.8" className="animate-subtle-pulse-slow"/>
+          <circle cx="300" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
+          <circle cx="1650" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseDelayed}/>
+          <circle cx="300" cy="750" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
+          <circle cx="1650" cy="650" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseSlow}/>
         </g>
         
         {/* Corner connection elements */}
