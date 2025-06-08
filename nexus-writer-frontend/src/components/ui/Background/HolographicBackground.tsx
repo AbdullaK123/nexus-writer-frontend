@@ -112,32 +112,30 @@ const HolographicBackground = () => {
         </g>
         
         {/* Circuit nodes and junctions */}
-        <g className="circuit-nodes">
+        <g className="circuit-nodes-left">
           {/* Primary nodes */}
-          <circle cx="1650" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
-          <circle cx="1450" cy="1000" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
-          <circle cx="1550" cy="850" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
-          <circle cx="5100" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseSlow}/>
-          
-          {/* Secondary junction points */}
-          <circle cx="1300" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
-          <circle cx="1650" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseDelayed}/>
-          <circle cx="1300" cy="750" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
-          <circle cx="1650" cy="650" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseSlow}/>
-        </g>
-
-        <g className="circuit-nodes">
-          {/* Primary nodes */}
-          <circle cx="600" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
-          <circle cx="450" cy="300" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
-          <circle cx="550" cy="850" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
-          <circle cx="500" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseSlow}/>
+          <circle cx="400" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="380" cy="300" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
+          <circle cx="420" cy="500" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="400" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseSlow}/>
           
           {/* Secondary junction points */}
           <circle cx="300" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
-          <circle cx="1650" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseDelayed}/>
+          <circle cx="270" cy="650" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseDelayed}/>
           <circle cx="300" cy="750" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
-          <circle cx="1650" cy="650" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseSlow}/>
+        </g>
+
+        <g className="circuit-nodes-right">
+          {/* Primary nodes - PERFECT MIRRORS */}
+          <circle cx="1520" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="1540" cy="300" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
+          <circle cx="1500" cy="500" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="1520" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseSlow}/>
+          
+          {/* Secondary junction points - PERFECT MIRRORS */}
+          <circle cx="1620" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
+          <circle cx="1650" cy="650" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseDelayed}/>
+          <circle cx="1620" cy="750" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
         </g>
         
         {/* Corner connection elements */}
