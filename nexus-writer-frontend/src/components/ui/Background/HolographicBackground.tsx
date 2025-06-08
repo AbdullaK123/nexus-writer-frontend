@@ -114,6 +114,20 @@ const HolographicBackground = () => {
         {/* Circuit nodes and junctions */}
         <g className="circuit-nodes">
           {/* Primary nodes */}
+          <circle cx="1650" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="1450" cy="1000" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
+          <circle cx="1550" cy="850" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
+          <circle cx="5100" cy="700" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseSlow}/>
+          
+          {/* Secondary junction points */}
+          <circle cx="1300" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
+          <circle cx="1650" cy="350" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseDelayed}/>
+          <circle cx="1300" cy="750" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulse}/>
+          <circle cx="1650" cy="650" r="2" fill="#00ffff" opacity="0.8" className={styles.animateSubtlePulseSlow}/>
+        </g>
+
+        <g className="circuit-nodes">
+          {/* Primary nodes */}
           <circle cx="600" cy="150" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
           <circle cx="450" cy="300" r="3" fill="url(#nodeGradient)" filter="url(#subtleGlow)" className={styles.animateNodePulseDelayed}/>
           <circle cx="550" cy="850" r="4" fill="url(#nodeGradient)" filter="url(#dataGlow)" className={styles.animateNodePulse}/>
@@ -130,7 +144,7 @@ const HolographicBackground = () => {
         <g className="corner-elements" opacity="0.4">
           {/* Top left */}
           <path d="M0 0 L150 0 L200 50 L200 150" stroke="#00e6ff" strokeWidth="1" fill="none"/>
-          <circle cx="200" cy="50" r="2" fill="#00e6ff"/>
+          <circle cx="200" cy="50" r="2" fill="#00e6ff" />
           
           {/* Top right */}
           <path d="M1920 0 L1770 0 L1720 50 L1720 150" stroke="#00e6ff" strokeWidth="1" fill="none"/>
@@ -143,6 +157,15 @@ const HolographicBackground = () => {
           {/* Bottom right */}
           <path d="M1920 1080 L1770 1080 L1720 1030 L1720 930" stroke="#00e6ff" strokeWidth="1" fill="none"/>
           <circle cx="1720" cy="1030" r="2" fill="#00e6ff"/>
+        </g>
+
+        <g className="data-packets">
+          <circle r="3" fill="#00ffff" 
+                  className={styles.dataPacket1}/>
+          <circle r="2" fill="#00d4ff" 
+                  className={styles.dataPacket2}/>
+          <circle r="2.5" fill="#0080ff" 
+                  className={styles.dataPacket3}/>
         </g>
         
         {/* Subtle grid pattern */}

@@ -55,6 +55,38 @@
   animation: subtlePulse 3s ease-in-out infinite;
 }
 
+
+.dataPacket1 {
+  offset-path: path("M0 200 L500 200 L600 150 L1200 150 L1400 180 L1920 180");
+  animation: dataPacketFlow 4s ease-in-out infinite;
+}
+
+.dataPacket2 {
+  offset-path: path("M0 350 L300 350 L450 300 L800 300 L1000 330 L1920 330" );
+  animation: dataPacketFlow 4s ease-in-out infinite;
+}
+
+.dataPacket3 {
+  offset-path: path("M0 900 L400 900 L550 850 L900 850 L1100 880 L1920 880" );
+  animation: dataPacketFlow 4s ease-in-out infinite;
+}
+
+
+@keyframes dataPacketFlow {
+  0% { 
+    offset-distance: 0%;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    offset-distance: 100%;
+    opacity: 0.3;
+  }
+}
+
+
 @keyframes pulseFlow {
   0%, 100% { 
     opacity: 0.6;
