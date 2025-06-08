@@ -78,7 +78,7 @@ export default function RegisterPage() {
                 </label>
                 <input
                     type='password'
-                    name='confirm-password'
+                    name='confirmPassword'
                     id='confirm-password'
                     value={userInfo.confirmPassword}
                     onChange={handleOnChange}

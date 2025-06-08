@@ -6,6 +6,7 @@
 /* Universal box-sizing reset - modern best practice */
 *, *::before, *::after {
   box-sizing: border-box;
+  margin: 0 0;
 }
 
 :root {
