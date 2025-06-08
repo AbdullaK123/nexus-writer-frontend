@@ -3,7 +3,7 @@ import styles from '@/components/ui/Background/HolographicBackground.module.css'
 
 const HolographicBackground = () => {
   return (
-    <div className="holographic-background">
+    <div className={styles.holographicBackground}>
       <svg 
         viewBox="0 0 1920 1080" 
         className={styles.holographicBackground}
@@ -49,7 +49,7 @@ const HolographicBackground = () => {
         </defs>
         
         {/* Primary horizontal data streams */}
-        <g className="data-streams">
+        <g className={styles.dataStreams}>
           {/* Top horizontal flows */}
           <path 
             d="M0 200 L500 200 L600 150 L1200 150 L1400 180 L1920 180" 
@@ -66,7 +66,7 @@ const HolographicBackground = () => {
             strokeWidth="1.5" 
             fill="none"
             filter="url(#subtleGlow)"
-            className="animate-pulse-flow-delayed"
+            className={styles.animatePulseFlowDelayed}
           />
           
           {/* Bottom horizontal flows */}
@@ -76,7 +76,7 @@ const HolographicBackground = () => {
             strokeWidth="2" 
             fill="none"
             filter="url(#dataGlow)"
-            className="animate-pulse-flow-slow"
+            className={styles.animatePulseFlowSlow}
           />
           
           <path 
@@ -85,7 +85,7 @@ const HolographicBackground = () => {
             strokeWidth="1.5" 
             fill="none"
             filter="url(#subtleGlow)"
-            className="animate-pulse-flow"
+            className={styles.animatePulseFlow}
           />
         </g>
         
