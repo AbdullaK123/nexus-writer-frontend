@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/ui/Navbar/Navbar";
+import HolographicBackground from "@/components/ui/Background/HolographicBackground";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <HolographicBackground/>
         <Navbar />
         {children}
       </body>

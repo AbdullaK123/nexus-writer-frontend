@@ -1,0 +1,85 @@
+/* components/ui/HolographicBackground/HolographicBackground.module.css */
+.holographicBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.backgroundSvg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.animatePulseFlow {
+  animation: pulseFlow 4s ease-in-out infinite;
+}
+
+.animatePulseFlowDelayed {
+  animation: pulseFlow 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animatePulseFlowSlow {
+  animation: pulseFlow 6s ease-in-out infinite;
+}
+
+.animateNodePulse {
+  animation: nodePulse 3s ease-in-out infinite;
+}
+
+.animateNodePulseDelayed {
+  animation: nodePulse 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animateNodePulseSlow {
+  animation: nodePulse 4s ease-in-out infinite;
+}
+
+.animateSubtlePulse {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+.animateSubtlePulseDelayed {
+  animation: subtlePulse 2s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.animateSubtlePulseSlow {
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+
+@keyframes pulseFlow {
+  0%, 100% { 
+    opacity: 0.6;
+  }
+  50% { 
+    opacity: 1;
+  }
+}
+
+@keyframes nodePulse {
+  0%, 100% { 
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { 
+    opacity: 0.6;
+  }
+  50% { 
+    opacity: 1;
+  }
+}
