@@ -1,6 +1,7 @@
 'use client'
 import styles from '@/app/(auth)/AuthLayout.module.css'
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 
 export default function LoginPage() {
@@ -22,6 +23,13 @@ export default function LoginPage() {
 
     return (
         <div className={styles.card}>
+             <Image
+                src='./logo.svg'
+                alt='Nexus Writer Logo'
+                width={60} 
+                height={60}
+                className={styles.logo}
+            />   
             <h1>Login</h1>
             <div>
                 <label

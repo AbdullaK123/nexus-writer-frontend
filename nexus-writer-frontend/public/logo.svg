@@ -1,0 +1,326 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Professional gradients -->
+    <radialGradient id="coreGradient" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+      <stop offset="20%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0080ff;stop-opacity:0.8" />
+    </radialGradient>
+    
+    <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#004d66;stop-opacity:0.4" />
+      <stop offset="30%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004d66;stop-opacity:0.4" />
+    </linearGradient>
+    
+    <radialGradient id="nodeGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#00d4ff;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#0080ff;stop-opacity:0.7" />
+    </radialGradient>
+    
+    <!-- Professional effects -->
+    <filter id="coreGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="connectionGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Circuit board trace patterns -->
+  <g id="circuitTraces" opacity="0.9">
+    <!-- Main power rails -->
+    <path d="M60 60 L60 25 L55 20 L60 15" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="3" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    <path d="M60 60 L95 60 L100 55 L105 60" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="3" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    <path d="M60 60 L60 95 L65 100 L60 105" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="3" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    <path d="M60 60 L25 60 L20 65 L15 60" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="3" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    
+    <!-- Circuit routing with 90-degree turns -->
+    <path d="M60 60 L75 60 L82 53 L87 33" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="2.5" 
+          fill="none"
+          filter="url(#connectionGlow)" 
+          opacity="0.8"/>
+    <path d="M60 60 L75 75 L82 82 L87 87" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="2.5" 
+          fill="none"
+          filter="url(#connectionGlow)" 
+          opacity="0.8"/>
+    <path d="M60 60 L45 75 L38 82 L33 87" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="2.5" 
+          fill="none"
+          filter="url(#connectionGlow)" 
+          opacity="0.8"/>
+    <path d="M60 60 L45 45 L38 38 L33 33" 
+          stroke="url(#connectionGradient)" 
+          stroke-width="2.5" 
+          fill="none"
+          filter="url(#connectionGlow)" 
+          opacity="0.8"/>
+  </g>
+  
+  <!-- Complex circuit patterns -->
+  <g id="circuitPatterns" opacity="0.8">
+    <!-- Branch circuits -->
+    <path d="M40 40 L50 40 L50 50 L60 60" 
+          stroke="#00d4ff" 
+          stroke-width="1.5" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    <path d="M80 40 L70 40 L70 50 L60 60" 
+          stroke="#00d4ff" 
+          stroke-width="1.5" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    <path d="M40 80 L50 80 L50 70 L60 60" 
+          stroke="#00d4ff" 
+          stroke-width="1.5" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    <path d="M80 80 L70 80 L70 70 L60 60" 
+          stroke="#00d4ff" 
+          stroke-width="1.5" 
+          fill="none"
+          filter="url(#connectionGlow)"/>
+    
+    <!-- Signal traces -->
+    <path d="M30 30 L35 30 L40 35 L45 35" 
+          stroke="#00e6ff" 
+          stroke-width="1" 
+          fill="none" 
+          opacity="0.7"/>
+    <path d="M90 30 L85 30 L80 35 L75 35" 
+          stroke="#00e6ff" 
+          stroke-width="1" 
+          fill="none" 
+          opacity="0.7"/>
+    <path d="M30 90 L35 90 L40 85 L45 85" 
+          stroke="#00e6ff" 
+          stroke-width="1" 
+          fill="none" 
+          opacity="0.7"/>
+    <path d="M90 90 L85 90 L80 85 L75 85" 
+          stroke="#00e6ff" 
+          stroke-width="1" 
+          fill="none" 
+          opacity="0.7"/>
+    
+    <!-- Via connections -->
+    <path d="M25 50 L35 50 L35 60 L45 60" 
+          stroke="#00d4ff" 
+          stroke-width="1.2" 
+          fill="none" 
+          opacity="0.6"/>
+    <path d="M95 50 L85 50 L85 60 L75 60" 
+          stroke="#00d4ff" 
+          stroke-width="1.2" 
+          fill="none" 
+          opacity="0.6"/>
+    <path d="M50 25 L50 35 L60 35 L60 45" 
+          stroke="#00d4ff" 
+          stroke-width="1.2" 
+          fill="none" 
+          opacity="0.6"/>
+    <path d="M50 95 L50 85 L60 85 L60 75" 
+          stroke="#00d4ff" 
+          stroke-width="1.2" 
+          fill="none" 
+          opacity="0.6"/>
+  </g>
+  
+  <!-- Secondary connection network -->
+  <g id="secondaryConnections" opacity="0.7">
+    <!-- Intermediate angles -->
+    <line x1="60" y1="60" x2="75" y2="22" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="98" y2="45" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="98" y2="75" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="75" y2="98" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="45" y2="98" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="22" y2="75" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="22" y2="45" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+    <line x1="60" y1="60" x2="45" y2="22" 
+          stroke="#00d4ff" 
+          stroke-width="1.8" 
+          filter="url(#connectionGlow)"/>
+  </g>
+  
+  <!-- Circuit components and terminals -->
+  <g id="circuitComponents">
+    <!-- Primary terminal pads -->
+    <rect x="58" y="13" width="4" height="4" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00ffff" 
+          stroke-width="0.5"/>
+    <rect x="103" y="58" width="4" height="4" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00ffff" 
+          stroke-width="0.5"/>
+    <rect x="58" y="103" width="4" height="4" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00ffff" 
+          stroke-width="0.5"/>
+    <rect x="13" y="58" width="4" height="4" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00ffff" 
+          stroke-width="0.5"/>
+    
+    <!-- IC packages at corners -->
+    <rect x="83" y="29" width="8" height="8" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00d4ff" 
+          stroke-width="0.4"/>
+    <rect x="83" y="83" width="8" height="8" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00d4ff" 
+          stroke-width="0.4"/>
+    <rect x="29" y="83" width="8" height="8" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00d4ff" 
+          stroke-width="0.4"/>
+    <rect x="29" y="29" width="8" height="8" rx="1" 
+          fill="url(#nodeGradient)" 
+          filter="url(#nodeGlow)" 
+          stroke="#00d4ff" 
+          stroke-width="0.4"/>
+    
+    <!-- Via holes -->
+    <circle cx="50" cy="40" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="70" cy="40" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="50" cy="80" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="70" cy="80" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="40" cy="50" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="80" cy="50" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="40" cy="70" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    <circle cx="80" cy="70" r="1.5" fill="#00d4ff" filter="url(#nodeGlow)" stroke="#ffffff" stroke-width="0.3"/>
+    
+    <!-- Resistor components -->
+    <rect x="32" y="32" width="4" height="2" rx="0.5" fill="#00ffff" filter="url(#nodeGlow)" opacity="0.8"/>
+    <rect x="84" y="32" width="4" height="2" rx="0.5" fill="#00ffff" filter="url(#nodeGlow)" opacity="0.8"/>
+    <rect x="32" y="86" width="4" height="2" rx="0.5" fill="#00ffff" filter="url(#nodeGlow)" opacity="0.8"/>
+    <rect x="84" y="86" width="4" height="2" rx="0.5" fill="#00ffff" filter="url(#nodeGlow)" opacity="0.8"/>
+    
+    <!-- Capacitor symbols -->
+    <rect x="24" y="48" width="1" height="4" fill="#00d4ff" opacity="0.7"/>
+    <rect x="26" y="48" width="1" height="4" fill="#00d4ff" opacity="0.7"/>
+    <rect x="93" y="48" width="1" height="4" fill="#00d4ff" opacity="0.7"/>
+    <rect x="95" y="48" width="1" height="4" fill="#00d4ff" opacity="0.7"/>
+  </g>
+  
+  <!-- Central nexus core -->
+  <g id="nexusCore">
+    <!-- Outer ring -->
+    <circle cx="60" cy="60" r="18" 
+            fill="none" 
+            stroke="url(#connectionGradient)" 
+            stroke-width="1.5" 
+            filter="url(#connectionGlow)" 
+            opacity="0.6"/>
+    
+    <!-- Middle ring -->
+    <circle cx="60" cy="60" r="12" 
+            fill="none" 
+            stroke="#00d4ff" 
+            stroke-width="1" 
+            filter="url(#nodeGlow)" 
+            opacity="0.8"/>
+    
+    <!-- Core hexagon (representing the nexus) -->
+    <polygon points="60,45 72,52.5 72,67.5 60,75 48,67.5 48,52.5" 
+             fill="url(#coreGradient)" 
+             filter="url(#coreGlow)" 
+             stroke="#ffffff" 
+             stroke-width="0.5"/>
+    
+    <!-- Inner core detail -->
+    <circle cx="60" cy="60" r="6" 
+            fill="url(#nodeGradient)" 
+            filter="url(#nodeGlow)" 
+            opacity="0.9"/>
+    
+    <!-- Central point -->
+    <circle cx="60" cy="60" r="2" 
+            fill="#ffffff" 
+            filter="url(#nodeGlow)"/>
+  </g>
+  
+  <!-- Data flow indicators -->
+  <g id="dataFlow" opacity="0.6">
+    <!-- Animated-style data packets (positioned to suggest movement) -->
+    <circle cx="45" cy="60" r="1.5" fill="#00ffff" opacity="0.9"/>
+    <circle cx="75" cy="60" r="1.5" fill="#00ffff" opacity="0.9"/>
+    <circle cx="60" cy="45" r="1.5" fill="#00ffff" opacity="0.9"/>
+    <circle cx="60" cy="75" r="1.5" fill="#00ffff" opacity="0.9"/>
+    
+    <circle cx="70" cy="40" r="1" fill="#00d4ff" opacity="0.7"/>
+    <circle cx="50" cy="80" r="1" fill="#00d4ff" opacity="0.7"/>
+    <circle cx="40" cy="50" r="1" fill="#00d4ff" opacity="0.7"/>
+    <circle cx="80" cy="70" r="1" fill="#00d4ff" opacity="0.7"/>
+  </g>
+</svg>

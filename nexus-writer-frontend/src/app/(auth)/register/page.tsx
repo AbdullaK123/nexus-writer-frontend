@@ -1,6 +1,7 @@
 'use client'
 import styles from '@/app/(auth)/AuthLayout.module.css'
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 
 export default function RegisterPage() {
@@ -27,6 +28,13 @@ export default function RegisterPage() {
 
     return (
         <div className={styles.card}>
+            <Image
+                src='./logo.svg'
+                alt='Nexus Writer Logo'
+                width={60} 
+                height={60}
+                className={styles.logo}
+            />   
             <h1>Register</h1>
             <div>
                 <label

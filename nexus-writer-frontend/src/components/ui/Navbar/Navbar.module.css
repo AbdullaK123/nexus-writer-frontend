@@ -8,12 +8,17 @@
     padding: 16px;
     background: linear-gradient(var(--background-primary), var(--background-secondary));
     border-bottom: 1px solid var(--accent-primary);
+    box-shadow: 0 2px 10px rgba(0, 212, 255, 0.2);
+}
+
+.logo {
+    filter: drop-shadow(0 0 5px var(--accent-primary));
 }
 
 .logo-container {
     display: flex;
     padding: 4px;
-    gap: 8px;
+    gap: 12px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -41,4 +46,11 @@
 .navbar-link:hover {
     transform: translateY(-3px);
     transition: all 0.1s ease-in-out
+}
+
+.navbar-link:active {
+  color: var(--success); /* #00ff41 */
+  text-shadow: 
+    0 0 8px var(--success),
+    0 0 15px var(--success);
 }
