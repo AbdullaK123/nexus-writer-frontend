@@ -3,7 +3,7 @@ import styles from '@/app/(auth)/AuthLayout.module.css'
 import React, { useState } from 'react';
 
 
-export default function Page() {
+export default function LoginPage() {
 
     const [credentials, setCredentials] = useState({email: "", password: ""});
 
