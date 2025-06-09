@@ -6,6 +6,7 @@
   padding: 2rem;
   align-items: center;
   justify-content: center;
+  transition: fadeInFromBottom 1s ease-in;
 }
 
 .hero-hook {
@@ -20,6 +21,12 @@
   gap: 2rem;
   max-width: 1200px;
   width: 100%;
+}
+
+.heroes-container > div > li {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
 }
 
 .problem-hero-container {
@@ -58,4 +65,15 @@
   .heroes-container {
     grid-template-columns: 1fr;
   }
+}
+
+@keyframes fadeInFromBottom {
+    0% {
+        opacity: 0%;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 100%;
+        transform: translateY(-10px);
+    }
 }
