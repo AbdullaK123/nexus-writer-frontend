@@ -6,7 +6,6 @@
   padding: 2rem;
   align-items: center;
   justify-content: center;
-  transition: fadeInFromBottom 1s ease-in;
 }
 
 .hero-hook {
@@ -23,10 +22,18 @@
   width: 100%;
 }
 
-.heroes-container > div > li {
-    list-style-type: none;
-    padding: 0px;
-    margin: 0px;
+.heroes-container ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.heroes-container li {
+  list-style-type: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text-primary);
 }
 
 .problem-hero-container {
@@ -67,13 +74,25 @@
   }
 }
 
+/* Stagger animations for visual appeal */
+.heroes-container {
+  animation: fadeInFromBottom 1.2s ease-out;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+.main-container {
+  animation: fadeInFromBottom 1s ease-out;
+}
+
+/* Fix the keyframe timing */
 @keyframes fadeInFromBottom {
-    0% {
-        opacity: 0%;
-        transform: translateY(10px);
-    }
-    100% {
-        opacity: 100%;
-        transform: translateY(-10px);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
