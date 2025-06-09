@@ -1,0 +1,61 @@
+.main-container {
+  min-height: calc(100vh - 80px); /* Account for navbar */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-hook {
+  max-width: 800px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.heroes-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.problem-hero-container {
+  padding: 2rem;
+  border: 2px solid var(--error);
+  background: linear-gradient(135deg, 
+    rgba(255, 64, 64, 0.1), 
+    rgba(255, 64, 64, 0.05)
+  );
+  border-radius: 12px;
+  box-shadow: 
+    0 0 20px rgba(255, 64, 64, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.success-hero-container {
+  padding: 2rem;
+  border: 2px solid var(--success);
+  background: linear-gradient(135deg, 
+    rgba(0, 255, 65, 0.1), 
+    rgba(0, 255, 65, 0.05)
+  );
+  border-radius: 12px;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 65, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cta-section {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .heroes-container {
+    grid-template-columns: 1fr;
+  }
+}
