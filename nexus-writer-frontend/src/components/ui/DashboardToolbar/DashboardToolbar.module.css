@@ -2,10 +2,11 @@
 .toolbar {
     display: flex;
     flex-direction: row;
-    padding: 16px;
-    justify-content: space-evenly;
+    padding: 2rem;
+    border-radius: 16px;
+    justify-content: space-between;
     width: 80vw;
-    height: 20vh;
+    height: 5vh;
     background: linear-gradient(var(--background-primary), var(--background-secondary));
     border: 1px solid var(--accent-primary);
     box-shadow: 
@@ -18,5 +19,7 @@
 .flex-row-container {
     display: flex;
     flex-direction: row;
+    gap: 8px;
+    padding: 4px;
     justify-content: space-evenly;
 }

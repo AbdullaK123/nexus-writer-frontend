@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './AppLayout.module.css'
 
 
 export default function AppLayout({
@@ -8,7 +9,7 @@ export default function AppLayout({
 }) {
     return (
         <div className='app-layout'>
-            <main className='app-body'>
+            <main className={styles['app-body']}>
                 {children}
             </main>
         </div>
