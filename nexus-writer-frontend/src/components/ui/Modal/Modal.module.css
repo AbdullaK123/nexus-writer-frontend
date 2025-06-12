@@ -1,0 +1,22 @@
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--background-primary);
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.model-content {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}

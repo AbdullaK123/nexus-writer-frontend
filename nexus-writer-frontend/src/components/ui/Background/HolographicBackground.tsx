@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '@/components/ui/Background/HolographicBackground.module.css'
 
 const HolographicBackground = () => {
-  console.log('HolographicBackground rendering!', styles); 
   return (
     <div className={styles.holographicBackground}>
       <svg 
