@@ -6,11 +6,7 @@ import styles from '@/app/(app)/AppLayout.module.css'
 export default function Dashboard() {
     return (
         <>
-            <DashboardToolbar
-                username="placeholder"
-                onCreateStory={(story : StoryCreateRequest) => {}}
-                onLayoutChange={() => {}}
-            />
+           
         </>
     )
 }

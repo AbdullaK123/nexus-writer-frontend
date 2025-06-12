@@ -1,6 +1,8 @@
 .app-body {
-  min-height: 100vh;
+   min-height: calc(95vh); /* Account for navbar */
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
 }
