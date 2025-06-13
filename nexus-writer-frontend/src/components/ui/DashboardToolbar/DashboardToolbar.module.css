@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 2rem;
+    padding: 3rem;
     border-radius: 16px;
     justify-content: space-between;
     width: 90vw;
@@ -14,6 +14,23 @@
         0 0 5px var(--accent-primary),     
         0 0 10px var(--accent-secondary),   
         inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.story-create-bar-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 4px;
+    justify-content: space-evenly;
+    width: 50%;
+}
+
+.story-create-bar-container input {
+    width: 80%;
+}
+
+.story-create-bar-container button {
+    width: 20%;
 }
 
 

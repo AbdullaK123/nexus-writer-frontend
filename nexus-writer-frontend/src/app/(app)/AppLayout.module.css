@@ -1,6 +1,17 @@
 .app-body {
    min-height: calc(95vh); /* Account for navbar */
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.flex-col-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2rem;

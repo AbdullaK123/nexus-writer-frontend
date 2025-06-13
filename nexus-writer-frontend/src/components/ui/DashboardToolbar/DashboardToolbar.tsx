@@ -15,7 +15,7 @@ export default function DashboardToolbar({ username, onCreateStory, onLayoutChan
     return (
         <div className={styles.toolbar}>
             <h3>{`Hello ${username}`}</h3>
-            <div className={styles['flex-row-container']}>
+            <div className={styles['story-create-bar-container']}>
                 <input
                     id="title"
                     name="title"
