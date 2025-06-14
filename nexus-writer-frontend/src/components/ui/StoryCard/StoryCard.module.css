@@ -1,11 +1,9 @@
-
-
 .story-card-container {
     display: flex;
     flex-direction: column;
     width: clamp(320px, 30vw, 640px);
-    gap: 2rem;
-    padding: 8px;
+    gap: 1.5rem;
+    padding: 1.5rem;
     border-radius: 16px;
     border: 1px solid var(--accent-primary);
     background: linear-gradient(var(--background-primary), var(--background-secondary));
@@ -13,41 +11,162 @@
         0 0 5px var(--accent-primary),     
         0 0 10px var(--accent-secondary),   
         inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.story-card-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 0 8px var(--accent-primary),     
+        0 0 15px var(--accent-secondary),   
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Title styling */
+.story-card-container h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Status and metadata row */
+.metadata-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.dates-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.dates-container p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: fit-content;
+    white-space: nowrap;
 }
 
 .completed-span {
-    padding: 8px;
-    border-radius: 16px;
-    background: var(--success)
+    background: var(--success);
+    color: var(--background-primary);
 }
 
 .ongoing-span {
-    padding: 8px;
-    border-radius: 16px;
-    background: var(--warning)
+    background: var(--warning);
+    color: var(--background-primary);
 }
 
 .onhaitus-span {
-    padding: 8px;
-    border-radius: 16px;
-    background: var(--error)
+    background: var(--error);
+    color: var(--text-primary);
 }
 
-.flex-row-container {
-    display: flex;
-    flex-direction: row;
-    padding: 2rem;
-    gap: 2rem;
-    justify-content: space-between;
-}
-
+/* Stats container */
 .story-stats-container {
-    display: flex;
-    flex-direction: row;
-    padding: 2rem;
-    gap: 2rem;
-    border-radius: 16px;
-    justify-content: space-between;
-    background: linear-gradient(var(--background-primary), var(--background-secondary));
-    border: 1px solid var(--accent-primary);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.story-stats-container p {
+    margin: 0;
+    font-size: 0.875rem;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+.story-stats-container p:first-child::before {
+    content: "📚 ";
+}
+
+.story-stats-container p:nth-child(2)::before {
+    content: "📝 ";
+}
+
+.story-stats-container p:last-child::before {
+    content: "🔖 ";
+}
+
+/* Action buttons */
+.actions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+}
+
+.actions-container button {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 44px; /* Ensure touch-friendly size */
+    width: auto; /* Override global width: 100% */
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .story-card-container {
+        width: 100%;
+        min-width: 280px;
+    }
+    
+    .status-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .dates-container {
+        text-align: center;
+    }
+    
+    .actions-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .story-stats-container {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+    
+    .story-stats-container p::before {
+        margin-right: 0.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .actions-container {
+        grid-template-columns: 1fr;
+    }
 }
