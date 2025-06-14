@@ -4,7 +4,7 @@ import { DashboardToolBarProps } from '@/app/types/interfaces';
 import { StoryCreateRequest } from '@/app/types/stories';
 import styles from './DashboardToolbar.module.css'
 
-export default function DashboardToolbar({ username, onCreateStory, onLayoutChange}: DashboardToolBarProps ) {
+export default function DashboardToolbar({ username, onCreateStory}: DashboardToolBarProps ) {
 
     const [story, setStory] = useState<StoryCreateRequest>({ title: "" })
 
@@ -29,20 +29,6 @@ export default function DashboardToolbar({ username, onCreateStory, onLayoutChan
                     onClick={() => onCreateStory(story)}
                 >
                     Create Story
-                </button>
-            </div>
-            <div className={styles['flex-row-container']}>
-                <button
-                    className='btn-primary'
-                    onClick={() => onLayoutChange()}
-                >
-                    Grid View
-                </button>
-                <button
-                     className='btn-primary'
-                    onClick={() => onLayoutChange()}
-                >
-                    List View
                 </button>
             </div>
         </div>
