@@ -74,6 +74,20 @@ h1 {
   width: 100%;
 }
 
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background: linear-gradient(var(--background-primary), var(--background-secondary));
+  border: 1px solid var(--accent-primary);
+  color: var(--text-primary);
+  font-family: var(--text-accent);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: rgba(0, 128, 255, 0.4);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
 .btn-primary:hover {
   background: var(--accent-primary);
   box-shadow:

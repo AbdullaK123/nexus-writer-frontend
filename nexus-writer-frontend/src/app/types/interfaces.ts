@@ -6,3 +6,19 @@ export interface DashboardToolBarProps {
     onCreateStory: (story: StoryCreateRequest) => void;
     onLayoutChange: () => void;
 }
+
+export interface ModalProps {
+  children: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export interface StoryCardProps {
+    title: string;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date;
+    totalChapters: number;
+    wordCount: number;
+    latestChapter: string;
+}
