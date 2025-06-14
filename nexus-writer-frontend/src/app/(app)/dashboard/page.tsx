@@ -2,11 +2,15 @@
 import DashboardToolbar from "@/components/ui/DashboardToolbar/DashboardToolbar"
 import { StoryCreateRequest } from "@/app/types/stories"
 import styles from '@/app/(app)/AppLayout.module.css'
+import { mockStoryData, singleMockStory } from '@/app/lib/examples'
+import StoryCard from "@/components/ui/StoryCard/StoryCard"
 
 export default function Dashboard() {
     return (
-        <div className={styles['flex-col-container']}>
-            <h1>This is content</h1>
+        <div className={styles['flex-wrap-container']}>
+            {mockStoryData.map((story, index) => (
+                <StoryCard key={index} {...story} />
+            ))}
         </div>
     )
 }
