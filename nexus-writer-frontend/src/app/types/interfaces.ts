@@ -21,3 +21,14 @@ export interface StoryCardProps {
     wordCount: number;
     latestChapter: string;
 }
+
+export interface StoryDetailHeaderProps {
+  title: string
+}
+
+export interface ChapterListItemProps {
+  chapterNumber: number;
+  title: string;
+  wordCount: number;
+  status: string;
+}

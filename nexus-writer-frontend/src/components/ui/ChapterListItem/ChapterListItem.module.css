@@ -1,0 +1,50 @@
+.chapter-list-item-container {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.chapter-metadata-container {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.published-chapter-number-badge {
+    padding: 2rem;
+    border-radius: 100%;
+    background: var(--success);
+}
+
+.draft-chapter-number-badge {
+    padding: 2rem;
+    border-radius: 100%;
+    background: var(--warning);
+}
+
+.outline-chapter-number-badge {
+    padding: 2rem;
+    border-radius: 100%;
+    background: var(--info);
+}
+
+.flex-col-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chapter-list-item-container:active {
+    background: var(--accent-primary);
+    opacity: 0.5;
+    border: 1px solid var(--accent-primary);
+    box-shadow: 
+        0 0 5px var(--accent-primary),     
+        0 0 10px var(--accent-secondary),   
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
