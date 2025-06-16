@@ -33,6 +33,7 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    border-radius: 16px;
     gap: 2rem;
     border: 1px solid var(--accent-primary);
     background: linear-gradient(var(--background-primary), var(--background-secondary));

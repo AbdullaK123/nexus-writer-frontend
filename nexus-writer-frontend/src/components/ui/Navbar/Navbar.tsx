@@ -1,6 +1,6 @@
 'use client'
 import styles from '@/components/ui/Navbar/Navbar.module.css'
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,7 +9,7 @@ export default function Navbar() {
         <nav className={styles.navbar}>
             <div className={styles['logo-container']}>
                 <Image
-                    src='./logo.svg'
+                    src='/logo.svg'
                     alt='Nexus Writer Logo'
                     width={40} 
                     height={40}

@@ -26,8 +26,9 @@ export default function ChapterListItem({
     }
 
     return (
-        <div className="chapter-list-item-container">
-            <div className="chapter-metadata-container">
+        // In ChapterListItem.tsx, fix these lines:
+        <div className={styles['chapter-list-item-container']}> 
+            <div className={styles['chapter-metadata-container']}> 
                 {getChapterNumberBadge(chapterNumber, status)}
                 <div className={styles['flex-col-container']}>
                     <h3>{title}</h3>

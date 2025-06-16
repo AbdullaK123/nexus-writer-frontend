@@ -4,18 +4,19 @@ import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
 import { mockStoryDetailSidebar, mockChapterPreview, mockPublishedChapter, mockOutlineChapter } from "@/app/lib/examples";
 
-
-export default async function Page({params}) {
-
+// In stories/[id]/page.tsx - replace your current structure with:
+export default async function Page({ params }) {
     const {id} = await params
 
     return (
-        <>
+        <div className={styles['story-detail-page']}>
             <StoryDetailHeader title={`Mock Story ${id}`} />
-            <div className={styles['flex-container']}>
+            <div className={styles['story-content-layout']}>
                 <StoryDetailSidebar {...mockStoryDetailSidebar}/>
-                <ChapterPreview {...mockChapterPreview} />
+                <div className={styles['main-content-area']}>
+                    <ChapterPreview {...mockChapterPreview} />
+                </div>
             </div>
-        </>
+        </div>
     )
 }

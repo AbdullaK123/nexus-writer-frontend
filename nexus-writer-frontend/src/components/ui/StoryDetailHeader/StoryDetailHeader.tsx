@@ -9,7 +9,7 @@ export default function StoryDetailHeader({ title } : StoryDetailHeaderProps) {
                 {/*where the arrow back icon will go */}
                 <h2>{title}</h2>
             </div>
-            <button className='btn-primary'>
+            <button className={`btn-primary ${styles['width-proper']}`}>
                 + Create Chapter
             </button>
         </div>

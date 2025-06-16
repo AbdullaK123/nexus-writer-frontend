@@ -10,25 +10,27 @@
 .chapter-metadata-container {
     display: flex;
     flex-direction: row;
+    padding: 1rem;
+    gap: 2rem;
     padding: 2rem;
     align-items: center;
     justify-content: space-evenly;
 }
 
 .published-chapter-number-badge {
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 100%;
     background: var(--success);
 }
 
 .draft-chapter-number-badge {
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 100%;
     background: var(--warning);
 }
 
 .outline-chapter-number-badge {
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 100%;
     background: var(--info);
 }

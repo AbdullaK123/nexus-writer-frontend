@@ -1,4 +1,28 @@
-.flex-container {
+.story-detail-page {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.story-content-layout {
     display: flex;
     gap: 2rem;
+    min-height: 70vh;
+    align-items: flex-start;
+}
+
+.main-content-area {
+    flex: 2;
+    min-width: 0; /* Allows flex item to shrink */
+}
+
+/* Responsive breakpoint */
+@media (max-width: 1024px) {
+    .story-content-layout {
+        flex-direction: column;
+    }
 }

@@ -1,21 +1,28 @@
-
 .story-sidebar-container {
     display: flex;
-    padding: 2rem;
+    flex-direction: column;
+    padding: 1.5rem;
     border: 1px solid var(--accent-primary);
-    border-top-right-radius: 16px;
-    border-bottom-left-radius: 16px;
-    width: 33%;
+    border-radius: 16px;
+    flex: 1;
+    max-width: 400px;
     background: linear-gradient(var(--background-primary), var(--background-secondary));
     box-shadow: 
         0 0 5px var(--accent-primary),     
         0 0 10px var(--accent-secondary),   
         inset 0 1px 0 rgba(255,255,255,0.1);
+    gap: 2rem;
 }
 
 .chapter-items-container {
     display: flex;
     flex-direction: column;
-    padding: 2rem;
-    gap: 2rem;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--accent-primary);
+    box-shadow: 
+        0 0 5px var(--accent-primary),     
+        0 0 10px var(--accent-secondary),   
+        inset 0 1px 0 rgba(255,255,255,0.1);
 }

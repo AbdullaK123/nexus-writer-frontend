@@ -1,6 +1,7 @@
 import StoryInfoCard from "../StoryInfoCard/StoryInfoCard";
 import ChapterListItem from "../ChapterListItem/ChapterListItem";
 import { StoryDetailSideBarProps } from "@/app/types/interfaces";
+import styles from './StoryDetailSidebar.module.css'
 
 
 export default function StoryDetailSidebar({ 
@@ -8,9 +9,9 @@ export default function StoryDetailSidebar({
     chapters,
  }: StoryDetailSideBarProps) {
     return (
-        <aside className="story-sidebar-container">
+        <aside className={styles['story-sidebar-container']}> 
             <StoryInfoCard {...storyInfo}/>
-            <div className="chapter-items-container">
+            <div className={styles['chapter-items-container']}>
                 <h2>Chapters</h2>
                 {chapters.map((chapter, index) => {
                     return (
