@@ -1,0 +1,26 @@
+
+.story-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 2rem;
+    border: 1px solid var(--primary-accent);
+    background: linear-gradient(var(--background-primary), var(--background-secondary));
+    box-shadow: 
+        0 0 5px var(--accent-primary),     
+        0 0 10px var(--accent-secondary),   
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.completed-text {
+    color: var(--success)
+}
+
+.draft-text {
+    color: var(--warning)
+}
+
+.haitus-text {
+    color: var(--error)
+}

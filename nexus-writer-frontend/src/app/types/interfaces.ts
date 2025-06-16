@@ -32,3 +32,23 @@ export interface ChapterListItemProps {
   wordCount: number;
   status: string;
 }
+
+export interface StoryInfoCardProps {
+  status: string;
+  totalChapters: number;
+  wordCount: number;
+  updatedAt: Date;
+}
+
+export interface StoryDetailSideBarProps {
+  storyInfo: StoryInfoCardProps;
+  chapters: ChapterListItemProps[];
+}
+
+export interface ChapterPreviewProps {
+  title: string;
+  status: string;
+  wordCount: number;
+  updatedAt: Date;
+  previewContent: string;
+}

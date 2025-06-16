@@ -15,7 +15,6 @@ export default function AppLayout({
                 <DashboardToolbar
                     username="placeholder"
                     onCreateStory={(story : StoryCreateRequest) => {}}
-                    onLayoutChange={() => {}}
                 />
                 {children}
             </main>
