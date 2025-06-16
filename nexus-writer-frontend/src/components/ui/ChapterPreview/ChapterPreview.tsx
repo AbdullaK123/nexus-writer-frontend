@@ -36,9 +36,9 @@ export default function ChapterPreview({
                 {previewContent}
             </div>
             <div className={styles['flex-row-container']}>
-                <button>Edit Chapter</button>
-                <button>Chapter Settings</button>
-                <button>Publish / Unpublish</button>
+                <button className='btn-primary'>Edit Chapter</button>
+                <button className='btn-secondary'>Chapter Settings</button>
+                <button className='btn-secondary'>Publish / Unpublish</button>
             </div>
         </div>
     )

@@ -1,8 +1,6 @@
 'use client'
 import React from 'react';
 import styles from './AppLayout.module.css'
-import DashboardToolbar from '@/components/ui/DashboardToolbar/DashboardToolbar';
-import { StoryCreateRequest } from '../types/stories';
 
 export default function AppLayout({
     children
@@ -12,10 +10,6 @@ export default function AppLayout({
     return (
         <div className='app-layout'>
             <main className={styles['app-body']}>
-                <DashboardToolbar
-                    username="placeholder"
-                    onCreateStory={(story : StoryCreateRequest) => {}}
-                />
                 {children}
             </main>
         </div>

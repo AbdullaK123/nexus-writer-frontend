@@ -7,10 +7,16 @@ import StoryCard from "@/components/ui/StoryCard/StoryCard"
 
 export default function Dashboard() {
     return (
-        <div className={styles['flex-wrap-container']}>
-            {mockStoryData.map((story, index) => (
-                <StoryCard key={index} {...story} />
-            ))}
-        </div>
+        <>
+            <DashboardToolbar
+                username="placeholder"
+                onCreateStory={(story : StoryCreateRequest) => {}}
+            />
+            <div className={styles['flex-wrap-container']}>
+                {mockStoryData.map((story, index) => (
+                    <StoryCard key={index} {...story} />
+                ))}
+            </div>
+        </>
     )
 }

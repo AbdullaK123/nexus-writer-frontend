@@ -2,15 +2,19 @@ import StoryDetailSidebar from "@/components/ui/StoryDetailSidebar/StoryDetailSi
 import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHeader";
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
+import { mockStoryDetailSidebar, mockChapterPreview, mockPublishedChapter, mockOutlineChapter } from "@/app/lib/examples";
 
 
-export default function Page() {
+export default async function Page({params}) {
+
+    const {id} = await params
+
     return (
         <>
-            <StoryDetailHeader />
+            <StoryDetailHeader title={`Mock Story ${id}`} />
             <div className={styles['flex-container']}>
-                <StoryDetailSidebar />
-                <ChapterPreview />
+                <StoryDetailSidebar {...mockStoryDetailSidebar}/>
+                <ChapterPreview {...mockChapterPreview} />
             </div>
         </>
     )
