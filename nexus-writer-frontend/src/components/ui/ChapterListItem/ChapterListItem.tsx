@@ -1,3 +1,4 @@
+// src/components/ui/ChapterListItem/ChapterListItem.tsx
 import { ChapterListItemProps } from "@/app/types/interfaces";
 import styles from './ChapterListItem.module.css'
 
@@ -9,34 +10,42 @@ export default function ChapterListItem({
 }: ChapterListItemProps) {
 
     const getBadgeCss = (status: string) => {
-        if (status.toLowerCase() === 'published') return 'published-chapter-number-badge';
-        if (status.toLowerCase() === 'draft') return 'draft-chapter-number-badge';
+        const normalizedStatus = status.toLowerCase();
+        if (normalizedStatus === 'published') return 'published-chapter-number-badge';
+        if (normalizedStatus === 'draft') return 'draft-chapter-number-badge';
         return 'outline-chapter-number-badge';
     }
 
-    const getChapterNumberBadge = (chapterNumber: number, status: string) => {
+    const getStatusIndicatorClass = (status: string) => {
+        const normalizedStatus = status.toLowerCase();
+        if (normalizedStatus === 'published') return 'published';
+        if (normalizedStatus === 'draft') return 'draft';
+        return 'outline';
+    }
 
-        const css = getBadgeCss(status)
-
-        return (
-            <span className={styles[css]}>
-                {chapterNumber}
-            </span>
-        )
+    const formatWordCount = (count: number) => {
+        if (count === 0) return '0 words';
+        if (count >= 1000) return `${(count / 1000).toFixed(1)}k words`;
+        return `${count} words`;
     }
 
     return (
-        // In ChapterListItem.tsx, fix these lines:
         <div className={styles['chapter-list-item-container']}> 
+            <div className={`${styles['status-indicator']} ${styles[getStatusIndicatorClass(status)]}`} />
             <div className={styles['chapter-metadata-container']}> 
-                {getChapterNumberBadge(chapterNumber, status)}
+                <span className={`${styles['chapter-number-badge']} ${styles[getBadgeCss(status)]}`}>
+                    {chapterNumber}
+                </span>
                 <div className={styles['flex-col-container']}>
                     <h3>{title}</h3>
-                    <span>{wordCount} words - {status}</span>
+                    <div className={styles['chapter-stats']}>
+                        <span>{formatWordCount(wordCount)}</span>
+                        <span>{status}</span>
+                    </div>
                 </div>
             </div>
-            <div>
-                {/* where the right arrow icon will go */}
+            <div className={styles['arrow-icon']}>
+                →
             </div>
         </div>
     )

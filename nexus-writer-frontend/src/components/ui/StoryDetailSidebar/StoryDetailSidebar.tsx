@@ -3,21 +3,27 @@ import ChapterListItem from "../ChapterListItem/ChapterListItem";
 import { StoryDetailSideBarProps } from "@/app/types/interfaces";
 import styles from './StoryDetailSidebar.module.css'
 
-
 export default function StoryDetailSidebar({ 
     storyInfo,
     chapters,
  }: StoryDetailSideBarProps) {
     return (
         <aside className={styles['story-sidebar-container']}> 
-            <StoryInfoCard {...storyInfo}/>
-            <div className={styles['chapter-items-container']}>
+            <div className={styles['sidebar-section']}>
+                <StoryInfoCard {...storyInfo}/>
+            </div>
+            
+            <div className={`${styles['sidebar-section']} ${styles['chapter-items-container']}`}>
                 <h2>Chapters</h2>
-                {chapters.map((chapter, index) => {
-                    return (
-                        <ChapterListItem key={index} {...chapter} />
-                    )
-                })}
+                {chapters && chapters.length > 0 ? (
+                    chapters.map((chapter, index) => (
+                        <ChapterListItem key={`chapter-${chapter.chapterNumber}-${index}`} {...chapter} />
+                    ))
+                ) : (
+                    <div className={styles['empty-chapters']}>
+                        No chapters yet
+                    </div>
+                )}
             </div>
         </aside>
     )

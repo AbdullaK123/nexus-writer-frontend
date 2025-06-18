@@ -27,6 +27,15 @@
   --font-body: 'Inter', sans-serif; 
   --font-mono: 'JetBrains Mono', monospace;
   --font-accent: 'Exo 2', sans-serif;
+  --space-xs: 0.5rem;   /* 8px */
+  --space-sm: 1rem;     /* 16px */  
+  --space-md: 1.5rem;   /* 24px */
+  --space-lg: 2rem;     /* 32px */
+  --space-xl: 3rem;     /* 48px */
+  
+  /* Container widths */
+  --content-width: 1200px;
+  --sidebar-width: 320px;
 }
 
 body {
@@ -132,6 +141,37 @@ label {
   display: block;
   text-shadow: 
     0 0 3px rgba(255,255,255,0.2);
+}
+
+/* Stack things vertically with consistent spacing */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.stack-sm { gap: var(--space-sm); }
+.stack-lg { gap: var(--space-lg); }
+
+/* Arrange things horizontally */
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* Container with consistent padding */
+.container {
+  padding: var(--space-lg);
+  max-width: var(--content-width);
+  margin: 0 auto;
 }
 
 
