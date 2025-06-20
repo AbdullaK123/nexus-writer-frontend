@@ -11,7 +11,7 @@ export default function Home() {
         width={60}
       />
       <h1 className={styles['cta-section']}>YOUR STORY SPANS GALAXIES, BUT YOUR TOOLS BARELY HANDLE A NOTEBOOK</h1>
-      <h2 className={styles['hero-hook']}>Stop fighting fragmented data. Start building universes.</h2>
+      <h2 className={styles['hero-hook']}>Stop fighting fragmented data. Start building universes</h2>
       <div className={styles['heroes-container']}>
         <div className={styles['problem-hero-container']}>
         <h3>THE CORRUPTION</h3>

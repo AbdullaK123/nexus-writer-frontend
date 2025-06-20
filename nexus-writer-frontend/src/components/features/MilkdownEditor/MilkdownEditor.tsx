@@ -1,0 +1,21 @@
+import { Crepe } from '@milkdown/crepe'
+import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react'
+import React from 'react'
+import "@milkdown/crepe/theme/common/style.css";
+
+
+const CrepeEditor: React.FC = () => {
+    const { get } = useEditor((root) => {
+        return new Crepe({ root })
+    });
+
+    return <Milkdown />
+}
+
+export const MilkdownEditorWrapper: React.FC = () => {
+    return (
+        <MilkdownProvider>
+            <CrepeEditor/>
+        </MilkdownProvider>
+    )
+}

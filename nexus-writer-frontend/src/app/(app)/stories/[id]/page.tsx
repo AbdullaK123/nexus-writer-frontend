@@ -2,7 +2,7 @@ import StoryDetailSidebar from "@/components/ui/StoryDetailSidebar/StoryDetailSi
 import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHeader";
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
-import { mockStoryDetailSidebar, mockChapterPreview, mockPublishedChapter, mockOutlineChapter } from "@/app/lib/examples";
+import { mockStoryDetailSidebar, mockChapterPreview } from "@/app/lib/examples";
 
 // In stories/[id]/page.tsx - replace your current structure with:
 export default async function Page({ params }) {

@@ -9,6 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@milkdown/core": "^7.13.2",
+    "@milkdown/crepe": "^7.13.2",
+    "@milkdown/ctx": "^7.13.2",
+    "@milkdown/kit": "^7.13.2",
+    "@milkdown/plugin-math": "^7.5.9",
+    "@milkdown/plugin-prism": "^7.13.2",
+    "@milkdown/plugin-upload": "^7.13.2",
+    "@milkdown/preset-commonmark": "^7.13.2",
+    "@milkdown/preset-gfm": "^7.13.2",
+    "@milkdown/react": "^7.13.2",
+    "@milkdown/theme-nord": "^7.13.2",
     "date-fns": "^4.1.0",
     "next": "15.3.3",
     "react": "^19.0.0",
