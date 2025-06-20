@@ -4,17 +4,32 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
-import { TRANSFORMERS } from '@lexical/markdown'
+import {
+  BOLD_ITALIC_STAR,
+  BOLD_ITALIC_UNDERSCORE, 
+  BOLD_STAR,
+  BOLD_UNDERSCORE,
+  ITALIC_STAR,
+  ITALIC_UNDERSCORE,
+  STRIKETHROUGH,
+  UNORDERED_LIST,
+  ORDERED_LIST,
+  CHECK_LIST,
+  QUOTE,
+  HEADING,
+  CODE,
+  LINK
+} from '@lexical/markdown'
 import { HeadingNode } from '@lexical/rich-text'
 import { ListNode, ListItemNode } from '@lexical/list'
-import { CodeNode, CodeHighlightNode } from '@lexical/code'
+import { CodeNode } from '@lexical/code'
 import { QuoteNode } from '@lexical/rich-text'
 import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin'
 import styles from './LexicalEditor.module.css'
-import './LexicalTheme.css'
+import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -47,8 +62,22 @@ const sciFiTheme = {
   code: 'lexical-code'
 }
 
-export default function LexicalEditor() {
+const customTransformers = [
+  HEADING,
+  QUOTE,
+  BOLD_ITALIC_STAR,
+  BOLD_ITALIC_UNDERSCORE,
+  BOLD_STAR, 
+  BOLD_UNDERSCORE,
+  ITALIC_STAR,
+  ITALIC_UNDERSCORE,
+  STRIKETHROUGH,
+  UNORDERED_LIST,
+  ORDERED_LIST,
+  CHECK_LIST
+]
 
+export default function LexicalEditor() {
     const initialConfig = {
         namespace: 'SciFiChapterEditor',
         theme: sciFiTheme,
@@ -58,7 +87,6 @@ export default function LexicalEditor() {
             ListItemNode,
             QuoteNode,
             CodeNode,
-            CodeHighlightNode,
             AutoLinkNode,
             LinkNode
         ],
@@ -71,6 +99,7 @@ export default function LexicalEditor() {
     return (
         <div className={styles['lexical-editor-container']}>
             <LexicalComposer initialConfig={initialConfig}>
+                <EditorToolbar />
                 <div className={styles['editor-shell']}>
                     <RichTextPlugin 
                         contentEditable={
@@ -88,7 +117,7 @@ export default function LexicalEditor() {
                     
                     {/* Essential plugins for writers */}
                     <HistoryPlugin />
-                    <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+                    <MarkdownShortcutPlugin transformers={customTransformers} />
                     <ListPlugin />
                     <LinkPlugin />
                     <CheckListPlugin />

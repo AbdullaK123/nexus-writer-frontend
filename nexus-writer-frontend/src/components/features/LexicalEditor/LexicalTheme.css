@@ -105,7 +105,6 @@
   font-family: var(--font-mono);
   font-size: 0.9em;
   border: 1px solid rgba(0, 212, 255, 0.3);
-  position: relative;
 }
 
 /* Quotes */
@@ -170,31 +169,6 @@
   color: var(--accent-secondary);
   text-decoration-color: var(--accent-secondary);
   text-shadow: 0 0 5px var(--accent-secondary);
-}
-
-/* Code Blocks */
-.lexical-code {
-  background: var(--background-primary);
-  border: 1px solid var(--accent-primary);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--success);
-  overflow-x: auto;
-  position: relative;
-}
-
-.lexical-code::before {
-  content: "{ code }";
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  opacity: 0.6;
 }
 
 /* Responsive adjustments for theme elements */
