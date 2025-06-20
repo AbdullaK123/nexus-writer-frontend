@@ -1,131 +1,128 @@
-/* Custom Milkdown Editor Styles */
+/* Enhanced Lexical Editor Styles for Sci-Fi Writing */
 
-/* Override the editor container */
-.milkdown-editor :global(.milkdown) {
-  /* background: var(--background-secondary) !important; */
-  border: 1px solid var(--accent-primary) !important;
-  border-radius: 16px !important;
+.lexical-editor-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-shell {
+  min-width: 80vw;
+  position: relative;
+  border: 1px solid var(--accent-primary);
+  border-radius: 16px;
   box-shadow: 
     0 0 5px var(--accent-primary),
-    inset 0 1px 0 rgba(255,255,255,0.1) !important;
-  min-height: 400px !important;
-  padding: 2rem !important;
-  min-width: 80vw;
+    0 0 15px var(--accent-secondary),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    inset 0 0 20px rgba(0, 212, 255, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* Style the editor content area */
-.milkdown-editor :global(.editor) {
-  color: var(--text-primary) !important;
-  font-family: var(--font-body) !important;
-  line-height: 1.6 !important;
-}
-
-/* Custom heading styles */
-.milkdown-editor :global(.editor h1),
-.milkdown-editor :global(.editor h2),
-.milkdown-editor :global(.editor h3),
-.milkdown-editor :global(.editor h4),
-.milkdown-editor :global(.editor h5),
-.milkdown-editor :global(.editor h6) {
-  color: var(--accent-primary) !important;
-  font-family: var(--font-heading) !important;
-  text-shadow: 0 0 5px var(--accent-primary) !important;
-}
-
-/* Style paragraphs */
-.milkdown-editor :global(.editor p) {
-  color: var(--text-primary) !important;
-  margin-bottom: 1rem !important;
-}
-
-/* Style blockquotes */
-.milkdown-editor :global(.editor blockquote) {
-  border-left: 3px solid var(--accent-primary) !important;
-  background: rgba(0, 212, 255, 0.1) !important;
-  padding: 1rem !important;
-  margin: 1rem 0 !important;
-  border-radius: 0 8px 8px 0 !important;
-}
-
-/* Style code blocks */
-.milkdown-editor :global(.editor pre) {
-  background: var(--background-primary) !important;
-  border: 1px solid var(--accent-primary) !important;
-  border-radius: 8px !important;
-  padding: 1rem !important;
-  overflow-x: auto !important;
-}
-
-.milkdown-editor :global(.editor code) {
-  background: rgba(0, 212, 255, 0.2) !important;
-  color: var(--accent-secondary) !important;
-  padding: 0.2rem 0.4rem !important;
-  border-radius: 4px !important;
-  font-family: var(--font-mono) !important;
-}
-
-/* Style lists */
-.milkdown-editor :global(.editor ul),
-.milkdown-editor :global(.editor ol) {
-  color: var(--text-primary) !important;
-}
-
-.milkdown-editor :global(.editor li) {
-  margin-bottom: 0.5rem !important;
-}
-
-/* Remove focus outline and borders */
-.milkdown-editor :global(.milkdown),
-.milkdown-editor :global(.editor),
-.milkdown-editor :global(.milkdown *) {
-  outline: none !important;
-  border: none !important;
-}
-
-/* Apply custom focus styles only to the main container */
-.milkdown-editor :global(.milkdown:focus-within) {
-  border: 1px solid var(--accent-primary) !important;
+.editor-shell:focus-within {
+  border-color: var(--accent-secondary);
   box-shadow: 
     0 0 10px var(--accent-primary),
-    0 0 20px rgba(0, 212, 255, 0.4) !important;
+    0 0 25px rgba(0, 212, 255, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 0 30px rgba(0, 212, 255, 0.08);
 }
 
-/* Remove any prosemirror editor outlines */
-.milkdown-editor :global(.ProseMirror),
-.milkdown-editor :global(.ProseMirror:focus) {
-  outline: none !important;
-  border: none !important;
+.editor-shell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--accent-primary), 
+    var(--accent-secondary), 
+    var(--accent-primary)
+  );
+  animation: shimmer 3s ease-in-out infinite;
+  z-index: 1;
 }
 
-/* Placeholder styling */
-.milkdown-editor :global(.editor .placeholder) {
-  color: var(--text-muted) !important;
-  font-style: italic !important;
+.editor-input {
+  min-height: 500px;
+  padding: 2.5rem;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  caret-color: var(--accent-primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.editor-placeholder {
+  position: absolute;
+  top: 2.5rem;
+  left: 2.5rem;
+  color: var(--text-muted);
+  font-style: italic;
+  pointer-events: none;
+  font-size: 1.1rem;
+  opacity: 0.7;
+  user-select: none;
 }
 
 /* Selection styling */
-.milkdown-editor :global(.editor ::selection) {
-  background: rgba(0, 212, 255, 0.3) !important;
+.editor-input ::selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
 }
 
-/* Toolbar styling if you add one later */
-.milkdown-editor :global(.milkdown-menu) {
-  background: var(--background-secondary) !important;
-  border: 1px solid var(--accent-primary) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+.editor-input ::-moz-selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
 }
 
-.milkdown-editor :global(.milkdown-menu button) {
-  color: var(--text-primary) !important;
-  border: none !important;
-  background: transparent !important;
-  padding: 0.5rem !important;
-  border-radius: 4px !important;
-  transition: all 0.2s ease !important;
+/* Animations */
+@keyframes shimmer {
+  0%, 100% { 
+    background-position: -100% 0;
+    opacity: 0.7;
+  }
+  50% { 
+    background-position: 100% 0;
+    opacity: 1;
+  }
 }
 
-.milkdown-editor :global(.milkdown-menu button:hover) {
-  background: var(--accent-primary) !important;
-  color: var(--background-primary) !important;
+/* Responsive design */
+@media (max-width: 768px) {
+  .editor-input {
+    padding: 1.5rem;
+    font-size: 1rem;
+    min-height: 400px;
+  }
+  
+  .editor-placeholder {
+    top: 1.5rem;
+    left: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-shell {
+    border-radius: 12px;
+  }
+  
+  .editor-input {
+    padding: 1rem;
+    min-height: 350px;
+  }
+  
+  .editor-placeholder {
+    top: 1rem;
+    left: 1rem;
+  }
 }

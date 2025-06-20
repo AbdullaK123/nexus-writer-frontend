@@ -188,3 +188,40 @@ label {
       0 0 10px var(--accent-secondary);
   }
 }
+
+/* Lexical Editor Theme Styles */
+.lexical-h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 0 0 5px var(--accent-primary), 0 0 10px var(--accent-primary);
+  margin: 2rem 0 1rem 0;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.lexical-h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 0 0 3px var(--accent-primary), 0 0 6px var(--accent-primary);
+  margin: 1.75rem 0 0.75rem 0;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+}
+
+.lexical-bold {
+  font-weight: 700;
+  color: var(--accent-secondary);
+  text-shadow: 0 0 3px var(--accent-secondary);
+}
+
+.lexical-italic {
+  font-style: italic;
+  color: var(--success);
+  text-shadow: 0 0 2px var(--success);
+}
+
+/* ... add all the other lexical theme styles */

@@ -1,0 +1,261 @@
+/* Lexical Editor Theme Styles for Sci-Fi Writing */
+
+/* Headings */
+.lexical-h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 
+    0 0 5px var(--accent-primary),
+    0 0 10px var(--accent-primary);
+  margin: 2rem 0 1rem 0;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.lexical-h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 
+    0 0 3px var(--accent-primary),
+    0 0 6px var(--accent-primary);
+  margin: 1.75rem 0 0.75rem 0;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+}
+
+.lexical-h3 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  text-shadow: 0 0 3px var(--accent-secondary);
+  margin: 1.5rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.lexical-h4 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  margin: 1.25rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.lexical-h5 {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  margin: 1rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.lexical-h6 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  margin: 1rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+/* Paragraphs */
+.lexical-paragraph {
+  margin: 0 0 1.5rem 0;
+  line-height: 1.8;
+  color: var(--text-primary);
+  text-shadow: 0 0 3px rgba(255,255,255,0.1);
+}
+
+/* Text Formatting */
+.lexical-bold {
+  font-weight: 700;
+  color: var(--accent-secondary);
+  text-shadow: 0 0 3px var(--accent-secondary);
+}
+
+.lexical-italic {
+  font-style: italic;
+  color: var(--success);
+  text-shadow: 0 0 2px var(--success);
+}
+
+.lexical-strikethrough {
+  text-decoration: line-through;
+  color: var(--error);
+  opacity: 0.8;
+}
+
+.lexical-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--warning);
+  text-underline-offset: 3px;
+}
+
+.lexical-inline-code {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--accent-secondary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  position: relative;
+}
+
+/* Quotes */
+.lexical-quote {
+  border-left: 4px solid var(--accent-primary);
+  background: rgba(0, 212, 255, 0.08);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0 12px 12px 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  position: relative;
+}
+
+.lexical-quote::before {
+  content: "";
+  font-size: 4rem;
+  color: var(--accent-primary);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+  font-family: serif;
+}
+
+/* Lists */
+.lexical-list-ul,
+.lexical-list-ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.lexical-listitem {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.lexical-list-ul .lexical-listitem::marker {
+  color: var(--accent-primary);
+}
+
+.lexical-list-ol .lexical-listitem::marker {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.lexical-nested-listitem {
+  margin: 0.25rem 0;
+}
+
+/* Links */
+.lexical-link {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-primary);
+  text-underline-offset: 2px;
+  transition: all 0.2s ease;
+}
+
+.lexical-link:hover {
+  color: var(--accent-secondary);
+  text-decoration-color: var(--accent-secondary);
+  text-shadow: 0 0 5px var(--accent-secondary);
+}
+
+/* Code Blocks */
+.lexical-code {
+  background: var(--background-primary);
+  border: 1px solid var(--accent-primary);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--success);
+  overflow-x: auto;
+  position: relative;
+}
+
+.lexical-code::before {
+  content: "{ code }";
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* Responsive adjustments for theme elements */
+@media (max-width: 768px) {
+  .lexical-h1 {
+    font-size: 2rem;
+  }
+  
+  .lexical-h2 {
+    font-size: 1.5rem;
+  }
+  
+  .lexical-h3 {
+    font-size: 1.25rem;
+  }
+  
+  .lexical-quote {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .lexical-quote::before {
+    font-size: 3rem;
+    top: -0.25rem;
+    left: 0.25rem;
+  }
+  
+  .lexical-code {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lexical-h1 {
+    font-size: 1.75rem;
+    margin: 1.5rem 0 0.75rem 0;
+  }
+  
+  .lexical-h2 {
+    font-size: 1.375rem;
+    margin: 1.25rem 0 0.5rem 0;
+  }
+  
+  .lexical-h3 {
+    font-size: 1.125rem;
+    margin: 1rem 0 0.5rem 0;
+  }
+  
+  .lexical-quote {
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+  }
+  
+  .lexical-list-ul,
+  .lexical-list-ol {
+    padding-left: 1.5rem;
+  }
+  
+  .lexical-code {
+    padding: 0.75rem;
+    margin: 1rem 0;
+  }
+}
