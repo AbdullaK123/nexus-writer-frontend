@@ -1,5 +1,5 @@
 'use client'
-import { MilkdownEditorWrapper } from "@/components/features/MilkdownEditor/MilkdownEditor";
+import LexicalEditor from '@/components/features/LexicalEditor/LexicalEditor'
 import styles from './page.module.css'
 
 export default function Page({ params }) {
@@ -10,7 +10,7 @@ export default function Page({ params }) {
 
     return (
         <div className={styles['content-container']}>
-            <MilkdownEditorWrapper />
+            <LexicalEditor />
         </div>
     )
 }
