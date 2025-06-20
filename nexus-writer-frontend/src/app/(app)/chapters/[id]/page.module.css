@@ -1,7 +1,10 @@
 
 .content-container {
     display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 2rem;
     width: 100vw;
     height: 100vh;
+    overflow-y: scroll;
 }

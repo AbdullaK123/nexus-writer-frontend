@@ -1,0 +1,133 @@
+/* Custom Milkdown Editor Styles */
+
+/* Override the editor container */
+.milkdown-editor :global(.milkdown) {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--accent-primary) !important;
+  border-radius: 12px !important;
+  box-shadow: 
+    0 0 5px var(--accent-primary),
+    inset 0 1px 0 rgba(255,255,255,0.1) !important;
+  min-height: 400px !important;
+  padding: 2rem !important;
+  width: 90vw;
+  height: auto;
+  margin-top: 5vh;
+}
+
+/* Style the editor content area */
+.milkdown-editor :global(.editor) {
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+  line-height: 1.6 !important;
+}
+
+/* Custom heading styles */
+.milkdown-editor :global(.editor h1),
+.milkdown-editor :global(.editor h2),
+.milkdown-editor :global(.editor h3),
+.milkdown-editor :global(.editor h4),
+.milkdown-editor :global(.editor h5),
+.milkdown-editor :global(.editor h6) {
+  color: var(--accent-primary) !important;
+  font-family: var(--font-heading) !important;
+  text-shadow: 0 0 5px var(--accent-primary) !important;
+}
+
+/* Style paragraphs */
+.milkdown-editor :global(.editor p) {
+  color: var(--text-primary) !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Style blockquotes */
+.milkdown-editor :global(.editor blockquote) {
+  border-left: 3px solid var(--accent-primary) !important;
+  background: rgba(0, 212, 255, 0.1) !important;
+  padding: 1rem !important;
+  margin: 1rem 0 !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+
+/* Style code blocks */
+.milkdown-editor :global(.editor pre) {
+  background: var(--background-primary) !important;
+  border: 1px solid var(--accent-primary) !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  overflow-x: auto !important;
+}
+
+.milkdown-editor :global(.editor code) {
+  background: rgba(0, 212, 255, 0.2) !important;
+  color: var(--accent-secondary) !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 4px !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* Style lists */
+.milkdown-editor :global(.editor ul),
+.milkdown-editor :global(.editor ol) {
+  color: var(--text-primary) !important;
+}
+
+.milkdown-editor :global(.editor li) {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Remove focus outline and borders */
+.milkdown-editor :global(.milkdown),
+.milkdown-editor :global(.editor),
+.milkdown-editor :global(.milkdown *) {
+  outline: none !important;
+  border: none !important;
+}
+
+/* Apply custom focus styles only to the main container */
+.milkdown-editor :global(.milkdown:focus-within) {
+  border: 1px solid var(--accent-primary) !important;
+  box-shadow: 
+    0 0 10px var(--accent-primary),
+    0 0 20px rgba(0, 212, 255, 0.4) !important;
+}
+
+/* Remove any prosemirror editor outlines */
+.milkdown-editor :global(.ProseMirror),
+.milkdown-editor :global(.ProseMirror:focus) {
+  outline: none !important;
+  border: none !important;
+}
+
+/* Placeholder styling */
+.milkdown-editor :global(.editor .placeholder) {
+  color: var(--text-muted) !important;
+  font-style: italic !important;
+}
+
+/* Selection styling */
+.milkdown-editor :global(.editor ::selection) {
+  background: rgba(0, 212, 255, 0.3) !important;
+}
+
+/* Toolbar styling if you add one later */
+.milkdown-editor :global(.milkdown-menu) {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--accent-primary) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.milkdown-editor :global(.milkdown-menu button) {
+  color: var(--text-primary) !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0.5rem !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.milkdown-editor :global(.milkdown-menu button:hover) {
+  background: var(--accent-primary) !important;
+  color: var(--background-primary) !important;
+}

@@ -3,12 +3,33 @@ import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react'
 import React from 'react'
 import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core'
 
+// Import theme CSS first
+import '@milkdown/theme-nord/style.css'
+// Then import custom styles
+import styles from './MilkdownEditor.module.css'
+
 const markdown =
-`# Milkdown React Commonmark
+`# Welcome to Nexus Writer
 
-> You're scared of a world where you're needed.
+> The future of storytelling is here.
 
-This is a demo for using Milkdown with **React**.`
+Start writing your next chapter...
+
+## Features
+
+- **Rich text editing** with Markdown support
+- **Real-time preview** of your content
+- **Cyberpunk-themed** interface
+- **Advanced formatting** options
+
+\`\`\`javascript
+// Your code looks great too
+function writeStory() {
+  return "Amazing content";
+}
+\`\`\`
+
+Ready to begin?`
 
 const MilkdownEditor: React.FC = () => {
     const { get } = useEditor((root) =>
@@ -20,8 +41,11 @@ const MilkdownEditor: React.FC = () => {
         .use(commonmark),
     );
 
-
-    return <Milkdown />
+    return (
+        <div className={styles['milkdown-editor']}>
+            <Milkdown />
+        </div>
+    )
 }
 
 export const MilkdownEditorWrapper: React.FC = () => {
