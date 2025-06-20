@@ -2,17 +2,15 @@
 
 /* Override the editor container */
 .milkdown-editor :global(.milkdown) {
-  background: var(--background-secondary) !important;
+  /* background: var(--background-secondary) !important; */
   border: 1px solid var(--accent-primary) !important;
-  border-radius: 12px !important;
+  border-radius: 16px !important;
   box-shadow: 
     0 0 5px var(--accent-primary),
     inset 0 1px 0 rgba(255,255,255,0.1) !important;
   min-height: 400px !important;
   padding: 2rem !important;
-  width: 90vw;
-  height: auto;
-  margin-top: 5vh;
+  min-width: 80vw;
 }
 
 /* Style the editor content area */

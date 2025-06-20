@@ -1,11 +1,12 @@
 .app-body {
-   min-height: calc(95vh); /* Account for navbar */
+   min-height: calc(100vh - 80px); /* Account for navbar */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Changed from center to flex-start */
   gap: 2rem;
   padding: 2rem;
+  /* Removed any height restrictions that might cause overflow issues */
 }
 
 .flex-col-container {
@@ -31,7 +32,6 @@
 .flex-wrap-container {
   animation: fadeInFromBottom 1s ease-out; 
 }
-
 
 @keyframes fadeInFromBottom {
   0% {
