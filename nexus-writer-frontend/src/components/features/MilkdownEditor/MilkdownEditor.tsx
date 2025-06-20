@@ -1,13 +1,27 @@
-import { Crepe } from '@milkdown/crepe'
+import { commonmark } from "@milkdown/kit/preset/commonmark";
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react'
 import React from 'react'
-import "@milkdown/crepe/theme/common/style.css";
+import { nord } from "@milkdown/theme-nord";
+import { Editor, rootCtx, defaultValueCtx } from '@milkdown/kit/core'
 
+const markdown =
+`# Milkdown React Commonmark
 
-const CrepeEditor: React.FC = () => {
-    const { get } = useEditor((root) => {
-        return new Crepe({ root })
-    });
+> You're scared of a world where you're needed.
+
+This is a demo for using Milkdown with **React**.`
+
+const MilkdownEditor: React.FC = () => {
+    const { get } = useEditor((root) =>
+        Editor.make()
+        .config(nord)
+        .config((ctx) => {
+            ctx.set(rootCtx, root)
+            ctx.set(defaultValueCtx, markdown)
+        })
+        .use(commonmark),
+    );
+
 
     return <Milkdown />
 }
@@ -15,7 +29,7 @@ const CrepeEditor: React.FC = () => {
 export const MilkdownEditorWrapper: React.FC = () => {
     return (
         <MilkdownProvider>
-            <CrepeEditor/>
+            <MilkdownEditor/>
         </MilkdownProvider>
     )
 }

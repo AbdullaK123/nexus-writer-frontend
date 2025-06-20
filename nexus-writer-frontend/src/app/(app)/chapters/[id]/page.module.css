@@ -1,7 +1,7 @@
 
 .content-container {
     display: flex;
-    align-items: center;
+    align-items:center;
     justify-content: center;
     width: 100vw;
     height: 100vh;
@@ -11,8 +11,8 @@
     display: flex;
     flex-wrap: wrap;
     width: 90vw;
-    height: minmax(90vh, auto);
+    height: 90vh;
+    padding: 2rem;
     border: 1px solid var(--accent-primary);
     border-radius: 16px;
 }
-
