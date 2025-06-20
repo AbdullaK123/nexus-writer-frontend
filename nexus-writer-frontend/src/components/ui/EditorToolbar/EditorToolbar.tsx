@@ -33,7 +33,6 @@ export default function EditorToolbar() {
                 })
             }
         })
-
     }
 
     const handleOnFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +46,6 @@ export default function EditorToolbar() {
                     'font-size': size
                 })
             }
-
         })
     }
 

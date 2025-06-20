@@ -8,7 +8,7 @@
 }
 
 .editor-shell {
-  min-width: 80vw;
+  width: 80vw;
   position: relative;
   border: 1px solid var(--accent-primary);
   border-radius: 16px;

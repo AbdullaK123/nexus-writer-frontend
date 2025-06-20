@@ -107,29 +107,6 @@
   border: 1px solid rgba(0, 212, 255, 0.3);
 }
 
-/* Quotes */
-.lexical-quote {
-  border-left: 4px solid var(--accent-primary);
-  background: rgba(0, 212, 255, 0.08);
-  padding: 1.5rem;
-  margin: 2rem 0;
-  border-radius: 0 12px 12px 0;
-  font-style: italic;
-  color: var(--text-secondary);
-  position: relative;
-}
-
-.lexical-quote::before {
-  content: "";
-  font-size: 4rem;
-  color: var(--accent-primary);
-  position: absolute;
-  top: -0.5rem;
-  left: 0.5rem;
-  opacity: 0.3;
-  font-family: serif;
-}
-
 /* Lists */
 .lexical-list-ul,
 .lexical-list-ol {

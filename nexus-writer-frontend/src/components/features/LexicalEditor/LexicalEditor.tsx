@@ -4,22 +4,7 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
-import {
-  BOLD_ITALIC_STAR,
-  BOLD_ITALIC_UNDERSCORE, 
-  BOLD_STAR,
-  BOLD_UNDERSCORE,
-  ITALIC_STAR,
-  ITALIC_UNDERSCORE,
-  STRIKETHROUGH,
-  UNORDERED_LIST,
-  ORDERED_LIST,
-  CHECK_LIST,
-  QUOTE,
-  HEADING,
-  CODE,
-  LINK
-} from '@lexical/markdown'
+import { TRANSFORMERS } from '@lexical/markdown'
 import { HeadingNode } from '@lexical/rich-text'
 import { ListNode, ListItemNode } from '@lexical/list'
 import { CodeNode } from '@lexical/code'
@@ -30,6 +15,7 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin'
 import styles from './LexicalEditor.module.css'
 import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
+import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -61,21 +47,6 @@ const sciFiTheme = {
   link: 'lexical-link',
   code: 'lexical-code'
 }
-
-const customTransformers = [
-  HEADING,
-  QUOTE,
-  BOLD_ITALIC_STAR,
-  BOLD_ITALIC_UNDERSCORE,
-  BOLD_STAR, 
-  BOLD_UNDERSCORE,
-  ITALIC_STAR,
-  ITALIC_UNDERSCORE,
-  STRIKETHROUGH,
-  UNORDERED_LIST,
-  ORDERED_LIST,
-  CHECK_LIST
-]
 
 export default function LexicalEditor() {
     const initialConfig = {
@@ -117,10 +88,11 @@ export default function LexicalEditor() {
                     
                     {/* Essential plugins for writers */}
                     <HistoryPlugin />
-                    <MarkdownShortcutPlugin transformers={customTransformers} />
+                    <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
                     <ListPlugin />
                     <LinkPlugin />
                     <CheckListPlugin />
+                    <IndentOnNewLinePlugin />
                 </div>
             </LexicalComposer>
         </div>
