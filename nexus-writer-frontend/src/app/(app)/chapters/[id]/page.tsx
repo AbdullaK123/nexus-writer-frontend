@@ -10,9 +10,7 @@ export default function Page({ params }) {
 
     return (
         <div className={styles['content-container']}>
-            <div className={styles['editor-container']}>
-                <MilkdownEditorWrapper />
-            </div>
+            <MilkdownEditorWrapper />
         </div>
     )
 }
