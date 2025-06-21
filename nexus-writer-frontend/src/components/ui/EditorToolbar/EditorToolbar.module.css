@@ -327,3 +327,19 @@
     width: 100%;
   }
 }
+
+.toolbar-button {
+    background: var(--background-secondary);
+    border: 1px solid var(--accent-primary);
+    border-radius: 6px;
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.toolbar-button:hover {
+    box-shadow: 
+      0 0 8px rgba(0, 212, 255, 0.3),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+    background-color: rgba(0, 212, 255, 0.05);
+}

@@ -4,6 +4,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $getSelection, $isRangeSelection } from 'lexical'
 import { $patchStyleText } from '@lexical/selection'
 import styles from './EditorToolbar.module.css'
+import lexicalStyles from '@/components/features/LexicalEditor/LexicalEditor.module.css'
 
 const sciFiFonts = [
     { name: 'Inter', label: 'Inter (Default)' },
@@ -19,6 +20,8 @@ export default function EditorToolbar() {
     const [editor] = useLexicalComposerContext()
     const [fontSize, setFontSize] = useState(16)
     const [font, setFont] = useState('Inter (Default)')
+    const [isBold, setIsBold] = useState(false)
+    const [isItalic, setIsItalic] = useState(false)
 
     const handleOnFontChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const fontLabel = e.currentTarget.value;
@@ -47,6 +50,34 @@ export default function EditorToolbar() {
                 })
             }
         })
+    }
+
+    const handleOnFontBold = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setIsBold(prevIsBold => !prevIsBold)
+
+        editor.update(() => {
+            const selection = $getSelection()
+            if ($isRangeSelection(selection)) {
+                $patchStyleText(selection, {
+                    'font-weight': isBold ? 'bold' : 'normal'
+                })
+            }
+        })
+
+    }
+
+    const handleOnFontItalic = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setIsItalic(prevIsItalic => !prevIsItalic)
+
+        editor.update(() => {
+            const selection = $getSelection()
+            if ($isRangeSelection(selection)) {
+                $patchStyleText(selection, {
+                    'font-style': isItalic ? 'italic' : 'normal'
+                })
+            }
+        })
+
     }
 
     return (
@@ -82,6 +113,22 @@ export default function EditorToolbar() {
                         )
                     })}
                 </select>
+            </div>
+            <div className={styles['toolbar-element']}>
+                <button 
+                    className={styles['toolbar-button']}
+                    onClick={handleOnFontBold}
+                >
+                    B
+                </button>
+            </div>
+            <div className={styles['toolbar-element']}>
+                <button 
+                    className={styles['toolbar-button']}
+                    onClick={handleOnFontItalic}
+                >
+                    I
+                </button>
             </div>
         </div>
     )
