@@ -37,7 +37,6 @@ export default function StoryInfoCard({
     
     return (
         <div className={styles['story-info-container']}>
-            <h3>Story Status</h3>
             
             <div className={styles['status-info']}>
                 <div className={`${styles['status-badge']} ${styles[getStatusClass(status)]}`}>

@@ -1,4 +1,3 @@
-// src/components/ui/StoryDetailHeader/StoryDetailHeader.tsx
 import styles from './StoryDetailHeader.module.css'
 import { StoryDetailHeaderProps } from '@/app/types/interfaces'
 

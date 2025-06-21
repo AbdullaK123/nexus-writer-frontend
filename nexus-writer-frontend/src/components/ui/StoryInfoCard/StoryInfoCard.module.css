@@ -5,44 +5,9 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 2rem;
     gap: 1.5rem;
-    background: linear-gradient(135deg, 
-        rgba(26, 26, 26, 0.95), 
-        rgba(16, 16, 16, 0.98)
-    );
-    border-radius: 16px;
-    border: 1px solid var(--accent-primary);
-    box-shadow: 
-        0 0 5px var(--accent-primary),     
-        0 0 10px var(--accent-secondary),   
-        inset 0 1px 0 rgba(255,255,255,0.1);
     position: relative;
     overflow: hidden;
-}
-
-.story-info-container::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, 
-        transparent, 
-        var(--accent-primary), 
-        transparent
-    );
-    animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.story-info-container h3 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: var(--accent-primary);
-    text-shadow: 
-        0 0 5px var(--accent-primary),
-        0 0 10px var(--accent-primary);
 }
 
 .status-info {
