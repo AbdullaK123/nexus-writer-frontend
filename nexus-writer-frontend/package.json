@@ -28,11 +28,13 @@
     "@milkdown/react": "^7.13.2",
     "@milkdown/theme-nord": "^7.13.2",
     "@prosemirror-adapter/react": "^0.4.1",
+    "@tanstack/react-query": "^5.81.0",
     "date-fns": "^4.1.0",
     "lexical": "^0.32.1",
     "next": "15.3.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "swr": "^2.3.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

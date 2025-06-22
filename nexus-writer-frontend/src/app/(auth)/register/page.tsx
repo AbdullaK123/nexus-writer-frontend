@@ -2,6 +2,7 @@
 import styles from '@/app/(auth)/AuthLayout.module.css'
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useAuth } from '@/app/hooks/useAuth';
 
 
 export default function RegisterPage() {

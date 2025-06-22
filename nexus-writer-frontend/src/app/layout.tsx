@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/ui/Navbar/Navbar";
 import HolographicBackground from "@/components/ui/Background/HolographicBackground";
+import ClientProvider from "@/components/features/QueryClientProvider/QueryClientProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
       <body>
         <HolographicBackground/>
         <Navbar />
-        {children}
+        <ClientProvider>
+          {children}
+        </ClientProvider>
       </body>
     </html>
   );

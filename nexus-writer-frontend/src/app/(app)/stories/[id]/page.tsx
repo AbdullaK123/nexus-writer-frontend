@@ -10,7 +10,7 @@ export default async function Page({ params }) {
 
     return (
         <div className={styles['story-detail-page']}>
-            <StoryDetailHeader title={`Mock Story ${id}`} />
+            <StoryDetailHeader storyId={id} title={`Mock Story ${id}`} />
             <div className={styles['story-content-layout']}>
                 <StoryDetailSidebar {...mockStoryDetailSidebar}/>
                 <div className={styles['main-content-area']}>
