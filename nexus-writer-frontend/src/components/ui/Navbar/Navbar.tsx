@@ -23,18 +23,18 @@ export default function Navbar() {
             </div>
             {user ? (
                 <div className={styles['links-container']}>
-                    <span className={styles['links-container']}>
+                    <span className={styles['navbar-link']}>
                         Welcome, {user.username}
                     </span>
                     <Link className={styles['navbar-link']} href={'/dashboard'}>
                         Dashboard
                     </Link>
-                    <span
+                    <a
                         onClick={() => logout()} 
-                        className={styles['links-container']}
+                        className={styles['logout-btn']}
                     >
                         {isLoggingOut ? 'Logging out...' : 'Logout'}
-                    </span>
+                    </a>
                 </div>
             ) : (
                 <div className={styles['links-container']}>

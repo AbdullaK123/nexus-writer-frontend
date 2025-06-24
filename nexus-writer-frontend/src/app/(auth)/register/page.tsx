@@ -5,9 +5,7 @@ import Image from 'next/image';
 import { useAuth } from '@/app/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { registrationInfo } from '@/app/types/auth';
 import { z } from 'zod';
-import { spawn } from 'child_process';
 
 const registrationFormSchema = z.object({
     username: z.string()
@@ -58,6 +56,26 @@ export default function RegisterPage() {
         }
     }, [user, router])
 
+    useEffect(() => {
+        if (loginSuccess) {
+            router.push('/dashboard')
+        }
+    }, [router, loginSuccess])
+    
+    
+    useEffect(() => {
+        if (registerSuccess) {
+            const {confirmPassword, username, ...credentials} = userInfo
+            setUserInfo({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: ""
+            })
+            login(credentials)
+        }
+    }, [registerSuccess])
+
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
 
         const {name, value} = e.target
@@ -97,14 +115,7 @@ export default function RegisterPage() {
         }
 
         const {confirmPassword, ...registrationData} = userInfo
-        const { username, ...credentials} = registrationData
         register(registrationData)
-        if (registerSuccess) {
-            login(credentials)
-            if (loginSuccess) {
-                router.push('/dashboard')
-            }
-        }
     }
 
 

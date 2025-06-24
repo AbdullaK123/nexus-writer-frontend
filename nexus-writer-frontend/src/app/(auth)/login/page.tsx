@@ -11,6 +11,13 @@ export default function LoginPage() {
     const {user, login, isLoggingIn, loginError, loginSuccess} = useAuth()
     const router = useRouter()
 
+    useEffect(() => {
+        if (loginSuccess) {
+            setCredentials({email: "", password: ""})
+            router.push('/dashboard')
+        }
+    }, [loginSuccess, router])
+
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
 
         const {name, value} = e.target
