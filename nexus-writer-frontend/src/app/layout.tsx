@@ -18,8 +18,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <HolographicBackground/>
-        <Navbar />
         <ClientProvider>
+          <Navbar />
           {children}
         </ClientProvider>
       </body>

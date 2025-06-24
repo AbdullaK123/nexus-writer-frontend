@@ -3,8 +3,12 @@ import styles from '@/components/ui/Navbar/Navbar.module.css'
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuth } from '@/app/hooks/useAuth';
 
 export default function Navbar() {
+
+    const { user, logout, isLoggingOut } = useAuth() 
+
     return (
         <nav className={styles.navbar}>
             <div className={styles['logo-container']}>
@@ -17,11 +21,27 @@ export default function Navbar() {
                 />
                 <h2>Nexus Writer</h2>
             </div>
-            <div className={styles['links-container']}>
-                <Link className={styles['navbar-link']} href={'/dashboard'}>Dashboard</Link>
-                <Link className={styles['navbar-link']} href={'/login'}>Login</Link>
-                <Link className={styles['navbar-link']} href={'/register'}>Register</Link>
-            </div>
+            {user ? (
+                <div className={styles['links-container']}>
+                    <span className={styles['links-container']}>
+                        Welcome, {user.username}
+                    </span>
+                    <Link className={styles['navbar-link']} href={'/dashboard'}>
+                        Dashboard
+                    </Link>
+                    <span
+                        onClick={() => logout()} 
+                        className={styles['links-container']}
+                    >
+                        {isLoggingOut ? 'Logging out...' : 'Logout'}
+                    </span>
+                </div>
+            ) : (
+                <div className={styles['links-container']}>
+                    <Link className={styles['navbar-link']} href={'/login'}>Login</Link>
+                    <Link className={styles['navbar-link']} href={'/register'}>Register</Link>
+                </div>
+            )}
         </nav>
     )
 }
