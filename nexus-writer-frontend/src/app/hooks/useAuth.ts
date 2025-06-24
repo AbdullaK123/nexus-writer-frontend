@@ -10,8 +10,18 @@ export function useAuth() {
 
     const {data: user, isLoading, isError, isSuccess} = useQuery({
         queryKey: ['auth'],
-        queryFn: () => fetch(`${API_URL}/auth/me`).then((res) => res.json()),
-        retry: false
+        queryFn: () => fetch(
+            `${API_URL}/auth/me`, {
+                 credentials: 'include' 
+            }
+        ).then(
+            (res) => {
+                if (!res.ok) throw new Error("Not authenticated");
+                return res.json()
+            }
+        ),
+        retry: false,
+        staleTime: 5*60*1000
     })
 
     const registerMutation = useMutation({
@@ -19,9 +29,15 @@ export function useAuth() {
             `${API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
                 body: JSON.stringify(userInfo)
             }
-        ).then((res) => res.json()),
+        ).then(
+            (res) => {
+                if (!res.ok) throw new Error("Failed to register");
+                return res.json()
+            }
+        ),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] })
     })
 
@@ -38,9 +54,13 @@ export function useAuth() {
 
     const logoutMutation = useMutation({
         mutationFn: () => fetch(`${API_URL}/auth/logout`, {
-            method: 'POST'
+            method: 'POST',
+            credentials: 'include'
         }),
-        onSuccess: () => queryClient.setQueryData(['auth'], null)
+        onSuccess: () => {
+            queryClient.setQueryData(['auth'], null)
+            queryClient.clear()
+        }
     })
 
     return {

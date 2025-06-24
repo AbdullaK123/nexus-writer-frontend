@@ -4,7 +4,6 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { $getSelection, $isRangeSelection } from 'lexical'
 import { $patchStyleText } from '@lexical/selection'
 import styles from './EditorToolbar.module.css'
-import lexicalStyles from '@/components/features/LexicalEditor/LexicalEditor.module.css'
 
 const sciFiFonts = [
     { name: 'Inter', label: 'Inter (Default)' },

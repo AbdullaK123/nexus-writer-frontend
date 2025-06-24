@@ -1,28 +1,37 @@
 'use client'
 import styles from '@/app/(auth)/AuthLayout.module.css'
-import React, { useState } from 'react';
-import Image from 'next/image';
-
+import React, { useState, useEffect } from 'react'
+import { useAuth } from '@/app/hooks/useAuth'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function LoginPage() {
 
     const [credentials, setCredentials] = useState({email: "", password: ""});
+    const {user, login, isLoggingIn, loginError} = useAuth()
+    const router = useRouter()
 
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+
+        const {name, value} = e.target
+
         setCredentials((prev) => {
            return {
                 ...prev,
-                [e.target.name]: e.target.value
+                [name]: value
            }
         })
     }
 
     //TODO: we'll worry about this later
-    const handleSubmit = () => {}
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        login(credentials)
+    }
 
 
     return (
-        <div className={styles.card}>
+        <form className={styles.card} onSubmit={handleSubmit}>
              <Image
                 src='./logo.svg'
                 alt='Nexus Writer Logo'
@@ -43,6 +52,7 @@ export default function LoginPage() {
                     id='email'
                     value={credentials.email}
                     onChange={handleOnChange}
+                    disabled={isLoggingIn}
                 />
             </div>
             <div>
@@ -57,11 +67,14 @@ export default function LoginPage() {
                     id='password'
                     value={credentials.password}
                     onChange={handleOnChange}
+                    disabled={isLoggingIn}
                 />
             </div>
             <button className='btn-primary'>
                 Submit
             </button>
-        </div>
+            {loginError && (<span className={styles['error-badge']}>{loginError.message}</span>)}
+            {isLoggingIn && (<span className={styles['info-badge']}>Logging you in...</span>)}
+        </form>
     )
 }

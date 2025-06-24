@@ -1,3 +1,4 @@
+import React from "react";
 import { StoryCreateRequest } from "./stories";
 
 // ========================================
@@ -136,6 +137,12 @@ export interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+}
+
+export interface AuthWrapperProps {
+  children: React.ReactNode
+  redirectTo?: string;
+  requireAuth?: boolean;
 }
 
 // ========================================

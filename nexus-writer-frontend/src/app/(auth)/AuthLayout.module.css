@@ -51,6 +51,16 @@
   animation: fadeInFromBottom 1s ease-out;
 }
 
+.error-badge {
+  color: var(--error);
+  font-style: italic;
+}
+
+.info-badge {
+  color: var(--info);
+  font-style: italic;
+}
+
 /* Fix the keyframe timing */
 @keyframes fadeInFromBottom {
   0% {
