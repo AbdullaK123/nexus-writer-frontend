@@ -38,7 +38,16 @@ export default function RegisterPage() {
         password: "",
         confirmPassword: ""
     });
-    const {user, register, isRegistering, registerError} = useAuth()
+    const {
+        user, 
+        register, 
+        isRegistering, 
+        registerError,
+        registerSuccess,
+        login,
+        isLoggingIn,
+        loginSuccess
+    } = useAuth()
     const [errors, setErrors] = useState<Record<string, string>>({})
     const router = useRouter()
 
@@ -88,7 +97,14 @@ export default function RegisterPage() {
         }
 
         const {confirmPassword, ...registrationData} = userInfo
+        const { username, ...credentials} = registrationData
         register(registrationData)
+        if (registerSuccess) {
+            login(credentials)
+            if (loginSuccess) {
+                router.push('/dashboard')
+            }
+        }
     }
 
 
@@ -176,6 +192,9 @@ export default function RegisterPage() {
             )}
             {registerError && (
                 <span className={styles['error-badge']}>Error registering you to nexus writer. The server might be experiencing issues</span>
+            )}
+            {registerSuccess && (
+                <span className={styles['success-badge']}>Success. Logging you in...</span>
             )}
         </form>
     )

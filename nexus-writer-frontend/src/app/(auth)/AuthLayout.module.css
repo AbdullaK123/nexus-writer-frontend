@@ -61,6 +61,11 @@
   font-style: italic;
 }
 
+.success-badge {
+  color: var(--success);
+  font-style: italic;
+}
+
 /* Fix the keyframe timing */
 @keyframes fadeInFromBottom {
   0% {

@@ -8,7 +8,7 @@ import Image from 'next/image'
 export default function LoginPage() {
 
     const [credentials, setCredentials] = useState({email: "", password: ""});
-    const {user, login, isLoggingIn, loginError} = useAuth()
+    const {user, login, isLoggingIn, loginError, loginSuccess} = useAuth()
     const router = useRouter()
 
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +27,9 @@ export default function LoginPage() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         login(credentials)
+        if (loginSuccess) {
+            router.push('/dashboard')
+        }
     }
 
 
@@ -75,6 +78,7 @@ export default function LoginPage() {
             </button>
             {loginError && (<span className={styles['error-badge']}>{loginError.message}</span>)}
             {isLoggingIn && (<span className={styles['info-badge']}>Logging you in...</span>)}
+            {loginSuccess && (<span className={styles['success-badge']}>Success. Redirecting to dashboard...</span>)}
         </form>
     )
 }

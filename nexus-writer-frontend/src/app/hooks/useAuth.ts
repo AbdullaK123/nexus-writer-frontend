@@ -73,10 +73,13 @@ export function useAuth() {
         logout: logoutMutation.mutate,
         isLoggingIn: loginMutation.isPending,
         loginError: loginMutation.error,
+        loginSuccess: loginMutation.isSuccess,
         logoutError: logoutMutation.error,
         isLoggingOut: logoutMutation.isPending,
+        logoutSuccess: logoutMutation.isSuccess,
         isRegistering: registerMutation.isPending,
-        registerError: registerMutation.error
+        registerError: registerMutation.error,
+        registerSuccess: registerMutation.isSuccess
     }
 
 }
