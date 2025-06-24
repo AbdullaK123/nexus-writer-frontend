@@ -6,6 +6,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { z } from 'zod';
+import Link from 'next/link';
 
 const registrationFormSchema = z.object({
     username: z.string()
@@ -30,6 +31,7 @@ const registrationFormSchema = z.object({
 
 export default function RegisterPage() {
 
+    const [registrationFlow, setRegistrationFlow] = useState('idle')
     const [userInfo, setUserInfo] = useState({
         username: "",
         email: "",
@@ -43,8 +45,8 @@ export default function RegisterPage() {
         registerError,
         registerSuccess,
         login,
-        isLoggingIn,
-        loginSuccess
+        loginSuccess,
+        loginError
     } = useAuth()
     const [errors, setErrors] = useState<Record<string, string>>({})
     const router = useRouter()
@@ -57,14 +59,26 @@ export default function RegisterPage() {
     }, [user, router])
 
     useEffect(() => {
-        if (loginSuccess) {
+        if (loginSuccess && registrationFlow === 'logging-in') {
+            setRegistrationFlow('complete')
             router.push('/dashboard')
+        } else if (loginError && registrationFlow === 'logging-in') {
+            // Registration worked, but auto-login failed
+            setRegistrationFlow('idle')
+            // Could show a "please login manually" message
         }
-    }, [router, loginSuccess])
+    }, [loginSuccess, loginError, registrationFlow, router])
+
+    useEffect(() => {
+        if (registerError) {
+            setRegistrationFlow('idle')
+        }
+    }, [registerError])
     
     
     useEffect(() => {
-        if (registerSuccess) {
+        if (registerSuccess && registrationFlow !== 'complete') {
+            setRegistrationFlow('logging-in')
             const {confirmPassword, username, ...credentials} = userInfo
             setUserInfo({
                 username: "",
@@ -74,7 +88,7 @@ export default function RegisterPage() {
             })
             login(credentials)
         }
-    }, [registerSuccess])
+    }, [registerSuccess, registrationFlow])
 
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
 
@@ -100,10 +114,9 @@ export default function RegisterPage() {
 
     const handleSubmit = (e : React.FormEvent) => {
         e.preventDefault();
-
-        // do zod validation
+        
+        // do zod validation FIRST
         const result = registrationFormSchema.safeParse(userInfo)
-
         if (!result.success) {
             const validationErrors : Record<string, string> = {} 
             result.error.errors.forEach((error) => {
@@ -111,9 +124,11 @@ export default function RegisterPage() {
                 validationErrors[field] = error.message
             })
             setErrors(validationErrors)
-            return
+            return // Exit early if validation fails
         }
-
+        
+        // Only start the flow if validation passes
+        setRegistrationFlow('registering')
         const {confirmPassword, ...registrationData} = userInfo
         register(registrationData)
     }
@@ -141,7 +156,7 @@ export default function RegisterPage() {
                     id='username'
                     value={userInfo.username}
                     onChange={handleOnChange}
-                    disabled={isRegistering}
+                    disabled={registrationFlow !== 'idle'}
                 />
                 {errors.username && (<span className={styles['error-badge']}>{errors.username}</span>)}
             </div>
@@ -157,7 +172,7 @@ export default function RegisterPage() {
                     id='email'
                     value={userInfo.email}
                     onChange={handleOnChange}
-                    disabled={isRegistering}
+                    disabled={registrationFlow !== 'idle'}
                 />
                 {errors.email && (<span className={styles['error-badge']}>{errors.email}</span>)}
             </div>
@@ -173,7 +188,7 @@ export default function RegisterPage() {
                     id='password'
                     value={userInfo.password}
                     onChange={handleOnChange}
-                    disabled={isRegistering}
+                    disabled={registrationFlow !== 'idle'}
                 />
                 {errors.password && (<span className={styles['error-badge']}>{errors.password}</span>)}
             </div>
@@ -189,23 +204,33 @@ export default function RegisterPage() {
                     id='confirm-password'
                     value={userInfo.confirmPassword}
                     onChange={handleOnChange}
-                    disabled={isRegistering}
+                    disabled={registrationFlow !== 'idle'}
                 />
                 {errors.confirmPassword && (<span className={styles['error-badge']}>{errors.confirmPassword}</span>)}
             </div>
             <button 
                 className='btn-primary'
+                disabled={registrationFlow !== 'idle'}
             >
-                Submit
+                {registrationFlow === 'idle' ? 'Submit' : 'Processing...'}
             </button>
-            {isRegistering && (
-                <span className={styles['info-badge']}>Registering...</span>
+            {registrationFlow === 'registering' && !registerError && (
+                <span className={styles['info-badge']}>Creating your account...</span>
+            )}
+
+            {registrationFlow === 'logging-in' && (
+                <span className={styles['info-badge']}>Account created! Logging you in...</span>
+            )}
+
+            {registerSuccess && loginError && registrationFlow === 'idle' && (
+                <span className={styles['success-badge']}>
+                    Account created! Please log in on the <Link href="/login">login page</Link>.
+                </span>
             )}
             {registerError && (
-                <span className={styles['error-badge']}>Error registering you to nexus writer. The server might be experiencing issues</span>
-            )}
-            {registerSuccess && (
-                <span className={styles['success-badge']}>Success. Logging you in...</span>
+                <span className={styles['error-badge']}>
+                    Registration failed. The server might be experiencing issues.
+                </span>
             )}
         </form>
     )

@@ -34,7 +34,7 @@ export function useAuth() {
             }
         ).then(
             (res) => {
-                if (!res.ok) throw new Error("Failed to register");
+                if (!res.ok) throw new Error("Failed to register.");
                 return res.json()
             }
         ),
@@ -49,7 +49,10 @@ export function useAuth() {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(creds)
             }
-        ).then((res) => res.json()),
+        ).then((res) => {
+            if (!res.ok) throw new Error("Invalid Credentials.")
+            return res.json()
+        }),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] })
     })
 
