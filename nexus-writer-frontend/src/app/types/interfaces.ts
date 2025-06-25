@@ -40,9 +40,9 @@ export interface StoryCardProps {
   status: "Complete" | "On Hiatus" | "Ongoing";
   createdAt: Date;
   updatedAt: Date;
-  totalChapters: number;
-  wordCount: number;
-  latestChapter: string;
+  totalChapters?: number;
+  wordCount?: number;
+  latestChapter?: string;
 }
 
 export interface StoryDetailHeaderProps {
