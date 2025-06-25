@@ -45,6 +45,14 @@ export interface StoryCardProps {
   latestChapter?: string;
 }
 
+export interface ApiStory {
+    id: string;
+    title: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface StoryDetailHeaderProps {
   title: string;
   storyId: string; 

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { StoryCreateRequest, StoryUpdateRequest } from "../types/stories"
+import { ApiStory } from "../types/interfaces"
 
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
@@ -22,6 +23,14 @@ export function useStories() {
         }).then((res) => {
             if (!res.ok) throw new Error("Failed to fetch stories")
             return res.json()
+        }).then((data) => {
+            const rawStories = data.stories
+            const transformedStories = rawStories.map((story: ApiStory) => ({
+                ...story,
+                createdAt: new Date(story.created_at + 'Z'),
+                updatedAt: new Date(story.updated_at + 'Z')
+            }))
+            return transformedStories
         })
     })
 

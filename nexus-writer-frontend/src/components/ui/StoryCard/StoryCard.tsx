@@ -29,7 +29,9 @@ export default function StoryCard({
         return formatDistanceToNow(date, { addSuffix: true })
     }
 
-    const formatWordCount = (count: number) => {
+    const formatWordCount = (count: number | undefined) => {
+        if (!count) return 0;
+
         if (count >= 1000) {
             return `${(count / 1000).toFixed(1)}k`
         }
@@ -77,7 +79,7 @@ export default function StoryCard({
             </div>
 
             <div className={styles['story-stats-container']}>
-                <p>Chapters: {totalChapters}</p>
+                <p>Chapters: {totalChapters || 0}</p>
                 <p>Words: {formatWordCount(wordCount)}</p>
                 <p>{latestChapter}</p>
             </div>
