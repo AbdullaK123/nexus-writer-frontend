@@ -25,12 +25,12 @@ export function useStories() {
             return res.json()
         }).then((data) => {
             const rawStories = data.stories
-            const transformedStories = rawStories.map((story: ApiStory) => ({
+            const transformedStories = rawStories?.map((story: ApiStory) => ({
                 ...story,
                 createdAt: new Date(story.created_at + 'Z'),
                 updatedAt: new Date(story.updated_at + 'Z')
             }))
-            return transformedStories
+            return transformedStories || []
         })
     })
 

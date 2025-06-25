@@ -31,7 +31,6 @@ const registrationFormSchema = z.object({
 
 export default function RegisterPage() {
 
-    const [registrationFlow, setRegistrationFlow] = useState('idle')
     const [userInfo, setUserInfo] = useState({
         username: "",
         email: "",
@@ -45,6 +44,7 @@ export default function RegisterPage() {
         registerError,
         registerSuccess,
         login,
+        isLoggingIn,
         loginSuccess,
         loginError
     } = useAuth()
@@ -59,37 +59,24 @@ export default function RegisterPage() {
     }, [user, router])
 
     useEffect(() => {
-        if (loginSuccess && registrationFlow === 'logging-in') {
-            setRegistrationFlow('complete')
-            router.push('/dashboard')
-        } else if (loginError && registrationFlow === 'logging-in') {
-            // Registration worked, but auto-login failed
-            setRegistrationFlow('idle')
-            // Could show a "please login manually" message
+        if (loginSuccess) {
+             router.push('/dashboard')
         }
-    }, [loginSuccess, loginError, registrationFlow, router])
+    }, [router, loginSuccess])
 
     useEffect(() => {
-        if (registerError) {
-            setRegistrationFlow('idle')
-        }
-    }, [registerError])
-    
-    
-    useEffect(() => {
-        if (registerSuccess && registrationFlow !== 'complete') {
-            setRegistrationFlow('logging-in')
+        if (registerSuccess) {
             const {confirmPassword, username, ...credentials} = userInfo
+            login(credentials)
             setUserInfo({
                 username: "",
                 email: "",
                 password: "",
                 confirmPassword: ""
             })
-            login(credentials)
         }
-    }, [registerSuccess, registrationFlow])
-
+    }, [registerSuccess])
+    
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
 
         const {name, value} = e.target
@@ -114,8 +101,7 @@ export default function RegisterPage() {
 
     const handleSubmit = (e : React.FormEvent) => {
         e.preventDefault();
-        
-        // do zod validation FIRST
+    
         const result = registrationFormSchema.safeParse(userInfo)
         if (!result.success) {
             const validationErrors : Record<string, string> = {} 
@@ -124,15 +110,14 @@ export default function RegisterPage() {
                 validationErrors[field] = error.message
             })
             setErrors(validationErrors)
-            return // Exit early if validation fails
+            return 
         }
         
-        // Only start the flow if validation passes
-        setRegistrationFlow('registering')
         const {confirmPassword, ...registrationData} = userInfo
         register(registrationData)
     }
 
+    const isProcessing = isRegistering || isLoggingIn
 
     return (
         <form className={styles.card} onSubmit={handleSubmit}>
@@ -156,7 +141,7 @@ export default function RegisterPage() {
                     id='username'
                     value={userInfo.username}
                     onChange={handleOnChange}
-                    disabled={registrationFlow !== 'idle'}
+                    disabled={isProcessing}
                 />
                 {errors.username && (<span className={styles['error-badge']}>{errors.username}</span>)}
             </div>
@@ -172,7 +157,7 @@ export default function RegisterPage() {
                     id='email'
                     value={userInfo.email}
                     onChange={handleOnChange}
-                    disabled={registrationFlow !== 'idle'}
+                    disabled={isProcessing}
                 />
                 {errors.email && (<span className={styles['error-badge']}>{errors.email}</span>)}
             </div>
@@ -188,7 +173,7 @@ export default function RegisterPage() {
                     id='password'
                     value={userInfo.password}
                     onChange={handleOnChange}
-                    disabled={registrationFlow !== 'idle'}
+                    disabled={isProcessing}
                 />
                 {errors.password && (<span className={styles['error-badge']}>{errors.password}</span>)}
             </div>
@@ -204,25 +189,25 @@ export default function RegisterPage() {
                     id='confirm-password'
                     value={userInfo.confirmPassword}
                     onChange={handleOnChange}
-                    disabled={registrationFlow !== 'idle'}
+                    disabled={isProcessing}
                 />
                 {errors.confirmPassword && (<span className={styles['error-badge']}>{errors.confirmPassword}</span>)}
             </div>
             <button 
                 className='btn-primary'
-                disabled={registrationFlow !== 'idle'}
+                disabled={isProcessing}
             >
-                {registrationFlow === 'idle' ? 'Submit' : 'Processing...'}
+                {isProcessing ? 'Processing...' : 'Submit'}
             </button>
-            {registrationFlow === 'registering' && !registerError && (
+            {isRegistering && !registerError && (
                 <span className={styles['info-badge']}>Creating your account...</span>
             )}
 
-            {registrationFlow === 'logging-in' && (
+            {isLoggingIn && (
                 <span className={styles['info-badge']}>Account created! Logging you in...</span>
             )}
 
-            {registerSuccess && loginError && registrationFlow === 'idle' && (
+            {registerSuccess && loginError && (
                 <span className={styles['success-badge']}>
                     Account created! Please log in on the <Link href="/login">login page</Link>.
                 </span>

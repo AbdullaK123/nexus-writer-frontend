@@ -7,9 +7,16 @@ import styles from './DashboardToolbar.module.css'
 export default function DashboardToolbar({ username, onCreateStory}: DashboardToolBarProps ) {
 
     const [story, setStory] = useState<StoryCreateRequest>({ title: "" })
-
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStory({ title: e.target.value })
+    }
+
+    const handleOnClick = () => {
+        if (!story.title.trim()) {
+            return // it can't be empty
+        }
+        onCreateStory(story)
+        setStory({ title: ""})
     }
 
     return (
@@ -26,7 +33,7 @@ export default function DashboardToolbar({ username, onCreateStory}: DashboardTo
                 />
                 <button
                     className='btn-primary'
-                    onClick={() => onCreateStory(story)}
+                    onClick={handleOnClick}
                 >
                     Create Story
                 </button>
