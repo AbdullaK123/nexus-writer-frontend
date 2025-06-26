@@ -53,6 +53,19 @@ export interface ApiStory {
     updated_at: string;
 }
 
+export interface ApiChapterListItem {
+    id: string;
+    title: string;
+    published: boolean;
+    updated_at: string;
+}
+
+export interface ApiChapterListResponse {
+    story_id: string;
+    story_title: string;
+    chapters: ApiChapterListItem[];
+}
+
 export interface StoryDetailHeaderProps {
   title: string;
   storyId: string; 
@@ -74,17 +87,16 @@ export interface StoryDetailSideBarProps {
 // CHAPTER INTERFACES (Updated to match backend)
 // ========================================
 
-export interface Chapter {
-  id: string;
-  story_id: string;
-  user_id: string;
-  title: string;
-  content: string;
-  published: boolean;
-  next_chapter_id?: string;
-  prev_chapter_id?: string;
-  created_at: Date;
-  updated_at: Date;
+export interface ApiChapterContentResponse {
+    id: string;
+    title: string;
+    content: string;
+    story_id: string;
+    story_title: string;
+    created_at: string;
+    updated_at: string;
+    previous_chapter_id?: string;
+    next_chapter_id?: string;
 }
 
 export interface ChapterListItemProps {
@@ -121,6 +133,11 @@ export interface UpdateChapterRequest {
   title?: string;
   content?: string;
   published?: boolean;
+}
+
+export interface UpdateMutationArgs {
+  chapterId: string;
+  requestBody: UpdateChapterRequest
 }
 
 export interface CreateStoryRequest {
