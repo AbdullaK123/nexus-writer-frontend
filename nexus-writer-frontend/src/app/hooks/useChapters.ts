@@ -39,6 +39,7 @@ export function useChapters(storyId: string) {
                 storyId: storyId,
                 storyTitle: data.story_title,
                 storyStatus: data.story_status,
+                storyLastUpdated: new Date(data.story_last_updated + 'Z'),
                 chapters: transformedChapterListItems
             }
         })

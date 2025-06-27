@@ -65,6 +65,7 @@ export interface ApiChapterListResponse {
     story_id: string;
     story_title: string;
     story_status: "Complete" | "On Hiatus" | "Ongoing";
+    story_last_updated: string;
     chapters: ApiChapterListItem[];
 }
 
