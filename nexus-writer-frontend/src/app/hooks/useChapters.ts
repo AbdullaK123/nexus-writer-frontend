@@ -31,12 +31,14 @@ export function useChapters(storyId: string) {
             const transformedChapterListItems = rawChapterListItems?.map((item: ApiChapterListItem) => {
                 return {
                     ...item,
+                    wordCount: item.word_count,
                     updatedAt: new Date(item.updated_at + 'Z')
                 }
             }) || []
             return {
                 storyId: storyId,
                 storyTitle: data.story_title,
+                storyStatus: data.story_status,
                 chapters: transformedChapterListItems
             }
         })

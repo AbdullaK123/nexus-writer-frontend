@@ -57,12 +57,14 @@ export interface ApiChapterListItem {
     id: string;
     title: string;
     published: boolean;
+    word_count: number;
     updated_at: string;
 }
 
 export interface ApiChapterListResponse {
     story_id: string;
     story_title: string;
+    story_status: "Complete" | "On Hiatus" | "Ongoing";
     chapters: ApiChapterListItem[];
 }
 
