@@ -1,8 +1,12 @@
+'use client'
 import { StoryCardProps } from "@/app/types/interfaces";
 import styles from './StoryCard.module.css'
 import { formatDistanceToNow } from 'date-fns'
+import { useRouter } from "next/navigation";
+import { useStories } from "@/app/hooks/useStories";
 
 export default function StoryCard({ 
+    id,
     title, 
     status, 
     createdAt, 
@@ -11,6 +15,16 @@ export default function StoryCard({
     wordCount,
     latestChapter
  }: StoryCardProps) {
+
+    console.log(id)
+
+    const router = useRouter()
+
+    const { getStory } = useStories()
+
+    const goToStoryPage = () => {
+        router.push(`/stories/${id}`)
+    }
 
     const getStatusSpan = (status: string) => {
         const baseClass = styles['status-badge'];
@@ -42,24 +56,24 @@ export default function StoryCard({
         switch (status) {
             case 'Complete':
                 return [
-                    { text: 'Read', css: 'btn-secondary' },
-                    { text: 'Chapters', css: 'btn-primary' },
-                    { text: 'Sequel', css: 'btn-secondary' },
-                    { text: 'Publish', css: 'btn-secondary' }
+                    { text: 'Read', css: 'btn-secondary', onClick: undefined },
+                    { text: 'Chapters', css: 'btn-primary', onClick: goToStoryPage },
+                    { text: 'Sequel', css: 'btn-secondary', onClick: undefined },
+                    { text: 'Publish', css: 'btn-secondary', onClick: undefined }
                 ]
             case 'On Hiatus':
                 return [
-                    { text: 'Resume', css: 'btn-primary' },
-                    { text: 'Outline', css: 'btn-secondary' },
-                    { text: 'Research', css: 'btn-secondary' },
-                    { text: 'AI', css: 'btn-secondary' }
+                    { text: 'Resume', css: 'btn-primary', onClick: undefined },
+                    { text: 'Outline', css: 'btn-secondary', onClick: undefined },
+                    { text: 'Research', css: 'btn-secondary', onClick: undefined },
+                    { text: 'AI', css: 'btn-secondary', onClick: undefined }
                 ]
             default:
                 return [
-                    { text: 'Continue', css: 'btn-primary' },
-                    { text: 'Chapters', css: 'btn-secondary' },
-                    { text: 'Settings', css: 'btn-secondary' },
-                    { text: 'AI', css: 'btn-secondary' }
+                    { text: 'Continue', css: 'btn-primary', onClick: undefined },
+                    { text: 'Chapters', css: 'btn-secondary', onClick: goToStoryPage },
+                    { text: 'Settings', css: 'btn-secondary', onClick: undefined },
+                    { text: 'AI', css: 'btn-secondary', onClick: undefined }
                 ]
         }
     }
@@ -86,7 +100,11 @@ export default function StoryCard({
 
             <div className={styles['actions-container']}>
                 {getBtnProps(status).map((prop, key) => (
-                    <button key={key} className={prop.css}>
+                    <button 
+                        key={key} 
+                        className={prop.css}
+                        onClick={prop.onClick}
+                    >
                         {prop.text}
                     </button>
                 ))}

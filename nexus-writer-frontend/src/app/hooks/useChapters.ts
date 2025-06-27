@@ -21,7 +21,7 @@ export function useChapters(storyId: string) {
          isSuccess
     } = useQuery({
         queryKey: ['chapters'],
-        queryFn:  () => fetch(`${API_URL}/${storyId}/chapters`, {
+        queryFn:  () => fetch(`${API_URL}/stories/${storyId}/chapters`, {
             'credentials': 'include'
         }).then((res) => {
             if (!res.ok) throw new Error('Failed to fetch chapters.')
@@ -71,7 +71,7 @@ export function useChapters(storyId: string) {
 
     // create mutation
     const createMutation = useMutation({
-        mutationFn: (chapterInfo: CreateChapterRequest) => fetch(`${API_URL}/${storyId}/chapters`, {
+        mutationFn: (chapterInfo: CreateChapterRequest) => fetch(`${API_URL}/stories/${storyId}/chapters`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

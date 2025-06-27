@@ -12,17 +12,24 @@ import {
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
+interface PageProps {
+    params: Promise<{ id: string }> | { id: string }
+}
 
-export default function Page({ params }: {params:any}) {
-
+export default function Page({ params }: PageProps) {
     const router = useRouter()
-
     const [storyId, setStoryId] = useState<string>("")
 
     useEffect(() => {
         const resolveParams = async () => {
-            const { id } = await params
-            setStoryId(id)
+            try {
+                // Handle both Promise and regular object cases
+                const resolvedParams = await Promise.resolve(params)
+                const { id } = resolvedParams
+                setStoryId(id)
+            } catch (error) {
+                console.error('Error resolving params:', error)
+            }
         }
         resolveParams()
     }, [params])
@@ -40,13 +47,17 @@ export default function Page({ params }: {params:any}) {
         isLoadingChapter
      } = useSelectedChapter(storyId)
 
-    // THIS IS ONLY A PLACEHOLDER UNTIL I FIND A BETTER SOLUTION
-    if (!chapters) {
+    // Don't run this check until we have a storyId
+    if (storyId && !chapters && !isLoading) {
         alert(`Story with id ${storyId} not found!`)
         router.push('/dashboard')
         return
     }
 
+    // Show loading state while resolving params or loading chapters
+    if (!storyId || isLoading) {
+        return <div>Loading...</div>
+    }
 
     const numChapters = chapters.chapters.length 
     const wordCount = chapters.chapters.reduce((acc, current) => acc + current.wordCount, 0) 
