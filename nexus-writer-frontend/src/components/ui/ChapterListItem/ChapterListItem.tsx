@@ -6,7 +6,7 @@ export default function ChapterListItem({
     chapterNumber,
     title,
     wordCount,
-    getChapterFn,
+    handleOnClick,
     status
 }: ChapterListItemProps) {
 
@@ -31,7 +31,7 @@ export default function ChapterListItem({
     }
 
     return (
-        <div className={styles['chapter-list-item-container']}> 
+        <div onClick={handleOnClick} className={styles['chapter-list-item-container']}> 
             <div className={`${styles['status-indicator']} ${styles[getStatusIndicatorClass(status)]}`} />
             <div className={styles['chapter-metadata-container']}> 
                 <span className={`${styles['chapter-number-badge']} ${styles[getBadgeCss(status)]}`}>

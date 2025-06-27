@@ -1,5 +1,6 @@
 import React from "react";
 import { StoryCreateRequest } from "./stories";
+import { UseQueryResult } from "@tanstack/react-query";
 
 // ========================================
 // USER INTERFACES
@@ -94,30 +95,30 @@ export interface ApiChapterContentResponse {
     id: string;
     title: string;
     content: string;
+    published: boolean;
     story_id: string;
     story_title: string;
     created_at: string;
     updated_at: string;
-    previous_chapter_id?: string;
-    next_chapter_id?: string;
+    previous_chapter_id: string;
+    next_chapter_id: string;
 }
-
 export interface ChapterListItemProps {
-  id?: string; // Chapter ID for navigation
+  id?: string;
   chapterNumber: number;
   title: string;
   wordCount: number;
-  status: "published" | "draft" | "outline"; // Derived from published field
-  getChapterFn: (chapterId: string) => any;
+  status: "published" | "draft" | "outline";
+  handleOnClick: () => void;
 }
 
 export interface ChapterPreviewProps {
   id?: string; // Chapter ID
-  title: string;
-  status: "published" | "draft" | "outline";
-  wordCount: number;
-  updatedAt: Date;
-  previewContent: string;
+  title?: string;
+  status?: "published" | "draft" | "outline";
+  wordCount?: number;
+  updatedAt?: Date;
+  previewContent?: string;
   storyId?: string; // For navigation
   storyTitle?: string;
   previousChapterId?: string; // Navigation

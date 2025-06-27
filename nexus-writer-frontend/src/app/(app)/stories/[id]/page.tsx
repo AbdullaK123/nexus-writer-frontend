@@ -4,15 +4,22 @@ import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHead
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
 import { useChapters } from "@/app/hooks/useChapters";
-import { StoryInfoCardProps, getChapterStatus } from "@/app/types/interfaces";
+import { 
+    StoryInfoCardProps, 
+    getChapterStatus, 
+    calculateReadingTime,
+    formatWordCount,
+    ChapterPreviewProps
+ } from "@/app/types/interfaces";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 // In stories/[id]/page.tsx - replace your current structure with:
 export default async function Page({ params }: {params:any}) {
 
     const {id} = await params
     const router = useRouter()
-
+    const [chapterPreviewProps, setChapterPreviewProps] = useState<ChapterPreviewProps>()
     const {
         chapters,
         getChapter,
@@ -36,7 +43,37 @@ export default async function Page({ params }: {params:any}) {
             ...chapter,
             chapterNumber: index + 1,
             status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-            getChapterFn: getChapter(chapter.id)
+            handleOnClick: () => {
+                const {
+                    data: chapterResponse,
+                    isLoading,
+                    isError,
+                    isSuccess
+                } = getChapter(chapter.id)
+
+                if (!chapterResponse) {
+                    alert(`Error: chapter does not exist`)
+                    return
+                }
+
+                const wordCount = chapterResponse.content.split(' ').length
+
+                setChapterPreviewProps({
+                    id: chapterResponse.id,
+                    title: chapterResponse.title,
+                    status: getChapterStatus(
+                        chapterResponse.published, 
+                        wordCount > 0
+                    ),
+                    wordCount: wordCount,
+                    updatedAt: chapterResponse.updatedAt,
+                    previewContent: chapterResponse.content,
+                    storyId: chapterResponse.storyId,
+                    storyTitle: chapterResponse.storyTitle,
+                    previousChapterId: chapterResponse.previousChapterId,
+                    nextChapterId: chapterResponse.nextChapterId
+                })
+            }
         }
     })
 
@@ -56,7 +93,7 @@ export default async function Page({ params }: {params:any}) {
                     chapters={chaptersWithStatusAndNumbers}
                 />
                 <div className={styles['main-content-area']}>
-                    <ChapterPreview {...mockChapterPreview} />
+                    <ChapterPreview {...chapterPreviewProps} />
                 </div>
             </div>
         </div>
