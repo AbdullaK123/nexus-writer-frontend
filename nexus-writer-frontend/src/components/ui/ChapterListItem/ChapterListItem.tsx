@@ -6,6 +6,7 @@ export default function ChapterListItem({
     chapterNumber,
     title,
     wordCount,
+    getChapterFn,
     status
 }: ChapterListItemProps) {
 

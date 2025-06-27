@@ -3,11 +3,9 @@ import StoryDetailSidebar from "@/components/ui/StoryDetailSidebar/StoryDetailSi
 import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHeader";
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
-import { mockStoryDetailSidebar, mockChapterPreview } from "@/app/lib/examples";
 import { useChapters } from "@/app/hooks/useChapters";
 import { StoryInfoCardProps, getChapterStatus } from "@/app/types/interfaces";
 import { useRouter } from "next/navigation";
-import { Router } from "next/router";
 
 // In stories/[id]/page.tsx - replace your current structure with:
 export default async function Page({ params }: {params:any}) {
@@ -17,6 +15,7 @@ export default async function Page({ params }: {params:any}) {
 
     const {
         chapters,
+        getChapter,
         isSuccess,
         isLoading,
         isError
@@ -26,6 +25,7 @@ export default async function Page({ params }: {params:any}) {
     if (!chapters) {
         alert(`Story with id ${id} not found!`)
         router.push('/dashboard')
+        return
     }
 
 
@@ -35,7 +35,8 @@ export default async function Page({ params }: {params:any}) {
         return {
             ...chapter,
             chapterNumber: index + 1,
-            status: getChapterStatus(chapter.published, chapter.wordCount > 0)
+            status: getChapterStatus(chapter.published, chapter.wordCount > 0),
+            getChapterFn: getChapter(chapter.id)
         }
     })
 

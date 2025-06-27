@@ -17,7 +17,10 @@ export default function StoryDetailSidebar({
             <div className={`${styles['sidebar-section']} ${styles['chapter-items-container']}`}>
                 {chapters && chapters.length > 0 ? (
                     chapters.map((chapter, index) => (
-                        <ChapterListItem key={`chapter-${chapter.chapterNumber}-${index}`} {...chapter} />
+                        <ChapterListItem 
+                            key={`chapter-${chapter.chapterNumber}-${index}`} 
+                            {...chapter} 
+                        />
                     ))
                 ) : (
                     <div className={styles['empty-chapters']}>

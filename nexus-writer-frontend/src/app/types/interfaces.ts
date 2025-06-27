@@ -108,6 +108,7 @@ export interface ChapterListItemProps {
   title: string;
   wordCount: number;
   status: "published" | "draft" | "outline"; // Derived from published field
+  getChapterFn: (chapterId: string) => any;
 }
 
 export interface ChapterPreviewProps {
