@@ -4,33 +4,45 @@ import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHead
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
 import { useChapters } from "@/app/hooks/useChapters";
+import { useSelectedChapter } from "@/app/hooks/useSelectedChapter";
 import { 
     StoryInfoCardProps, 
-    getChapterStatus, 
-    calculateReadingTime,
-    formatWordCount,
-    ChapterPreviewProps
+    getChapterStatus
  } from "@/app/types/interfaces";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-// In stories/[id]/page.tsx - replace your current structure with:
-export default async function Page({ params }: {params:any}) {
 
-    const {id} = await params
+export default function Page({ params }: {params:any}) {
+
     const router = useRouter()
-    const [chapterPreviewProps, setChapterPreviewProps] = useState<ChapterPreviewProps>()
+
+    const [storyId, setStoryId] = useState<string>("")
+
+    useEffect(() => {
+        const resolveParams = async () => {
+            const { id } = await params
+            setStoryId(id)
+        }
+        resolveParams()
+    }, [params])
+
     const {
         chapters,
-        getChapter,
         isSuccess,
         isLoading,
         isError
-    } = useChapters(id)
+    } = useChapters(storyId)
+
+    const { 
+        selectedChapter, 
+        selectChapter, 
+        isLoadingChapter
+     } = useSelectedChapter(storyId)
 
     // THIS IS ONLY A PLACEHOLDER UNTIL I FIND A BETTER SOLUTION
     if (!chapters) {
-        alert(`Story with id ${id} not found!`)
+        alert(`Story with id ${storyId} not found!`)
         router.push('/dashboard')
         return
     }
@@ -43,37 +55,7 @@ export default async function Page({ params }: {params:any}) {
             ...chapter,
             chapterNumber: index + 1,
             status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-            handleOnClick: () => {
-                const {
-                    data: chapterResponse,
-                    isLoading,
-                    isError,
-                    isSuccess
-                } = getChapter(chapter.id)
-
-                if (!chapterResponse) {
-                    alert(`Error: chapter does not exist`)
-                    return
-                }
-
-                const wordCount = chapterResponse.content.split(' ').length
-
-                setChapterPreviewProps({
-                    id: chapterResponse.id,
-                    title: chapterResponse.title,
-                    status: getChapterStatus(
-                        chapterResponse.published, 
-                        wordCount > 0
-                    ),
-                    wordCount: wordCount,
-                    updatedAt: chapterResponse.updatedAt,
-                    previewContent: chapterResponse.content,
-                    storyId: chapterResponse.storyId,
-                    storyTitle: chapterResponse.storyTitle,
-                    previousChapterId: chapterResponse.previousChapterId,
-                    nextChapterId: chapterResponse.nextChapterId
-                })
-            }
+            handleOnClick: () => selectChapter(chapter.id)
         }
     })
 
@@ -86,15 +68,23 @@ export default async function Page({ params }: {params:any}) {
 
     return (
         <div className={styles['story-detail-page']}>
-            <StoryDetailHeader storyId={id} title={chapters.storyTitle} />
+            <StoryDetailHeader storyId={storyId} title={chapters.storyTitle} />
             <div className={styles['story-content-layout']}>
                 <StoryDetailSidebar
                     storyInfo={storyInfo}
                     chapters={chaptersWithStatusAndNumbers}
                 />
-                <div className={styles['main-content-area']}>
-                    <ChapterPreview {...chapterPreviewProps} />
-                </div>
+                {isLoadingChapter ? (
+                    <div>Loading chapter...</div>
+                ) : selectedChapter ? (
+                    <ChapterPreview 
+                        {...selectedChapter} 
+                    />
+                ) : (
+                    <div>
+                        <h2>Select a chapter to preview</h2>
+                    </div>
+                )}
             </div>
         </div>
     )

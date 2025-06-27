@@ -256,3 +256,20 @@ export function formatWordCount(wordCount: number): string {
   if (wordCount >= 1000) return `${(wordCount / 1000).toFixed(1)}k`;
   return wordCount.toString();
 }
+
+export function transformChapterResponse(apiResponse: ApiChapterContentResponse): ChapterPreviewProps {
+    const wordCount = apiResponse.content ? apiResponse.content.split(' ').length : 0
+    
+    return {
+        id: apiResponse.id,
+        title: apiResponse.title,
+        status: getChapterStatus(apiResponse.published, wordCount > 0),
+        wordCount: wordCount,
+        updatedAt: new Date(apiResponse.updated_at + 'Z'),
+        previewContent: apiResponse.content,
+        storyId: apiResponse.story_id,
+        storyTitle: apiResponse.story_title,
+        previousChapterId: apiResponse.previous_chapter_id,
+        nextChapterId: apiResponse.next_chapter_id
+    }
+}
