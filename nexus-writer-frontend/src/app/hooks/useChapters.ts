@@ -13,14 +13,14 @@ export function useChapters(storyId: string) {
 
     const queryClient = useQueryClient()
 
-    // get query
+    // get query - FIXED: Include storyId in query key
     const {
          data: chapters, 
          isLoading, 
          isError, 
          isSuccess
     } = useQuery({
-        queryKey: ['chapters'],
+        queryKey: ['chapters', storyId], // Include storyId in query key
         queryFn:  () => fetch(`${API_URL}/stories/${storyId}/chapters`, {
             'credentials': 'include'
         }).then((res) => {
@@ -42,7 +42,8 @@ export function useChapters(storyId: string) {
                 storyLastUpdated: new Date(data.story_last_updated + 'Z'),
                 chapters: transformedChapterListItems
             }
-        })
+        }),
+        enabled: !!storyId, // Only run query when storyId exists
     })
 
     const getChapter = (chapterId: string) => useQuery({
@@ -69,7 +70,7 @@ export function useChapters(storyId: string) {
         })
     })
 
-    // create mutation
+    // create mutation - FIXED: Invalidate the correct query key
     const createMutation = useMutation({
         mutationFn: (chapterInfo: CreateChapterRequest) => fetch(`${API_URL}/stories/${storyId}/chapters`, {
             method: 'POST',
@@ -96,10 +97,55 @@ export function useChapters(storyId: string) {
             }
             return transformedChapter
         }),
-        onSuccess: () => queryClient.invalidateQueries({queryKey: ['chapters']})
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['chapters', storyId]})
+        },
+        onMutate: async (newChapter: any) => {
+            // cancel all active queries
+            await queryClient.cancelQueries({ queryKey: ['chapters', storyId]})
+
+            // snapshot current query
+            const previousChapters = queryClient.getQueryData(['chapters', storyId])
+
+            // manually update cache
+            queryClient.setQueryData(['chapters', storyId], (oldData: any) => {
+                if (!oldData) return oldData
+
+                 const optimisticChapter = {
+                    id: `temp-${Date.now()}`,
+                    title: newChapter.title,
+                    published: false,
+                    wordCount: 0,
+                    updatedAt: new Date(),
+                    isOptimistic: true,
+                    
+                    // ADD THE MISSING REQUIRED PROPERTIES:
+                    chapterNumber: oldData.chapters.length + 1, // Next chapter number
+                    status: "draft" as const, // Required status
+                    handleOnClick: () => {
+                        // Temporary click handler (could show a message or do nothing)
+                        console.log('Optimistic chapter clicked');
+                    }
+                };
+
+                return {
+                    ...oldData,
+                    chapters: [...oldData.chapters, optimisticChapter]
+                }
+
+            })
+
+            // return snap of curren query in case of rollback
+            return { previousChapters }
+        },
+        onError: (error, variables, context) => {
+            if (context?.previousChapters) {
+                queryClient.setQueryData(['chapters', storyId], context.previousChapters)
+            }
+        }
     })
 
-    // update mutation
+    // update mutation - FIXED: Invalidate the correct query key
     const updateMutation = useMutation({
         mutationFn: ({ chapterId, requestBody }: UpdateMutationArgs) => fetch(`${API_URL}/chapters/${chapterId}`, {
             method: 'PUT',
@@ -126,10 +172,13 @@ export function useChapters(storyId: string) {
             }
             return transformedChapter
         }),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['chapters']})
+        onSuccess: (data) => {
+            // FIXED: Invalidate both the chapter list and the individual chapter
+            queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
+            queryClient.invalidateQueries({ queryKey: ['chapters', data.id] })
+        }
     })
 
-    // delete mutation
     const deleteMutation = useMutation({
         mutationFn: (chapterId: string) => fetch(`${API_URL}/chapters/${chapterId}`, {
             method: 'DELETE',
@@ -138,7 +187,9 @@ export function useChapters(storyId: string) {
             if (!res.ok) throw new Error('Failed to delete chapter')
             return res.json()
         }),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['chapters'] })
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
+        }
     })
 
     // return everything
