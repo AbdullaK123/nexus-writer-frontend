@@ -6,6 +6,7 @@ import styles from './page.module.css';
 import { useChapters } from "@/app/hooks/useChapters";
 import { useSelectedChapter } from "@/app/hooks/useSelectedChapter";
 import { 
+    CreateChapterRequest,
     StoryInfoCardProps, 
     getChapterStatus
  } from "@/app/types/interfaces";
@@ -36,10 +37,27 @@ export default function Page({ params }: PageProps) {
 
     const {
         chapters,
-        isSuccess,
         isLoading,
-        isError
+        isError,
+        create,
+        isCreating,
+        creationError,
+        creationSuccess
     } = useChapters(storyId)
+
+    useEffect(() => {
+        if (isError) {
+            alert(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`)
+            router.push('/dashboard')
+        }
+    }, [isError])
+
+    useEffect(() => {
+          if (creationError) {
+              alert('Failed to create chapter. Please check the server logs')
+              return
+          }
+    }, [creationError])
 
     const { 
         selectedChapter, 
@@ -56,7 +74,11 @@ export default function Page({ params }: PageProps) {
 
     // Show loading state while resolving params or loading chapters
     if (!storyId || isLoading) {
-        return <div>Loading...</div>
+        return (
+            <div className={styles['centered']}>
+                <h1>Loading...</h1>
+            </div>
+        )
     }
 
     const numChapters = chapters.chapters.length 
@@ -77,23 +99,40 @@ export default function Page({ params }: PageProps) {
         updatedAt: chapters?.storyLastUpdated || new Date()
     }
 
+    const onCreateChapter = (chapterInfo: CreateChapterRequest) => {
+        if(!chapterInfo.title.trim()) {
+            alert('Chapter title can not be empty!')
+            return
+        }
+        create(chapterInfo)
+    }
+
+
     return (
         <div className={styles['story-detail-page']}>
-            <StoryDetailHeader storyId={storyId} title={chapters.storyTitle} />
+            <StoryDetailHeader 
+                storyId={storyId} 
+                title={chapters.storyTitle} 
+                onCreateChapter={onCreateChapter}
+                isCreating={isCreating}
+                creationSuccess={creationSuccess}
+            />
             <div className={styles['story-content-layout']}>
                 <StoryDetailSidebar
                     storyInfo={storyInfo}
                     chapters={chaptersWithStatusAndNumbers}
                 />
                 {isLoadingChapter ? (
-                    <div>Loading chapter...</div>
+                    <div className={styles['centered']}>
+                        <h1>Loading chapter...</h1>
+                    </div>
                 ) : selectedChapter ? (
                     <ChapterPreview 
                         {...selectedChapter} 
                     />
                 ) : (
-                    <div>
-                        <h2>Select a chapter to preview</h2>
+                    <div className={styles['centered']}>
+                        <h1>Select a chapter to preview</h1>
                     </div>
                 )}
             </div>

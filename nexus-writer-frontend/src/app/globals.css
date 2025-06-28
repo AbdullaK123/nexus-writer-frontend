@@ -105,6 +105,12 @@ h1 {
   transform: translateY(-2px);;
 }
 
+.btn-secondary:hover {
+  text-shadow: 1px 1px white;
+  background: var(--background-secondary);
+  transform: translateY(-2px);
+}
+
 input[type="email"],
 input[type="password"],
 input[type="text"],
