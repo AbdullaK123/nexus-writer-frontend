@@ -1,15 +1,23 @@
-// src/components/ui/ChapterPreview/ChapterPreview.tsx
+'use client'
 import styles from './ChapterPreview.module.css'
 import { ChapterPreviewProps } from '@/app/types/interfaces'
 import { formatDistanceToNow } from 'date-fns'
+import { useRouter } from 'next/navigation'
 
 export default function ChapterPreview({ 
+    id,
     title,
     status,
     wordCount,
     updatedAt,
-    previewContent
+    previewContent,
+    storyId,
+    storyTitle,
+    previousChapterId,
+    nextChapterId
 }: ChapterPreviewProps) {
+
+    const router = useRouter()
 
     const getReadingTime = (wordCount : number) => {
         const minutes = Math.round(wordCount / 200); // 200 WPM average
@@ -34,7 +42,7 @@ export default function ChapterPreview({
 
     const getActionButtons = () => {
         const baseButtons = [
-            { text: 'Edit Chapter', class: 'btn-primary' },
+            { text: 'Edit Chapter', class: 'btn-primary', onClick: () => router.push(`/chapters/${storyId}/${id}`) },
             { text: 'Chapter Settings', class: 'btn-secondary' }
         ];
 

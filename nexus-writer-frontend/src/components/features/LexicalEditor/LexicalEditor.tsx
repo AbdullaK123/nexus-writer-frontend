@@ -85,7 +85,6 @@ export default function LexicalEditor() {
                         }
                         ErrorBoundary={LexicalErrorBoundary}
                     />
-                    
                     {/* Essential plugins for writers */}
                     <HistoryPlugin />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />

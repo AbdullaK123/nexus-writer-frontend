@@ -122,7 +122,7 @@ export interface ChapterPreviewProps {
   wordCount?: number;
   updatedAt?: Date;
   previewContent?: string;
-  storyId?: string; // For navigation
+  storyId: string; // For navigation
   storyTitle?: string;
   previousChapterId?: string; // Navigation
   nextChapterId?: string; // Navigation

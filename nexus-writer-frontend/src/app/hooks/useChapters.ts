@@ -13,14 +13,14 @@ export function useChapters(storyId: string) {
 
     const queryClient = useQueryClient()
 
-    // get query - FIXED: Include storyId in query key
+    // get query
     const {
          data: chapters, 
          isLoading, 
          isError, 
          isSuccess
     } = useQuery({
-        queryKey: ['chapters', storyId], // Include storyId in query key
+        queryKey: ['chapters', storyId],
         queryFn:  () => fetch(`${API_URL}/stories/${storyId}/chapters`, {
             'credentials': 'include'
         }).then((res) => {
@@ -43,7 +43,7 @@ export function useChapters(storyId: string) {
                 chapters: transformedChapterListItems
             }
         }),
-        enabled: !!storyId, // Only run query when storyId exists
+        enabled: !!storyId,
     })
 
     const getChapter = (chapterId: string) => useQuery({
@@ -70,7 +70,7 @@ export function useChapters(storyId: string) {
         })
     })
 
-    // create mutation - FIXED: Invalidate the correct query key
+    // FIXED: create mutation with proper optimistic updates
     const createMutation = useMutation({
         mutationFn: (chapterInfo: CreateChapterRequest) => fetch(`${API_URL}/stories/${storyId}/chapters`, {
             method: 'POST',
@@ -100,52 +100,49 @@ export function useChapters(storyId: string) {
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['chapters', storyId]})
         },
-        onMutate: async (newChapter: any) => {
-            // cancel all active queries
+        onMutate: async (newChapter: CreateChapterRequest) => {
+            // Cancel any outgoing refetches
             await queryClient.cancelQueries({ queryKey: ['chapters', storyId]})
 
-            // snapshot current query
+            // Snapshot the previous value
             const previousChapters = queryClient.getQueryData(['chapters', storyId])
 
-            // manually update cache
+            // Optimistically update the cache
             queryClient.setQueryData(['chapters', storyId], (oldData: any) => {
                 if (!oldData) return oldData
 
-                 const optimisticChapter = {
-                    id: `temp-${Date.now()}`,
+                // Create optimistic chapter that matches the EXACT structure
+                const optimisticChapter = {
+                    id: `temp-${Date.now()}`, // Temporary ID
                     title: newChapter.title,
                     published: false,
-                    wordCount: 0,
-                    updatedAt: new Date(),
-                    isOptimistic: true,
-                    
-                    // ADD THE MISSING REQUIRED PROPERTIES:
-                    chapterNumber: oldData.chapters.length + 1, // Next chapter number
-                    status: "draft" as const, // Required status
-                    handleOnClick: () => {
-                        // Temporary click handler (could show a message or do nothing)
-                        console.log('Optimistic chapter clicked');
-                    }
+                    wordCount: 0, // matches transformed structure
+                    updatedAt: new Date(), // matches transformed structure
+                    // Remove all the extra properties that don't belong
                 };
 
                 return {
                     ...oldData,
                     chapters: [...oldData.chapters, optimisticChapter]
                 }
-
             })
 
-            // return snap of curren query in case of rollback
+            // Return context for rollback
             return { previousChapters }
         },
         onError: (error, variables, context) => {
+            // Rollback on error
             if (context?.previousChapters) {
                 queryClient.setQueryData(['chapters', storyId], context.previousChapters)
             }
+        },
+        onSettled: () => {
+            // Always refetch after mutation settles (success or error)
+            queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
         }
     })
 
-    // update mutation - FIXED: Invalidate the correct query key
+    // update mutation
     const updateMutation = useMutation({
         mutationFn: ({ chapterId, requestBody }: UpdateMutationArgs) => fetch(`${API_URL}/chapters/${chapterId}`, {
             method: 'PUT',
@@ -173,7 +170,6 @@ export function useChapters(storyId: string) {
             return transformedChapter
         }),
         onSuccess: (data) => {
-            // FIXED: Invalidate both the chapter list and the individual chapter
             queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
             queryClient.invalidateQueries({ queryKey: ['chapters', data.id] })
         }
@@ -192,7 +188,6 @@ export function useChapters(storyId: string) {
         }
     })
 
-    // return everything
     return {
         chapters,
         isLoading,
