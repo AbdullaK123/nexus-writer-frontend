@@ -201,7 +201,7 @@ export function useChapters(storyId: string) {
         update: updateMutation.mutate,
         isUpdating: updateMutation.isPending,
         updateError: updateMutation.isError,
-        updateSucess: updateMutation.isSuccess,
+        updateSuccess: updateMutation.isSuccess,
         delete: deleteMutation.mutate,
         isDeleting: deleteMutation.isPending,
         deleteError: deleteMutation.isError,

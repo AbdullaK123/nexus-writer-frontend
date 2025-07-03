@@ -1,11 +1,11 @@
-/* src/components/ui/StoryDetailHeader/StoryDetailHeader.module.css */
+
 
 .story-detail-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 2rem 2.5rem;
     width: 100%;
     border: 1px solid var(--accent-primary);
     border-radius: 16px;
@@ -15,6 +15,7 @@
         0 0 10px var(--accent-secondary),   
         inset 0 1px 0 rgba(255,255,255,0.1);
     transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
 }
 
 .story-detail-header:hover {

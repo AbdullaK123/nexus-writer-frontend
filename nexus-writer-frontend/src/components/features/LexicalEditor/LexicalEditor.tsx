@@ -13,6 +13,7 @@ import { AutoLinkNode, LinkNode } from '@lexical/link'
 import { ListPlugin } from '@lexical/react/LexicalListPlugin'
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin'
+import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical'
 import styles from './LexicalEditor.module.css'
 import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
@@ -48,7 +49,44 @@ const sciFiTheme = {
   code: 'lexical-code'
 }
 
-export default function LexicalEditor() {
+interface LexicalEditorProps {
+    storyId: string;
+    chapterId: string;
+    initialContent?: string
+}
+
+function createInitialState(content?: string) {
+    if (!content) return undefined
+
+    // try to parse the lexical json
+    try {
+        const parsed = JSON.parse(content)
+
+        if (parsed.root && parsed.root.children) {
+            return content
+        }
+
+    } catch (error) {
+        console.error('Failed to parse content as lexical json')
+    }
+
+   return () => {
+    const root = $getRoot()
+    const paragraphs = content.split('\n\n')
+    
+    paragraphs.forEach(paragraphText => {
+      if (paragraphText.trim()) {
+        const paragraph = $createParagraphNode()
+        const textNode = $createTextNode(paragraphText.trim())
+        paragraph.append(textNode)
+        root.append(paragraph)
+      }
+    })
+  }
+
+}
+
+export default function LexicalEditor({ initialContent }: LexicalEditorProps) {
     const initialConfig = {
         namespace: 'SciFiChapterEditor',
         theme: sciFiTheme,
@@ -64,7 +102,7 @@ export default function LexicalEditor() {
         onError: (error: Error) => {
             console.error('Lexical Editor Error:', error)
         },
-        editorState: undefined // Start with empty state
+        editorState: createInitialState(initialContent)
     }
 
     return (
@@ -85,7 +123,6 @@ export default function LexicalEditor() {
                         }
                         ErrorBoundary={LexicalErrorBoundary}
                     />
-                    {/* Essential plugins for writers */}
                     <HistoryPlugin />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
                     <ListPlugin />

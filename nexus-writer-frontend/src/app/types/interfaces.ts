@@ -50,6 +50,8 @@ export interface ApiStory {
     id: string;
     title: string;
     status: string;
+    total_chapters: number;
+    word_count: number;
     created_at: string;
     updated_at: string;
 }

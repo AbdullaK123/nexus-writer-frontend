@@ -16,11 +16,7 @@ export default function StoryCard({
     latestChapter
  }: StoryCardProps) {
 
-    console.log(id)
-
     const router = useRouter()
-
-    const { getStory } = useStories()
 
     const goToStoryPage = () => {
         router.push(`/stories/${id}`)

@@ -28,7 +28,9 @@ export function useStories() {
             const transformedStories = rawStories?.map((story: ApiStory) => ({
                 ...story,
                 createdAt: new Date(story.created_at + 'Z'),
-                updatedAt: new Date(story.updated_at + 'Z')
+                updatedAt: new Date(story.updated_at + 'Z'),
+                totalChapters: story.total_chapters,
+                wordCount: story.word_count
             }))
             return transformedStories || []
         })

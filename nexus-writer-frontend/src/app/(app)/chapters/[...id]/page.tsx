@@ -1,24 +1,13 @@
 'use client'
 import LexicalEditor from '@/components/features/LexicalEditor/LexicalEditor'
 import styles from './page.module.css'
-import { useEffect, useState } from 'react'
 import { useChapters } from '@/app/hooks/useChapters'
+import { useParams } from 'next/navigation'
 
-export default function Page({ params }) {
+export default function Page() {
 
-    const [storyId, setStoryId] = useState<string>("")
-    const [chapterId, setChapterId] = useState<string>("")
-
-    useEffect(() => {
-        const resolveParams = async () => {
-            const resolvedParams = await Promise.resolve(params)
-            const { storyID, chapterID } = resolvedParams
-            setStoryId(storyID)
-            setChapterId(chapterID)
-        }
-        resolveParams()
-    }, [params])
-
+    const params = useParams()
+    const [storyId, chapterId] = params.id as string[]
     const { getChapter } = useChapters(storyId)
 
     const {
@@ -28,11 +17,32 @@ export default function Page({ params }) {
         isLoading
     } = getChapter(chapterId)
 
+    // Handle missing params
+    if (!storyId || !chapterId) {
+        return (
+            <div className={styles['content-container']}>
+                <h1>Invalid chapter URL</h1>
+                <p>Expected: /chapters/[storyId]/[chapterId]</p>
+            </div>
+        )
+    }
+
     return (
         <div className={styles['content-container']}>
-            {isLoading ? (
+            {isLoading && (
                 <h1>Loading Chapter...</h1>
-            ): <LexicalEditor />}
+            )}
+            {isError && (
+                <h1>Error loading chapter. Please try again.</h1>
+            )}
+            {isSuccess && chapter && (
+                <LexicalEditor 
+                    key={chapter.id}
+                    initialContent={chapter.content}
+                    storyId={storyId}
+                    chapterId={chapterId}
+                />
+            )}
         </div>
     )
 }

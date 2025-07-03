@@ -11,29 +11,13 @@ import {
     getChapterStatus
  } from "@/app/types/interfaces";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useParams } from "next/navigation";
 
-interface PageProps {
-    params: Promise<{ id: string }> | { id: string }
-}
-
-export default function Page({ params }: PageProps) {
+export default function Page() {
     const router = useRouter()
-    const [storyId, setStoryId] = useState<string>("")
-
-    useEffect(() => {
-        const resolveParams = async () => {
-            try {
-                // Handle both Promise and regular object cases
-                const resolvedParams = await Promise.resolve(params)
-                const { id } = resolvedParams
-                setStoryId(id)
-            } catch (error) {
-                console.error('Error resolving params:', error)
-            }
-        }
-        resolveParams()
-    }, [params])
+    const params = useParams()
+    const storyId = params?.id as string
 
     const {
         chapters,

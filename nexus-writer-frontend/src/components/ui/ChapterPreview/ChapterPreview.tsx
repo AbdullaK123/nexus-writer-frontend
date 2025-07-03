@@ -42,14 +42,14 @@ export default function ChapterPreview({
 
     const getActionButtons = () => {
         const baseButtons = [
-            { text: 'Edit Chapter', class: 'btn-primary', onClick: () => router.push(`/chapters/${storyId}/${id}`) },
-            { text: 'Chapter Settings', class: 'btn-secondary' }
+            { text: 'Edit Chapter', class: 'btn-primary', onclick: () => router.push(`/chapters/${storyId}/${id}`) },
+            { text: 'Chapter Settings', class: 'btn-secondary', onclick: () => {} }
         ];
 
         if (status.toLowerCase() === 'published') {
-            return [...baseButtons, { text: 'Unpublish', class: 'btn-secondary' }];
+            return [...baseButtons, { text: 'Unpublish', class: 'btn-secondary', onclick: () => {} }];
         } else {
-            return [...baseButtons, { text: 'Publish', class: 'btn-primary' }];
+            return [...baseButtons, { text: 'Publish', class: 'btn-primary', onclick: () => {} }];
         }
     }
 
@@ -92,6 +92,7 @@ export default function ChapterPreview({
                     <button 
                         key={index} 
                         className={button.class}
+                        onClick={button.onclick}
                     >
                         {button.text}
                     </button>
