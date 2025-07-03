@@ -17,6 +17,7 @@ import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical'
 import styles from './LexicalEditor.module.css'
 import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
+import SavePlugin from './plugins/SavingPlugin'
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -86,7 +87,7 @@ function createInitialState(content?: string) {
 
 }
 
-export default function LexicalEditor({ initialContent }: LexicalEditorProps) {
+export default function LexicalEditor({ initialContent, chapterId, storyId }: LexicalEditorProps) {
     const initialConfig = {
         namespace: 'SciFiChapterEditor',
         theme: sciFiTheme,
@@ -129,6 +130,10 @@ export default function LexicalEditor({ initialContent }: LexicalEditorProps) {
                     <LinkPlugin />
                     <CheckListPlugin />
                     <IndentOnNewLinePlugin />
+                    <SavePlugin 
+                        chapterId={chapterId}
+                        storyId={storyId}
+                    />
                 </div>
             </LexicalComposer>
         </div>
