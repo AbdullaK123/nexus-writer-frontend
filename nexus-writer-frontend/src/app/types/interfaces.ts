@@ -109,7 +109,8 @@ export interface ApiChapterContentResponse {
     next_chapter_id: string;
 }
 export interface ChapterListItemProps {
-  id?: string;
+  storyId: string;
+  id: string;
   chapterNumber: number;
   title: string;
   wordCount: number;
@@ -178,6 +179,13 @@ export interface AuthWrapperProps {
   children: React.ReactNode
   redirectTo?: string;
   requireAuth?: boolean;
+}
+
+export interface ChapterContextMenuProps {
+  x: number;
+  y: number;
+  onAction: (action: string) => void;
+  onClose: () => void;
 }
 
 // ========================================

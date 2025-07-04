@@ -70,6 +70,7 @@ export default function Page() {
     const chaptersWithStatusAndNumbers = chapters.chapters.map((chapter, index) => {
         return {
             ...chapter,
+            storyId: storyId,
             chapterNumber: index + 1,
             status: getChapterStatus(chapter.published, chapter.wordCount > 0),
             handleOnClick: () => selectChapter(chapter.id)

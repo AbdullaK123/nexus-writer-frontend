@@ -1,14 +1,39 @@
-// src/components/ui/ChapterListItem/ChapterListItem.tsx
 import { ChapterListItemProps } from "@/app/types/interfaces";
 import styles from './ChapterListItem.module.css'
+import ChapterContextMenu from "../ChapterContextMenu/ChapterContextMenu";
+import { useContextMenu } from "@/app/hooks/useContextMenu";
+import { useChapters } from "@/app/hooks/useChapters"; 
+import React, { useState, useEffect } from "react";
 
 export default function ChapterListItem({
+    storyId,
+    id,
     chapterNumber,
     title,
     wordCount,
     handleOnClick,
     status
 }: ChapterListItemProps) {
+
+    const { menu, openMenu, closeMenu } = useContextMenu()
+    const { 
+        deleteChapter,
+        isDeleting,
+        deleteError,
+        deleteSuccess,
+        update,
+        isUpdating,
+        updateError,
+        updateSuccess
+    } = useChapters(storyId)
+    const [updatingTitle, setUpdatingTitle] = useState(false)
+    const [chapterTitle, setChapterTitle] = useState(title)
+
+    useEffect(() => {
+        if (updateSuccess) {
+            setUpdatingTitle(false)
+        }
+    }, [updateSuccess])
 
     const getBadgeCss = (status: string) => {
         const normalizedStatus = status.toLowerCase();
@@ -30,24 +55,68 @@ export default function ChapterListItem({
         return `${count} words`;
     }
 
+    const handleOnAction = (action: string) => {
+        if (action !== 'delete') return;
+        deleteChapter(id)
+        closeMenu()
+    }
+
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setChapterTitle(e.target.value)
+    }
+
+    const handleOnDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        setUpdatingTitle(true)
+    }
+
+    const handleOnEnterDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            update({ chapterId: id, requestBody: { title: chapterTitle} })
+        }
+    }
+
     return (
-        <div onClick={handleOnClick} className={styles['chapter-list-item-container']}> 
-            <div className={`${styles['status-indicator']} ${styles[getStatusIndicatorClass(status)]}`} />
-            <div className={styles['chapter-metadata-container']}> 
-                <span className={`${styles['chapter-number-badge']} ${styles[getBadgeCss(status)]}`}>
-                    {chapterNumber}
-                </span>
-                <div className={styles['flex-col-container']}>
-                    <h3>{title}</h3>
-                    <div className={styles['chapter-stats']}>
-                        <span>{formatWordCount(wordCount)}</span>
-                        <span>{status}</span>
+        <div onClick={closeMenu}>
+            <div 
+                onClick={handleOnClick} 
+                className={`${styles['chapter-list-item-container']} ${menu.visible && styles['no-hover']}`}
+                onContextMenu={openMenu}
+                onDoubleClick={handleOnDoubleClick}
+            > 
+                <div className={`${styles['status-indicator']} ${styles[getStatusIndicatorClass(status)]}`} />
+                <div className={styles['chapter-metadata-container']}> 
+                    <span className={`${styles['chapter-number-badge']} ${styles[getBadgeCss(status)]}`}>
+                        {chapterNumber}
+                    </span>
+                    <div className={styles['flex-col-container']}>
+                        {updatingTitle ? (
+                            <input 
+                                name="title"
+                                type="text"
+                                value={chapterTitle}
+                                onChange={handleOnChange}
+                                onKeyDown={handleOnEnterDown}
+                            />
+                        ) : <h3>{title}</h3>}
+                        <div className={styles['chapter-stats']}>
+                            <span>{formatWordCount(wordCount)}</span>
+                            <span>{status}</span>
+                        </div>
                     </div>
                 </div>
+                <div className={styles['arrow-icon']}>
+                    →
+                </div>
             </div>
-            <div className={styles['arrow-icon']}>
-                →
-            </div>
+            {menu.visible && (
+                <ChapterContextMenu 
+                    x={menu.x}
+                    y={menu.y}
+                    onClose={closeMenu}
+                    onAction={handleOnAction}
+                />
+            )}
         </div>
     )
 }

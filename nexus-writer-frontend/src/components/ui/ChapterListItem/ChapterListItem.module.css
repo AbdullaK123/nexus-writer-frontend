@@ -17,6 +17,10 @@
     overflow: hidden;
 }
 
+.no-hover {
+    pointer-events: none;
+}
+
 .chapter-list-item-container:hover {
     border-color: var(--accent-primary);
     background: linear-gradient(135deg, 
