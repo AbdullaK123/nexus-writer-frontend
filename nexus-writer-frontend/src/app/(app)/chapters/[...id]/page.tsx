@@ -15,7 +15,7 @@ export default function Page() {
         isSuccess,
         isError,
         isLoading
-    } = getChapter(chapterId)
+    } = getChapter(chapterId, true)
 
     // Handle missing params
     if (!storyId || !chapterId) {

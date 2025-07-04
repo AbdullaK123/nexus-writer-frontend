@@ -46,9 +46,9 @@ export function useChapters(storyId: string) {
         enabled: !!storyId,
     })
 
-    const getChapter = (chapterId: string) => useQuery({
-        queryKey: ['chapters', chapterId],
-        queryFn: () => fetch(`${API_URL}/chapters/${chapterId}`, {
+    const getChapter = (chapterId: string, as_lexical_json: boolean) => useQuery({
+        queryKey: ['chapters', chapterId, as_lexical_json ? 'True' : 'False'],
+        queryFn: () => fetch(`${API_URL}/chapters/${chapterId}/?as_lexical_json=${as_lexical_json ? 'True' : 'False'}`, {
             credentials: 'include'
         }).then((res) => {
             if (!res.ok) throw new Error('Failed to create new chapter.')
