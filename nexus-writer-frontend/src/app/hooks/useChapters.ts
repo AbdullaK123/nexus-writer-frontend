@@ -172,6 +172,8 @@ export function useChapters(storyId: string) {
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
             queryClient.invalidateQueries({ queryKey: ['chapters', data.id] })
+            queryClient.invalidateQueries({ queryKey: ['chapters', data.id, 'True']})
+            queryClient.invalidateQueries({ queryKey: ['chapters', data.id, 'False']})
         }
     })
 

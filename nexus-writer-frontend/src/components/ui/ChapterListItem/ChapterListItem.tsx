@@ -3,7 +3,7 @@ import styles from './ChapterListItem.module.css'
 import ChapterContextMenu from "../ChapterContextMenu/ChapterContextMenu";
 import { useContextMenu } from "@/app/hooks/useContextMenu";
 import { useChapters } from "@/app/hooks/useChapters"; 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function ChapterListItem({
     storyId,
@@ -28,6 +28,14 @@ export default function ChapterListItem({
     } = useChapters(storyId)
     const [updatingTitle, setUpdatingTitle] = useState(false)
     const [chapterTitle, setChapterTitle] = useState(title)
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (updatingTitle) {
+            inputRef.current?.focus()
+            inputRef.current?.select()
+        }
+    }, [updatingTitle])
 
     useEffect(() => {
         if (updateSuccess) {
@@ -73,6 +81,10 @@ export default function ChapterListItem({
         if (e.key === "Enter") {
             e.preventDefault()
             update({ chapterId: id, requestBody: { title: chapterTitle} })
+        }
+         if (e.key === "Escape") {
+            setUpdatingTitle(false)
+            setChapterTitle(title) // Reset to original
         }
     }
 
