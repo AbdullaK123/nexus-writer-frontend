@@ -4,6 +4,7 @@ import ChapterContextMenu from "../ChapterContextMenu/ChapterContextMenu";
 import { useContextMenu } from "@/app/hooks/useContextMenu";
 import { useChapters } from "@/app/hooks/useChapters"; 
 import React, { useState, useEffect, useRef } from "react";
+import { useInView } from "@/app/hooks/useInView";
 
 export default function ChapterListItem({
     storyId,
@@ -29,7 +30,8 @@ export default function ChapterListItem({
     } = useChapters(storyId)
     const [updatingTitle, setUpdatingTitle] = useState(false)
     const [chapterTitle, setChapterTitle] = useState(title)
-    const inputRef = useRef<HTMLInputElement>(null)
+    const inputRef = useRef<HTMLInputElement>(undefined)
+    const [isInView, elementRef] = useInView(0)
 
     useEffect(() => {
         if (updatingTitle) {
@@ -50,6 +52,12 @@ export default function ChapterListItem({
             handleClearSelection()
         }
     }, [deleteSuccess])
+
+    useEffect(() => {
+        if (isInView) {
+            closeMenu()
+        }
+    }, [isInView])
 
     const getBadgeCss = (status: string) => {
         const normalizedStatus = status.toLowerCase();
@@ -88,6 +96,7 @@ export default function ChapterListItem({
     const handleOnEnterDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
             e.preventDefault()
+            setUpdatingTitle(false)
             update({ chapterId: id, requestBody: { title: chapterTitle} })
         }
          if (e.key === "Escape") {
@@ -97,7 +106,10 @@ export default function ChapterListItem({
     }
 
     return (
-        <div onClick={closeMenu}>
+        <div
+            ref={elementRef} 
+            onClick={closeMenu}
+        >
             <div 
                 onClick={handleOnClick} 
                 className={`${styles['chapter-list-item-container']} ${menu.visible && styles['no-hover']}`}
@@ -119,7 +131,7 @@ export default function ChapterListItem({
                                 onChange={handleOnChange}
                                 onKeyDown={handleOnEnterDown}
                             />
-                        ): <h3>{title}</h3>}
+                        ): (isUpdating === false) && (isDeleting === false) && <h3>{title}</h3>}
                         {isUpdating && (<h3>Updating Title...</h3>)}
                         {isDeleting && (<h3>Deleting Chapter...</h3>)}
                         <div className={styles['chapter-stats']}>
