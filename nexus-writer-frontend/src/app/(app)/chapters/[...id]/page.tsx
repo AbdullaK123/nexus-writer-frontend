@@ -41,6 +41,7 @@ export default function Page() {
                     <ChapterNavHeader 
                         storyId={storyId}
                         chapterTitle={chapter.title}
+                        chapterId={chapterId}
                         prevChapterId={chapter.previousChapterId}
                         nextChapterId={chapter.nextChapterId}
                     />
