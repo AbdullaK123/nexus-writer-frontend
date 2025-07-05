@@ -132,6 +132,13 @@ export interface ChapterPreviewProps {
   nextChapterId?: string; // Navigation
 }
 
+export interface ChapterNavHeaderProps {
+  storyId: string;
+  chapterTitle: string;
+  prevChapterId?: string;
+  nextChapterId?: string;
+}
+
 // ========================================
 // FORM & REQUEST INTERFACES
 // ========================================

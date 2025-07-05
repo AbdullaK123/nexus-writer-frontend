@@ -3,6 +3,7 @@ import LexicalEditor from '@/components/features/LexicalEditor/LexicalEditor'
 import styles from './page.module.css'
 import { useChapters } from '@/app/hooks/useChapters'
 import { useParams } from 'next/navigation'
+import ChapterNavHeader from '@/components/ui/ChapterNavHeader/ChapterNavHeader'
 
 export default function Page() {
 
@@ -36,12 +37,20 @@ export default function Page() {
                 <h1>Error loading chapter. Please try again.</h1>
             )}
             {isSuccess && chapter && (
-                <LexicalEditor 
-                    key={chapter.id}
-                    initialContent={chapter.content}
-                    storyId={storyId}
-                    chapterId={chapterId}
-                />
+                <>
+                    <ChapterNavHeader 
+                        storyId={storyId}
+                        chapterTitle={chapter.title}
+                        prevChapterId={chapter.previousChapterId}
+                        nextChapterId={chapter.nextChapterId}
+                    />
+                    <LexicalEditor 
+                        key={chapter.id}
+                        initialContent={chapter.content}
+                        storyId={storyId}
+                        chapterId={chapterId}
+                    />
+                </>
             )}
         </div>
     )
