@@ -30,8 +30,8 @@ export default function ChapterListItem({
     } = useChapters(storyId)
     const [updatingTitle, setUpdatingTitle] = useState(false)
     const [chapterTitle, setChapterTitle] = useState(title)
-    const inputRef = useRef<HTMLInputElement>(undefined)
-    const [isInView, elementRef] = useInView(0)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const [isInView, elementRef] = useInView(1)
 
     useEffect(() => {
         if (updatingTitle) {
@@ -54,7 +54,7 @@ export default function ChapterListItem({
     }, [deleteSuccess])
 
     useEffect(() => {
-        if (isInView) {
+        if (!isInView) {
             closeMenu()
         }
     }, [isInView])

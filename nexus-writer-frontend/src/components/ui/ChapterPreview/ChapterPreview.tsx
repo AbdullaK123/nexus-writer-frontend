@@ -46,7 +46,7 @@ export default function ChapterPreview({
             { text: 'Chapter Settings', class: 'btn-secondary', onclick: () => {} }
         ];
 
-        if (status.toLowerCase() === 'published') {
+        if (status && status.toLowerCase() === 'published') {
             return [...baseButtons, { text: 'Unpublish', class: 'btn-secondary', onclick: () => {} }];
         } else {
             return [...baseButtons, { text: 'Publish', class: 'btn-primary', onclick: () => {} }];
@@ -56,18 +56,18 @@ export default function ChapterPreview({
     return (
         <div className={styles['chapter-preview-container']}>
             <div className={styles['chapter-header']}>
-                <h2 className={`${styles['chapter-title']} ${styles[getStatusClass(status)]}`}>
+                <h2 className={`${styles['chapter-title']} ${status && styles[getStatusClass(status)]}`}>
                     {title}
                 </h2>
                 <div className={styles['chapter-metadata']}>
                     <div className={`${styles['metadata-item']} ${styles['word-count']}`}>
-                        {formatWordCount(wordCount)} words
+                        {wordCount && formatWordCount(wordCount)} words
                     </div>
                     <div className={`${styles['metadata-item']} ${styles['reading-time']}`}>
-                        {getReadingTime(wordCount)} read
+                        {wordCount && getReadingTime(wordCount)} read
                     </div>
                     <div className={`${styles['metadata-item']} ${styles['last-edited']}`}>
-                        {getDuration(updatedAt)}
+                        {updatedAt && getDuration(updatedAt)}
                     </div>
                     <div className={`${styles['metadata-item']} ${styles['status']}`}>
                         {status}
