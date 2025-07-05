@@ -4,6 +4,7 @@ import ChapterContextMenu from "../ChapterContextMenu/ChapterContextMenu";
 import { useContextMenu } from "@/app/hooks/useContextMenu";
 import { useChapters } from "@/app/hooks/useChapters"; 
 import React, { useState, useEffect, useRef } from "react";
+import { useSelectedChapter } from "@/app/hooks/useSelectedChapter";
 
 export default function ChapterListItem({
     storyId,
@@ -29,6 +30,7 @@ export default function ChapterListItem({
     const [updatingTitle, setUpdatingTitle] = useState(false)
     const [chapterTitle, setChapterTitle] = useState(title)
     const inputRef = useRef<HTMLInputElement>(null)
+    const { clearSelection } = useSelectedChapter(storyId)
 
     useEffect(() => {
         if (updatingTitle) {
@@ -40,8 +42,15 @@ export default function ChapterListItem({
     useEffect(() => {
         if (updateSuccess) {
             setUpdatingTitle(false)
+            handleOnClick()
         }
     }, [updateSuccess])
+
+    useEffect(() => {
+        if (deleteSuccess) {
+            clearSelection(id)
+        }
+    }, [deleteSuccess])
 
     const getBadgeCss = (status: string) => {
         const normalizedStatus = status.toLowerCase();
@@ -104,13 +113,16 @@ export default function ChapterListItem({
                     <div className={styles['flex-col-container']}>
                         {updatingTitle ? (
                             <input 
+                                ref={inputRef}
                                 name="title"
                                 type="text"
                                 value={chapterTitle}
                                 onChange={handleOnChange}
                                 onKeyDown={handleOnEnterDown}
                             />
-                        ) : <h3>{title}</h3>}
+                        ): <h3>{title}</h3>}
+                        {isUpdating && (<h3>Updating Title...</h3>)}
+                        {isDeleting && (<h3>Deleting Chapter...</h3>)}
                         <div className={styles['chapter-stats']}>
                             <span>{formatWordCount(wordCount)}</span>
                             <span>{status}</span>

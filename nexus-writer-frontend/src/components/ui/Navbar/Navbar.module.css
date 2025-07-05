@@ -8,7 +8,7 @@
     padding: 16px;
     background: linear-gradient(var(--background-primary), var(--background-secondary));
     border-bottom: 1px solid var(--accent-primary);
-    box-shadow: 0 5px 10px rgba(0, 212, 255, 0.2);
+    box-shadow: 0 2px 5px var(--accent-primary);
     z-index: 9999;
 }
 

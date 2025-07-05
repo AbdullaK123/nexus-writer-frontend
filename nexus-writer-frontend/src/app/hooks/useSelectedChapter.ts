@@ -30,6 +30,7 @@ export function useSelectedChapter(storyId: string) {
             }
         } catch (error) {
             console.error('Failed to fetch chapter:', error)
+            setSelectedChapter(undefined)
         } finally {
             setIsLoadingChapter(false)
         }
@@ -39,6 +40,10 @@ export function useSelectedChapter(storyId: string) {
         selectedChapter,
         selectChapter,
         isLoadingChapter,
-        clearSelection: () => setSelectedChapter(undefined)
+        clearSelection: (chapterId: string) => {
+            queryClient.removeQueries({ queryKey: ['chapters', chapterId, 'False']})
+            queryClient.removeQueries({ queryKey: ['chapters', chapterId, 'True']})
+            setSelectedChapter(undefined)
+        }
     }
 }
