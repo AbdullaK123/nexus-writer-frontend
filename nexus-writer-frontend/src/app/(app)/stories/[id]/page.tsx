@@ -46,7 +46,8 @@ export default function Page() {
     const { 
         selectedChapter, 
         selectChapter, 
-        isLoadingChapter
+        isLoadingChapter,
+        clearSelection
      } = useSelectedChapter(storyId)
 
     // Don't run this check until we have a storyId
@@ -73,7 +74,8 @@ export default function Page() {
             storyId: storyId,
             chapterNumber: index + 1,
             status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-            handleOnClick: () => selectChapter(chapter.id)
+            handleOnClick: () => selectChapter(chapter.id),
+            handleClearSelection: clearSelection
         }
     })
 

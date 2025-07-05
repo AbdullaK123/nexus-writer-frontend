@@ -40,10 +40,6 @@ export function useSelectedChapter(storyId: string) {
         selectedChapter,
         selectChapter,
         isLoadingChapter,
-        clearSelection: (chapterId: string) => {
-            queryClient.removeQueries({ queryKey: ['chapters', chapterId, 'False']})
-            queryClient.removeQueries({ queryKey: ['chapters', chapterId, 'True']})
-            setSelectedChapter(undefined)
-        }
+        clearSelection: () => setSelectedChapter(undefined)
     }
 }

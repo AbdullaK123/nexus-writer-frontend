@@ -116,6 +116,7 @@ export interface ChapterListItemProps {
   wordCount: number;
   status: "published" | "draft" | "outline";
   handleOnClick: () => void;
+  handleClearSelection: () => void;
 }
 
 export interface ChapterPreviewProps {

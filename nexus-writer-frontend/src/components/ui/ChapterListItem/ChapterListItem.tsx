@@ -4,7 +4,6 @@ import ChapterContextMenu from "../ChapterContextMenu/ChapterContextMenu";
 import { useContextMenu } from "@/app/hooks/useContextMenu";
 import { useChapters } from "@/app/hooks/useChapters"; 
 import React, { useState, useEffect, useRef } from "react";
-import { useSelectedChapter } from "@/app/hooks/useSelectedChapter";
 
 export default function ChapterListItem({
     storyId,
@@ -13,6 +12,7 @@ export default function ChapterListItem({
     title,
     wordCount,
     handleOnClick,
+    handleClearSelection,
     status
 }: ChapterListItemProps) {
 
@@ -30,7 +30,6 @@ export default function ChapterListItem({
     const [updatingTitle, setUpdatingTitle] = useState(false)
     const [chapterTitle, setChapterTitle] = useState(title)
     const inputRef = useRef<HTMLInputElement>(null)
-    const { clearSelection } = useSelectedChapter(storyId)
 
     useEffect(() => {
         if (updatingTitle) {
@@ -48,7 +47,7 @@ export default function ChapterListItem({
 
     useEffect(() => {
         if (deleteSuccess) {
-            clearSelection(id)
+            handleClearSelection()
         }
     }, [deleteSuccess])
 
