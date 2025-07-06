@@ -20,6 +20,7 @@ export default function ChapterNavHeader({
         isCreating,
         creationError,
         creationSuccess,
+        createdChapter, // Add this to get the created chapter data
         update,
         isUpdating,
         updateError,
@@ -57,11 +58,12 @@ export default function ChapterNavHeader({
         }
     }
 
+    // FIXED: Use the created chapter ID from the mutation response
     useEffect(() => {
-        if (creationSuccess && nextChapterId) {
-            router.push(`/chapters/${storyId}/${nextChapterId}`)
+        if (creationSuccess && createdChapter?.id) {
+            router.push(`/chapters/${storyId}/${createdChapter.id}`)
         }
-    }, [creationSuccess, nextChapterId])
+    }, [creationSuccess, createdChapter?.id, router, storyId])
 
     useEffect(() => {
         if (updateSuccess) {

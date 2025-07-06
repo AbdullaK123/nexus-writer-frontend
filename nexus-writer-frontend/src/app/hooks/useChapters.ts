@@ -98,12 +98,6 @@ export function useChapters(storyId: string) {
                 nextChapterId: data.next_chapter_id
             }
             return transformedChapter
-        },
-        // 🎮 SMART PREFETCHING - Load adjacent chapters
-        onSuccess: (data) => {
-            if (as_lexical_json) {
-                prefetchAdjacentChapters(chapterId, storyId)
-            }
         }
     })
 
@@ -228,7 +222,7 @@ export function useChapters(storyId: string) {
         isCreating: createMutation.isPending,
         creationError: createMutation.isError,
         creationSuccess: createMutation.isSuccess,
-        createdChapter: createMutation.data,
+        createdChapter: createMutation.data, // FIXED: Make sure this is exposed
         update: updateMutation.mutate,
         isUpdating: updateMutation.isPending,
         updateError: updateMutation.isError,
