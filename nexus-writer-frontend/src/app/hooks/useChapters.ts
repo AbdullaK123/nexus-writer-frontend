@@ -1,4 +1,6 @@
+// app/hooks/useChapters.ts - OPTIMIZED WITH SMART CACHING
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCacheInvalidation } from './useCacheInvalidation'
 import { 
     ApiChapterListItem, 
     CreateChapterRequest,
@@ -10,23 +12,48 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 
 export function useChapters(storyId: string) {
-
     const queryClient = useQueryClient()
+    const { 
+        invalidateChapter, 
+        optimisticChapterUpdate, 
+        prefetchAdjacentChapters 
+    } = useCacheInvalidation()
 
-    // get query
+    // ========================================
+    // OPTIMIZED CACHE KEYS
+    // ========================================
+    
+    const getChapterCacheKey = (chapterId: string, asLexicalJson: boolean = true) => {
+        return ['chapters', chapterId, asLexicalJson ? 'True' : 'False']
+    }
+
+    const getChapterListCacheKey = (storyId: string) => {
+        return ['chapters', storyId]
+    }
+
+    // ========================================
+    // QUERIES WITH SMART STALE TIME
+    // ========================================
+
+    // Get all chapters for a story
     const {
          data: chapters, 
          isLoading, 
          isError, 
          isSuccess
     } = useQuery({
-        queryKey: ['chapters', storyId],
-        queryFn:  () => fetch(`${API_URL}/stories/${storyId}/chapters`, {
-            'credentials': 'include'
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to fetch chapters.')
-            return res.json()
-        }).then((data: ApiChapterListResponse) => {
+        queryKey: getChapterListCacheKey(storyId),
+        queryFn: async () => {
+            const response = await fetch(`${API_URL}/stories/${storyId}/chapters`, {
+                credentials: 'include'
+            })
+            if (!response.ok) throw new Error('Failed to fetch chapters.')
+            return response.json()
+        },
+        enabled: !!storyId,
+        staleTime: 30 * 1000, // Chapter lists can be slightly stale (30s)
+        gcTime: 10 * 60 * 1000, // Keep longer since frequently accessed
+        select: (data: ApiChapterListResponse) => {
             const rawChapterListItems = data.chapters
             const transformedChapterListItems = rawChapterListItems?.map((item: ApiChapterListItem) => {
                 return {
@@ -42,18 +69,22 @@ export function useChapters(storyId: string) {
                 storyLastUpdated: new Date(data.story_last_updated + 'Z'),
                 chapters: transformedChapterListItems
             }
-        }),
-        enabled: !!storyId,
+        }
     })
 
+    // Get individual chapter with prefetching
     const getChapter = (chapterId: string, as_lexical_json: boolean) => useQuery({
-        queryKey: ['chapters', chapterId, as_lexical_json ? 'True' : 'False'],
-        queryFn: () => fetch(`${API_URL}/chapters/${chapterId}/?as_lexical_json=${as_lexical_json ? 'True' : 'False'}`, {
-            credentials: 'include'
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to create new chapter.')
-            return res.json()
-        }).then((data: ApiChapterContentResponse) => {
+        queryKey: getChapterCacheKey(chapterId, as_lexical_json),
+        queryFn: async () => {
+            const response = await fetch(`${API_URL}/chapters/${chapterId}/?as_lexical_json=${as_lexical_json ? 'True' : 'False'}`, {
+                credentials: 'include'
+            })
+            if (!response.ok) throw new Error('Failed to fetch chapter.')
+            return response.json()
+        },
+        staleTime: 0, // Individual chapters should always be fresh
+        gcTime: 5 * 60 * 1000,
+        select: (data: ApiChapterContentResponse) => {
             const transformedChapter = {
                 id: data.id,
                 title: data.title,
@@ -67,126 +98,123 @@ export function useChapters(storyId: string) {
                 nextChapterId: data.next_chapter_id
             }
             return transformedChapter
-        })
+        },
+        // 🎮 SMART PREFETCHING - Load adjacent chapters
+        onSuccess: (data) => {
+            if (as_lexical_json) {
+                prefetchAdjacentChapters(chapterId, storyId)
+            }
+        }
     })
 
-    // FIXED: create mutation with proper optimistic updates
+    // ========================================
+    // OPTIMIZED MUTATIONS WITH OPTIMISTIC UPDATES
+    // ========================================
+
+    // Create mutation with immediate UI feedback
     const createMutation = useMutation({
-        mutationFn: (chapterInfo: CreateChapterRequest) => fetch(`${API_URL}/stories/${storyId}/chapters`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(chapterInfo)
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to create new chapter.')
-            return res.json()
-        }).then((data: ApiChapterContentResponse) => {
-            const transformedChapter = {
-                id: data.id,
-                title: data.title,
-                content: data.content,
-                published: data.published,
-                storyId: data.story_id,
-                storyTitle: data.story_title,
-                createdAt: new Date(data.created_at + 'Z'),
-                updatedAt: new Date(data.updated_at + 'Z'),
-                previousChapterId: data.previous_chapter_id,
-                nextChapterId: data.next_chapter_id
-            }
-            return transformedChapter
-        }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ['chapters', storyId]})
+        mutationKey: ['createChapter', storyId],
+        mutationFn: async (chapterInfo: CreateChapterRequest) => {
+            const response = await fetch(`${API_URL}/stories/${storyId}/chapters`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(chapterInfo)
+            })
+            if (!response.ok) throw new Error('Failed to create new chapter.')
+            return response.json()
         },
-        onMutate: async (newChapter: CreateChapterRequest) => {
-            // Cancel any outgoing refetches
-            await queryClient.cancelQueries({ queryKey: ['chapters', storyId]})
-
-            // Snapshot the previous value
-            const previousChapters = queryClient.getQueryData(['chapters', storyId])
-
-            // Optimistically update the cache
-            queryClient.setQueryData(['chapters', storyId], (oldData: any) => {
-                if (!oldData) return oldData
-
-                // Create optimistic chapter that matches the EXACT structure
+        onMutate: async (newChapter) => {
+            // Cancel outgoing refetches
+            await queryClient.cancelQueries({ queryKey: getChapterListCacheKey(storyId) })
+            
+            // Snapshot previous value
+            const previousChapters = queryClient.getQueryData(getChapterListCacheKey(storyId))
+            
+            // Optimistically update chapter list
+            queryClient.setQueryData(getChapterListCacheKey(storyId), (old: any) => {
+                if (!old) return old
+                
                 const optimisticChapter = {
-                    id: `temp-${Date.now()}`, // Temporary ID
+                    id: `temp-${Date.now()}`,
                     title: newChapter.title,
                     published: false,
-                    wordCount: 0, // matches transformed structure
-                    updatedAt: new Date(), // matches transformed structure
-                    // Remove all the extra properties that don't belong
-                };
-
+                    wordCount: 0,
+                    updatedAt: new Date()
+                }
+                
                 return {
-                    ...oldData,
-                    chapters: [...oldData.chapters, optimisticChapter]
+                    ...old,
+                    chapters: [...old.chapters, optimisticChapter]
                 }
             })
-
-            // Return context for rollback
+            
             return { previousChapters }
         },
-        onError: (error, variables, context) => {
-            // Rollback on error
+        onError: (err, newChapter, context) => {
+            // Revert optimistic update
             if (context?.previousChapters) {
-                queryClient.setQueryData(['chapters', storyId], context.previousChapters)
+                queryClient.setQueryData(getChapterListCacheKey(storyId), context.previousChapters)
             }
         },
         onSettled: () => {
-            // Always refetch after mutation settles (success or error)
-            queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
+            // Always refetch after mutation settles
+            queryClient.invalidateQueries({ queryKey: getChapterListCacheKey(storyId) })
         }
     })
 
-    // update mutation
+    // Update mutation with optimistic updates
     const updateMutation = useMutation({
-        mutationFn: ({ chapterId, requestBody }: UpdateMutationArgs) => fetch(`${API_URL}/chapters/${chapterId}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to update chapter')
-            return res.json()
-        }).then((data: ApiChapterContentResponse) => {
-             const transformedChapter = {
-                id: data.id,
-                title: data.title,
-                content: data.content,
-                published: data.published,
-                storyId: data.story_id,
-                storyTitle: data.story_title,
-                createdAt: new Date(data.created_at + 'Z'),
-                updatedAt: new Date(data.updated_at + 'Z'),
-                previousChapterId: data.previous_chapter_id,
-                nextChapterId: data.next_chapter_id
-            }
-            return transformedChapter
-        }),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
-            queryClient.invalidateQueries({ queryKey: ['chapters', data.id] })
-            queryClient.invalidateQueries({ queryKey: ['chapters', data.id, 'True']})
-            queryClient.invalidateQueries({ queryKey: ['chapters', data.id, 'False']})
+        mutationKey: ['updateChapter'],
+        mutationFn: async ({ chapterId, requestBody }: UpdateMutationArgs) => {
+            const response = await fetch(`${API_URL}/chapters/${chapterId}`, {
+                method: 'PUT',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            if (!response.ok) throw new Error('Failed to update chapter')
+            return response.json()
+        },
+        onMutate: async ({ chapterId, requestBody }) => {
+            // ⚡ Apply optimistic update immediately
+            optimisticChapterUpdate(chapterId, requestBody)
+            
+            return { chapterId, requestBody }
+        },
+        onSuccess: (data, { chapterId }) => {
+            // Invalidate affected caches
+            invalidateChapter(chapterId, storyId)
+        },
+        onError: (error, { chapterId }) => {
+            console.error('Chapter update failed:', error)
+            // Revalidate to get correct data
+            invalidateChapter(chapterId, storyId)
         }
     })
 
+    // Delete mutation
     const deleteMutation = useMutation({
-        mutationFn: (chapterId: string) => fetch(`${API_URL}/chapters/${chapterId}`, {
-            method: 'DELETE',
-            credentials: 'include',
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to delete chapter')
-            return res.json()
-        }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['chapters', storyId] })
+        mutationKey: ['deleteChapter'],
+        mutationFn: async (chapterId: string) => {
+            const response = await fetch(`${API_URL}/chapters/${chapterId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            })
+            if (!response.ok) throw new Error('Failed to delete chapter')
+            return response.json()
+        },
+        onSuccess: (data, chapterId) => {
+            // Remove from cache immediately
+            queryClient.removeQueries({ queryKey: ['chapters', chapterId] })
+            // Invalidate chapter list
+            queryClient.invalidateQueries({ queryKey: getChapterListCacheKey(storyId) })
+            // Invalidate story list (chapter count changed)
+            queryClient.invalidateQueries({ queryKey: ['stories'] })
         }
     })
 
@@ -200,6 +228,7 @@ export function useChapters(storyId: string) {
         isCreating: createMutation.isPending,
         creationError: createMutation.isError,
         creationSuccess: createMutation.isSuccess,
+        createdChapter: createMutation.data,
         update: updateMutation.mutate,
         isUpdating: updateMutation.isPending,
         updateError: updateMutation.isError,
@@ -207,6 +236,6 @@ export function useChapters(storyId: string) {
         deleteChapter: deleteMutation.mutate,
         isDeleting: deleteMutation.isPending,
         deleteError: deleteMutation.isError,
-        deleteSuccess: deleteMutation.isSuccess
+        deleteSuccess: deleteMutation.isSuccess,
     }
 }
