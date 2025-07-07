@@ -19,8 +19,8 @@
 
 .back-to-story-button {
     border-radius: 1rem;
-    background: var(--background-secondary);
-    border: 1px solid var(--accent-primary);
+    background: none;
+    border: none;
     color: var(--accent-primary);
     cursor: pointer;
     transition: all 0.3s ease;
@@ -29,7 +29,7 @@
 }
 
 .back-to-story-button:hover {
-    background: var(--accent-primary);
-    color: var(--background-primary);
+    /* background: var(--accent-primary);
+    color: var(--background-primary); */
     transform: translateX(-2px) scale(1.05);
 }
