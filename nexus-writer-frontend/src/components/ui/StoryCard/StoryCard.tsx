@@ -7,6 +7,7 @@ import { useStories } from "@/app/hooks/useStories";
 
 export default function StoryCard({ 
     id,
+    latestChapterId,
     title, 
     status, 
     createdAt, 
@@ -15,6 +16,8 @@ export default function StoryCard({
     wordCount,
     latestChapter
  }: StoryCardProps) {
+
+    console.log(`latest chapter is ${latestChapterId}`)
 
     const router = useRouter()
 
@@ -48,6 +51,13 @@ export default function StoryCard({
         return count.toString()
     }
 
+    const goToLatestChapter = () => {
+        if (latestChapterId) {
+            console.log('Going to latest chapter...')
+            router.push(`/chapters/${id}/${latestChapterId}`)
+        }
+    }
+
     const getBtnProps = (status: string) => {
         switch (status) {
             case 'Complete':
@@ -59,14 +69,14 @@ export default function StoryCard({
                 ]
             case 'On Hiatus':
                 return [
-                    { text: 'Resume', css: 'btn-primary', onClick: undefined },
+                    { text: 'Resume', css: 'btn-primary', onClick: goToLatestChapter },
                     { text: 'Outline', css: 'btn-secondary', onClick: undefined },
                     { text: 'Research', css: 'btn-secondary', onClick: undefined },
                     { text: 'AI', css: 'btn-secondary', onClick: undefined }
                 ]
             default:
                 return [
-                    { text: 'Continue', css: 'btn-primary', onClick: undefined },
+                    { text: 'Continue', css: 'btn-primary', onClick: goToLatestChapter },
                     { text: 'Chapters', css: 'btn-secondary', onClick: goToStoryPage },
                     { text: 'Settings', css: 'btn-secondary', onClick: undefined },
                     { text: 'AI', css: 'btn-secondary', onClick: undefined }

@@ -37,6 +37,7 @@ export interface Story {
 
 export interface StoryCardProps {
   id: string; 
+  latestChapterId?: string;
   title: string;
   status: "Complete" | "On Hiatus" | "Ongoing";
   createdAt: Date;
@@ -48,6 +49,7 @@ export interface StoryCardProps {
 
 export interface ApiStory {
     id: string;
+    latest_chapter_id?: string;
     title: string;
     status: string;
     total_chapters: number;

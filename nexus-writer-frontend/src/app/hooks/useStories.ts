@@ -27,11 +27,13 @@ export function useStories() {
             const rawStories = data.stories
             const transformedStories = rawStories?.map((story: ApiStory) => ({
                 ...story,
+                latestChapterId: story.latest_chapter_id,
                 createdAt: new Date(story.created_at + 'Z'),
                 updatedAt: new Date(story.updated_at + 'Z'),
                 totalChapters: story.total_chapters,
                 wordCount: story.word_count
             }))
+            console.log(JSON.stringify(transformedStories))
             return transformedStories || []
         })
     })
