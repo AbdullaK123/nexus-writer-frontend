@@ -121,13 +121,13 @@ export function useChapters(storyId: string) {
             return response.json()
         },
         onMutate: async (newChapter) => {
-            // Cancel outgoing refetches
+            // stop any background refetches from ruining the optimistic update!
             await queryClient.cancelQueries({ queryKey: getChapterListCacheKey(storyId) })
             
-            // Snapshot previous value
+            // in case the update fails
             const previousChapters = queryClient.getQueryData(getChapterListCacheKey(storyId))
             
-            // Optimistically update chapter list
+            // directly modify cache
             queryClient.setQueryData(getChapterListCacheKey(storyId), (old: any) => {
                 if (!old) return old
                 
@@ -145,6 +145,7 @@ export function useChapters(storyId: string) {
                 }
             })
             
+            // pass fallback to onError
             return { previousChapters }
         },
         onError: (err, newChapter, context) => {
@@ -222,7 +223,7 @@ export function useChapters(storyId: string) {
         isCreating: createMutation.isPending,
         creationError: createMutation.isError,
         creationSuccess: createMutation.isSuccess,
-        createdChapter: createMutation.data, // FIXED: Make sure this is exposed
+        createdChapter: createMutation.data, 
         update: updateMutation.mutate,
         isUpdating: updateMutation.isPending,
         updateError: updateMutation.isError,

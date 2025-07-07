@@ -59,6 +59,20 @@ export default function ChapterListItem({
         }
     }, [isInView])
 
+    useEffect(() => {
+        if (updateError) {
+            alert(`Failed to update chapter. Check server logs.`)
+            return
+        }
+    }, [updateError])
+
+    useEffect(() => {
+        if (deleteError) {
+            alert('Failed to delete chapter. Check server logs.')
+            return
+        }
+    }, [deleteError])
+
     const getBadgeCss = (status: string) => {
         const normalizedStatus = status.toLowerCase();
         if (normalizedStatus === 'published') return 'published-chapter-number-badge';
@@ -74,6 +88,7 @@ export default function ChapterListItem({
     }
 
     const formatWordCount = (count: number) => {
+        if (!count) return '0 words'
         if (count === 0) return '0 words';
         if (count >= 1000) return `${(count / 1000).toFixed(1)}k words`;
         return `${count} words`;

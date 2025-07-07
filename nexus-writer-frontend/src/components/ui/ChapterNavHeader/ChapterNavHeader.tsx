@@ -71,6 +71,20 @@ export default function ChapterNavHeader({
         }
     }, [updateSuccess])
 
+    useEffect(() => {
+        if (creationError) {
+            alert('Failed to create chapter. Check server logs')
+            return
+        }
+    }, [creationError])
+
+    useEffect(() => {
+        if (updateError) {
+            alert('Failed to update chapter. Check server logs')
+            return
+        }
+    }, [updateError])
+
     return (
         <div 
             onDoubleClick={handleDoubleClick}
