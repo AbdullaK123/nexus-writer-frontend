@@ -3,7 +3,6 @@ import { StoryCardProps } from "@/app/types/interfaces";
 import styles from './StoryCard.module.css'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from "next/navigation";
-import { useStories } from "@/app/hooks/useStories";
 
 export default function StoryCard({ 
     id,
@@ -16,8 +15,6 @@ export default function StoryCard({
     wordCount,
     latestChapter
  }: StoryCardProps) {
-
-    console.log(`latest chapter is ${latestChapterId}`)
 
     const router = useRouter()
 
@@ -53,8 +50,13 @@ export default function StoryCard({
 
     const goToLatestChapter = () => {
         if (latestChapterId) {
-            console.log('Going to latest chapter...')
             router.push(`/chapters/${id}/${latestChapterId}`)
+        }
+    }
+
+    const handlePrefetch = () => {
+        if (latestChapterId) {
+            router.prefetch(`/chapters/${id}/${latestChapterId}`)
         }
     }
 
@@ -62,24 +64,24 @@ export default function StoryCard({
         switch (status) {
             case 'Complete':
                 return [
-                    { text: 'Read', css: 'btn-secondary', onClick: undefined },
-                    { text: 'Chapters', css: 'btn-primary', onClick: goToStoryPage },
-                    { text: 'Sequel', css: 'btn-secondary', onClick: undefined },
-                    { text: 'Publish', css: 'btn-secondary', onClick: undefined }
+                    { text: 'Read', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
+                    { text: 'Chapters', css: 'btn-primary', onClick: goToStoryPage, onMouseEnter: undefined},
+                    { text: 'Sequel', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
+                    { text: 'Publish', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined}
                 ]
             case 'On Hiatus':
                 return [
-                    { text: 'Resume', css: 'btn-primary', onClick: goToLatestChapter },
-                    { text: 'Outline', css: 'btn-secondary', onClick: undefined },
-                    { text: 'Research', css: 'btn-secondary', onClick: undefined },
-                    { text: 'AI', css: 'btn-secondary', onClick: undefined }
+                    { text: 'Resume', css: 'btn-primary', onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
+                    { text: 'Outline', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
+                    { text: 'Research', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
+                    { text: 'AI', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined }
                 ]
             default:
                 return [
-                    { text: 'Continue', css: 'btn-primary', onClick: goToLatestChapter },
-                    { text: 'Chapters', css: 'btn-secondary', onClick: goToStoryPage },
-                    { text: 'Settings', css: 'btn-secondary', onClick: undefined },
-                    { text: 'AI', css: 'btn-secondary', onClick: undefined }
+                    { text: 'Continue', css: 'btn-primary', onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
+                    { text: 'Chapters', css: 'btn-secondary', onClick: goToStoryPage, onMouseEnter: undefined },
+                    { text: 'Settings', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
+                    { text: 'AI', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined  }
                 ]
         }
     }
@@ -110,6 +112,7 @@ export default function StoryCard({
                         key={key} 
                         className={prop.css}
                         onClick={prop.onClick}
+                        onMouseEnter={prop.onMouseEnter}
                     >
                         {prop.text}
                     </button>

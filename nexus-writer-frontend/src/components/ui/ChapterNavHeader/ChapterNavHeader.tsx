@@ -93,6 +93,7 @@ export default function ChapterNavHeader({
             {prevChapterId && (
                 <button
                     className={styles['nav-button']}
+                    onMouseEnter={() => router.prefetch(`/chapters/${storyId}/${prevChapterId}`)}
                     onClick={() => router.push(`/chapters/${storyId}/${prevChapterId}`)}
                 >
                     ←
@@ -116,6 +117,7 @@ export default function ChapterNavHeader({
             <button
                 className={nextChapterId ? styles['nav-button'] : styles['create-button']}
                 onClick={handleClickNext}
+                onMouseEnter={ nextChapterId && (() => router.prefetch(`/chapters/${storyId}/${nextChapterId}`))}
             >
                 {nextChapterId ? "→": "+"}
             </button>
