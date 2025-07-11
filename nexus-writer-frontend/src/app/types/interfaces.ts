@@ -132,6 +132,7 @@ export interface ChapterPreviewProps {
   storyTitle?: string;
   previousChapterId?: string; // Navigation
   nextChapterId?: string; // Navigation
+  onStatusUpdate: () => void;
 }
 
 export interface ChapterNavHeaderProps {
@@ -281,7 +282,7 @@ export function formatWordCount(wordCount: number): string {
   return wordCount.toString();
 }
 
-export function transformChapterResponse(apiResponse: ApiChapterContentResponse): ChapterPreviewProps {
+export function transformChapterResponse(apiResponse: ApiChapterContentResponse): Omit<ChapterPreviewProps, 'onStatusUpdate'> {
     const wordCount = apiResponse.content ? apiResponse.content.split(' ').length : 0
     
     return {

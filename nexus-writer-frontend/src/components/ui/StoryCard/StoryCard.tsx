@@ -56,6 +56,7 @@ export default function StoryCard({
 
     const handlePrefetch = () => {
         if (latestChapterId) {
+            console.log('🚀 Prefetching chapter:', latestChapterId)
             router.prefetch(`/chapters/${id}/${latestChapterId}`)
         }
     }

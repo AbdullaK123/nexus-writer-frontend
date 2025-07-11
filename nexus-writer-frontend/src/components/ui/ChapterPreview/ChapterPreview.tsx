@@ -3,6 +3,8 @@ import styles from './ChapterPreview.module.css'
 import { ChapterPreviewProps } from '@/app/types/interfaces'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from 'next/navigation'
+import { useChapters } from '@/app/hooks/useChapters'
+import { useEffect } from 'react'
 
 export default function ChapterPreview({ 
     id,
@@ -14,10 +16,31 @@ export default function ChapterPreview({
     storyId,
     storyTitle,
     previousChapterId,
-    nextChapterId
+    nextChapterId,
+    onStatusUpdate
 }: ChapterPreviewProps) {
 
     const router = useRouter()
+    const {
+        update,
+        isUpdating,
+        updateError,
+        updateSuccess
+    } = useChapters(storyId)
+
+    useEffect(() => {
+        if (updateError) {
+            alert('Failed to publish / unpublish chapter. Check server logs')
+            return
+        }
+    }, [updateError])
+
+    useEffect(() => {
+        if (updateSuccess) {
+            alert('Successfully published / unpublished chapter.')
+            onStatusUpdate()
+        }
+    }, [updateSuccess])
 
     const getReadingTime = (wordCount : number) => {
         const minutes = Math.round(wordCount / 200); // 200 WPM average
@@ -40,16 +63,49 @@ export default function ChapterPreview({
         return count.toString();
     }
 
+    const handlePublish = () => {
+        if (previewContent) {
+            update({
+                chapterId: id,
+                requestBody: {
+                    published: true
+                }
+            })
+        }
+    }
+
+    const handleUnpublish = () => {
+        if (previewContent) {
+            update({
+                chapterId: id,
+                requestBody: {
+                    published: false
+                }
+            })
+        }
+    }
+
     const getActionButtons = () => {
+
+        
+
         const baseButtons = [
             { text: 'Edit Chapter', class: 'btn-primary', onclick: () => router.push(`/chapters/${storyId}/${id}`) },
             { text: 'Chapter Settings', class: 'btn-secondary', onclick: () => {} }
         ];
 
         if (status && status.toLowerCase() === 'published') {
-            return [...baseButtons, { text: 'Unpublish', class: 'btn-secondary', onclick: () => {} }];
+            return [...baseButtons, {
+                text: isUpdating ? 'Unpublishing...' : 'Unpublish', 
+                class: 'btn-secondary', 
+                onclick: handleUnpublish
+            }];
         } else {
-            return [...baseButtons, { text: 'Publish', class: 'btn-primary', onclick: () => {} }];
+            return [...baseButtons, { 
+                text: isUpdating? 'Publishing...': 'Publish' , 
+                class: 'btn-primary', 
+                onclick: handlePublish
+             }];
         }
     }
 

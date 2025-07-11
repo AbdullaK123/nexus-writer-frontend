@@ -116,6 +116,7 @@ export default function Page() {
                 ) : selectedChapter ? (
                     <ChapterPreview 
                         {...selectedChapter} 
+                        onStatusUpdate={() => selectChapter(selectedChapter.id)}
                     />
                 ) : (
                     <div className={styles['centered']}>
