@@ -87,8 +87,6 @@ export default function ChapterPreview({
 
     const getActionButtons = () => {
 
-        
-
         const baseButtons = [
             { text: 'Edit Chapter', class: 'btn-primary', onclick: () => router.push(`/chapters/${storyId}/${id}`) },
             { text: 'Chapter Settings', class: 'btn-secondary', onclick: () => {} }

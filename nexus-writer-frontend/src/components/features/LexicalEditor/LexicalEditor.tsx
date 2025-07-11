@@ -17,7 +17,7 @@ import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical'
 import styles from './LexicalEditor.module.css'
 import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
-import SavePlugin from './plugins/SavingPlugin'
+import AutoSavePlugin from './plugins/AutoSavePlugin'
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -130,7 +130,7 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
                     <LinkPlugin />
                     <CheckListPlugin />
                     <IndentOnNewLinePlugin />
-                    <SavePlugin 
+                    <AutoSavePlugin 
                         chapterId={chapterId}
                         storyId={storyId}
                     />
