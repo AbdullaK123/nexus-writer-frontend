@@ -6,6 +6,7 @@ import { useChapters } from "@/app/hooks/useChapters";
 import React, { useState, useEffect, useRef } from "react";
 import { useInView } from "@/app/hooks/useInView";
 
+
 export default function ChapterListItem({
     storyId,
     id,

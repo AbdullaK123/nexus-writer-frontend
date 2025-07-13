@@ -3,6 +3,11 @@ import { StoryCardProps } from "@/app/types/interfaces";
 import styles from './StoryCard.module.css'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useStories } from "@/app/hooks/useStories";
+import EditableStoryTitle from "../EditableTitle/EditableTitle";
+
+
 
 export default function StoryCard({ 
     id,
@@ -89,7 +94,10 @@ export default function StoryCard({
 
     return (
         <div className={styles['story-card-container']}>
-            <h2>{title}</h2>
+            <EditableStoryTitle 
+                storyId={id}
+                title={title}
+            />
             
             <div className={styles['metadata-row']}>
                 <div className={styles['status-row']}>

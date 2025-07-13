@@ -103,6 +103,7 @@ export function useStories() {
         getStory,
         create: createStoryMutation.mutate,
         update: updateStoryMutation.mutate,
+        updatedStory: updateStoryMutation.data,
         delete: deleteStoryMutation.mutate,
         isLoading,
         isCreating: createStoryMutation.isPending,
@@ -114,7 +115,7 @@ export function useStories() {
         deleteError: deleteStoryMutation.isError,
         isSuccess,
         isCreated: createStoryMutation.isSuccess,
-        isUpated: updateStoryMutation.isSuccess,
+        isUpdated: updateStoryMutation.isSuccess,
         isDeleted: deleteStoryMutation.isSuccess
     }
 
