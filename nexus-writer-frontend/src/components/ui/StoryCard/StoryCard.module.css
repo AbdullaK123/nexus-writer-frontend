@@ -135,6 +135,10 @@
     width: auto; /* Override global width: 100% */
 }
 
+.no-hover {
+    pointer-events: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .story-card-container {

@@ -109,11 +109,18 @@ export default function StoryCard({
             closeMenu()
         }
     }
+    
+    const handleOnClick = (e) => {
+        if (elementRef.current && !elementRef.current.contains(e.target)) {
+            closeMenu()
+        }
+    }
 
     return (
         <div 
+            onClick={handleOnClick}
             onContextMenu={(e: React.MouseEvent) => openMenu(e)}
-            className={styles['story-card-container']}
+            className={`${styles['story-card-container']} ${menu.visible && styles['no-hover']}`}
         >
             {isDeleting ? (
                 <h2>Deleting story...</h2>
