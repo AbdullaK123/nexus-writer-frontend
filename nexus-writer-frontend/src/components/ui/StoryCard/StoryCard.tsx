@@ -8,8 +8,9 @@ import EditableStatus from "../EditableStatus/EditableStatus";
 import { useContextMenu } from "@/app/hooks/useContextMenu";
 import ContextMenu from '../ContextMenu/ContextMenu'
 import { useStories } from "@/app/hooks/useStories";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useInView } from "@/app/hooks/useInView";
+import { useChapters } from "@/app/hooks/useChapters";
 
 
 export default function StoryCard({ 
@@ -26,6 +27,7 @@ export default function StoryCard({
 
     const router = useRouter()
     const {menu, openMenu, closeMenu} = useContextMenu()
+    const containerRef = useRef<HTMLDivElement>(null)
     const [isInView, elementRef] = useInView(1)
     const {
         deleteStory,
@@ -33,6 +35,19 @@ export default function StoryCard({
         isDeleted,
         deleteError
     } = useStories()
+    const {
+        create,
+        createdChapter,
+        isCreating,
+        creationSuccess,
+        creationError
+    } = useChapters(id)
+
+    useEffect(() => {
+        if (creationSuccess && createdChapter.id) {
+            router.push(`/chapters/${id}/${createdChapter.id}`)
+        }
+    }, [router, creationSuccess, createdChapter])
 
     useEffect(() => {
         if (deleteError) {
@@ -52,8 +67,9 @@ export default function StoryCard({
 
         const handleClickOutside = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            // Check if click is outside the story card
-            if (elementRef.current && !elementRef.current.contains(target)) {
+            
+            // Only close if click is outside the entire container
+            if (containerRef.current && !containerRef.current.contains(target)) {
                 closeMenu();
             }
         };
@@ -83,6 +99,10 @@ export default function StoryCard({
         if (latestChapterId) {
             router.push(`/chapters/${id}/${latestChapterId}`)
         }
+        create({
+            title: "Double click to change the title...",
+            content: ""
+        })
     }
 
     const handlePrefetch = () => {
@@ -126,8 +146,8 @@ export default function StoryCard({
     }
     
     return (
-        <>
-            <div 
+        <div ref={containerRef}>
+             <div 
                 onContextMenu={(e: React.MouseEvent) => openMenu(e)}
                 className={`${styles['story-card-container']} ${menu.visible && styles['no-hover']}`}
             >
@@ -179,6 +199,6 @@ export default function StoryCard({
                     onAction={handleOnAction}
                 />
             )}
-        </>
+        </div>
     )
 }
