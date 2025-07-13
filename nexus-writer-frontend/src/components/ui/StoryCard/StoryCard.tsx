@@ -3,10 +3,13 @@ import { StoryCardProps } from "@/app/types/interfaces";
 import styles from './StoryCard.module.css'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
-import { useStories } from "@/app/hooks/useStories";
 import EditableStoryTitle from "../EditableTitle/EditableTitle";
-
+import EditableStatus from "../EditableStatus/EditableStatus";
+import { useContextMenu } from "@/app/hooks/useContextMenu";
+import ContextMenu from '../ContextMenu/ContextMenu'
+import { useStories } from "@/app/hooks/useStories";
+import React, { useEffect } from "react";
+import { useInView } from "@/app/hooks/useInView";
 
 
 export default function StoryCard({ 
@@ -22,22 +25,30 @@ export default function StoryCard({
  }: StoryCardProps) {
 
     const router = useRouter()
+    const {menu, openMenu, closeMenu} = useContextMenu()
+    const [isInView, elementRef] = useInView(1)
+    const {
+        deleteStory,
+        isDeleting,
+        isDeleted,
+        deleteError
+    } = useStories()
+
+    useEffect(() => {
+        if (deleteError) {
+            alert('Failed to delete story. Check server logs')
+            return
+        }
+    }, [deleteError])
+
+    useEffect(() =>  {
+        if (!isInView) {
+            closeMenu()
+        }
+    }, [isInView])
 
     const goToStoryPage = () => {
         router.push(`/stories/${id}`)
-    }
-
-    const getStatusSpan = (status: string) => {
-        const baseClass = styles['status-badge'];
-        
-        switch(status) {
-            case 'Complete':
-                return <span className={`${baseClass} ${styles['completed-span']}`}>Complete</span>
-            case 'On Hiatus':
-                return <span className={`${baseClass} ${styles['onhaitus-span']}`}>On Hiatus</span>
-            default:
-                return <span className={`${baseClass} ${styles['ongoing-span']}`}>Ongoing</span>
-        }
     }
 
     const getDuration = (date: Date) => {
@@ -92,16 +103,32 @@ export default function StoryCard({
         }
     }
 
+    const handleOnAction = (action: string) => {
+        if (action === 'delete') {
+            deleteStory(id)
+            closeMenu()
+        }
+    }
+
     return (
-        <div className={styles['story-card-container']}>
-            <EditableStoryTitle 
-                storyId={id}
-                title={title}
-            />
-            
+        <div 
+            onContextMenu={(e: React.MouseEvent) => openMenu(e)}
+            className={styles['story-card-container']}
+        >
+            {isDeleting ? (
+                <h2>Deleting story...</h2>
+            ) : (
+                  <EditableStoryTitle 
+                    storyId={id}
+                    title={title}
+                />  
+            )}
             <div className={styles['metadata-row']}>
                 <div className={styles['status-row']}>
-                    {getStatusSpan(status)}
+                    <EditableStatus 
+                        storyId={id}
+                        status={status}
+                    />
                     <div className={styles['dates-container']}>
                         <p>Created {getDuration(createdAt)}</p>
                         <p>Updated {getDuration(updatedAt)}</p>
@@ -127,6 +154,14 @@ export default function StoryCard({
                     </button>
                 ))}
             </div>
+            {menu.visible && (
+                <ContextMenu 
+                    x={menu.x}
+                    y={menu.y}
+                    onClose={closeMenu}
+                    onAction={handleOnAction}
+                />
+            )}
         </div>
     )
 }

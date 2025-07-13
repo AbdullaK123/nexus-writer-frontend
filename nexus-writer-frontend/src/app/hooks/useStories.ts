@@ -104,7 +104,7 @@ export function useStories() {
         create: createStoryMutation.mutate,
         update: updateStoryMutation.mutate,
         updatedStory: updateStoryMutation.data,
-        delete: deleteStoryMutation.mutate,
+        deleteStory: deleteStoryMutation.mutate,
         isLoading,
         isCreating: createStoryMutation.isPending,
         isUpdating: updateStoryMutation.isPending,

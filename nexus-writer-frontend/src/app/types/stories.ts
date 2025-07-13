@@ -6,7 +6,7 @@ export type StoryCreateRequest = {
 
 export type StoryUpdateRequestBody = {
     title?: string;
-    status?: 'Complete' | 'Ongoing' | 'On Haitus'
+    status?:  "Complete" | "Ongoing" | "On Hiatus"
 }
 
 export type StoryUpdateRequest = {

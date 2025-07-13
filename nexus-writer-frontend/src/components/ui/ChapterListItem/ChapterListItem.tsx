@@ -1,6 +1,6 @@
 import { ChapterListItemProps } from "@/app/types/interfaces";
 import styles from './ChapterListItem.module.css'
-import ChapterContextMenu from "../ChapterContextMenu/ChapterContextMenu";
+import ContextMenu from "../ContextMenu/ContextMenu";
 import { useContextMenu } from "@/app/hooks/useContextMenu";
 import { useChapters } from "@/app/hooks/useChapters"; 
 import React, { useState, useEffect, useRef } from "react";
@@ -161,7 +161,7 @@ export default function ChapterListItem({
                 </div>
             </div>
             {menu.visible && (
-                <ChapterContextMenu 
+                <ContextMenu 
                     x={menu.x}
                     y={menu.y}
                     onClose={closeMenu}

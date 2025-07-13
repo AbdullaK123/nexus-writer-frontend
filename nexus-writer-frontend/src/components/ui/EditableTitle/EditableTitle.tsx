@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useStories } from "@/app/hooks/useStories"
 
 type EditableStoryTitleProps = {
@@ -13,6 +13,7 @@ export default function EditableStoryTitle({
 
     const [storyTitle, setStoryTitle] = useState(title)
     const [isEdititing, setIsEditing] = useState(false)
+    const componentRef = useRef(null)
     const {
         update,
         updatedStory,
@@ -41,10 +42,27 @@ export default function EditableStoryTitle({
         }
     }, [isUpdated, updatedStory])
 
+    useEffect(() => {
+
+        if (!isEdititing) return;
+
+        const handleClickOutside = (e) => {
+            if (componentRef.current && !componentRef.current.contains(e.target)) {
+                console.log('Clicked outside!')
+                setIsEditing(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [isEdititing])
+
 
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
             e.preventDefault();
+            setIsEditing(false)
             console.log('Updating story title...')
             update({
                 storyId: storyId,
@@ -66,11 +84,13 @@ export default function EditableStoryTitle({
     return (
         <div
             onDoubleClick={handleOnDoubleClick}
+            ref={componentRef} 
         >
            {isEdititing ? (
-                <input 
+                <input
                     id="title"
                     name="title"
+                    type="text"
                     value={storyTitle}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStoryTitle(e.target.value)}
                     onKeyDown={handleOnKeyDown}
