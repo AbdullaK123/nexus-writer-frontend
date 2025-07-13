@@ -47,6 +47,21 @@ export default function StoryCard({
         }
     }, [isInView])
 
+     useEffect(() => {
+        if (!menu.visible) return;
+
+        const handleClickOutside = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            // Check if click is outside the story card
+            if (elementRef.current && !elementRef.current.contains(target)) {
+                closeMenu();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [menu.visible, closeMenu]);
+
     const goToStoryPage = () => {
         router.push(`/stories/${id}`)
     }
@@ -110,56 +125,51 @@ export default function StoryCard({
         }
     }
     
-    const handleOnClick = (e) => {
-        if (elementRef.current && !elementRef.current.contains(e.target)) {
-            closeMenu()
-        }
-    }
-
     return (
-        <div 
-            onClick={handleOnClick}
-            onContextMenu={(e: React.MouseEvent) => openMenu(e)}
-            className={`${styles['story-card-container']} ${menu.visible && styles['no-hover']}`}
-        >
-            {isDeleting ? (
-                <h2>Deleting story...</h2>
-            ) : (
-                  <EditableStoryTitle 
-                    storyId={id}
-                    title={title}
-                />  
-            )}
-            <div className={styles['metadata-row']}>
-                <div className={styles['status-row']}>
-                    <EditableStatus 
+        <>
+            <div 
+                onContextMenu={(e: React.MouseEvent) => openMenu(e)}
+                className={`${styles['story-card-container']} ${menu.visible && styles['no-hover']}`}
+            >
+                {isDeleting ? (
+                    <h2>Deleting story...</h2>
+                ) : (
+                    <EditableStoryTitle 
                         storyId={id}
-                        status={status}
-                    />
-                    <div className={styles['dates-container']}>
-                        <p>Created {getDuration(createdAt)}</p>
-                        <p>Updated {getDuration(updatedAt)}</p>
+                        title={title}
+                    />  
+                )}
+                <div className={styles['metadata-row']}>
+                    <div className={styles['status-row']}>
+                        <EditableStatus 
+                            storyId={id}
+                            status={status}
+                        />
+                        <div className={styles['dates-container']}>
+                            <p>Created {getDuration(createdAt)}</p>
+                            <p>Updated {getDuration(updatedAt)}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className={styles['story-stats-container']}>
-                <p>Chapters: {totalChapters || 0}</p>
-                <p>Words: {formatWordCount(wordCount)}</p>
-                <p>{latestChapter}</p>
-            </div>
+                <div className={styles['story-stats-container']}>
+                    <p>Chapters: {totalChapters || 0}</p>
+                    <p>Words: {formatWordCount(wordCount)}</p>
+                    <p>{latestChapter}</p>
+                </div>
 
-            <div className={styles['actions-container']}>
-                {getBtnProps(status).map((prop, key) => (
-                    <button 
-                        key={key} 
-                        className={prop.css}
-                        onClick={prop.onClick}
-                        onMouseEnter={prop.onMouseEnter}
-                    >
-                        {prop.text}
-                    </button>
-                ))}
+                <div className={styles['actions-container']}>
+                    {getBtnProps(status).map((prop, key) => (
+                        <button 
+                            key={key} 
+                            className={prop.css}
+                            onClick={prop.onClick}
+                            onMouseEnter={prop.onMouseEnter}
+                        >
+                            {prop.text}
+                        </button>
+                    ))}
+                </div>
             </div>
             {menu.visible && (
                 <ContextMenu 
@@ -169,6 +179,6 @@ export default function StoryCard({
                     onAction={handleOnAction}
                 />
             )}
-        </div>
+        </>
     )
 }
