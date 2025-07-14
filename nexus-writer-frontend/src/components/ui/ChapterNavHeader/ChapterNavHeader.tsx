@@ -38,6 +38,21 @@ export default function ChapterNavHeader({
         router.push(`/chapters/${storyId}/${nextChapterId}`)
     }, [router, nextChapterId, storyId, create])
 
+     // Navigate to next chapter (keyboard shortcut only)
+    const handleNavigateNext = useCallback(() => {
+        if (nextChapterId) {
+            router.push(`/chapters/${storyId}/${nextChapterId}`)
+        }
+        // If no next chapter, do nothing for keyboard shortcut
+    }, [router, nextChapterId, storyId])
+
+    // Navigate to previous chapter (keyboard shortcut only)
+    const handleNavigatePrev = useCallback(() => {
+        if (prevChapterId) {
+            router.push(`/chapters/${storyId}/${prevChapterId}`)
+        }
+    }, [router, prevChapterId, storyId])
+
     const handleDoubleClick = () => {
         setUpdatingTitle(true)
     }
@@ -87,16 +102,18 @@ export default function ChapterNavHeader({
     useEffect(() => {
         const handleShortcut = (e) => {
              if (e.ctrlKey && e.key === "ArrowRight") {
-                handleClickNext()
+                e.preventDefault()
+                handleNavigateNext()
             }
-            if (e.ctrlKey && e.key === "ArrowLeft" && prevChapterId) {
-                router.push(`/chapters/${storyId}/${prevChapterId}`)
+            if (e.ctrlKey && e.key === "ArrowLeft") {
+                e.preventDefault()
+                handleNavigatePrev()
             }
         }
         document.addEventListener('keydown', handleShortcut)
 
         return () => document.removeEventListener('keydown', handleShortcut)
-    }, [handleClickNext, prevChapterId, storyId, router])
+    }, [handleNavigatePrev, handleNavigateNext])
 
     return (
         <div 
