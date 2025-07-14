@@ -98,11 +98,12 @@ export default function StoryCard({
     const goToLatestChapter = () => {
         if (latestChapterId) {
             router.push(`/chapters/${id}/${latestChapterId}`)
-        }
-        create({
-            title: "Double click to change the title...",
-            content: ""
-        })
+        } else (
+             create({
+                title: "Double click to change the title...",
+                content: ""
+            })
+        )
     }
 
     const handlePrefetch = () => {

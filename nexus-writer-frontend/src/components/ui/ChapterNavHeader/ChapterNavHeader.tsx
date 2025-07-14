@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { ChapterNavHeaderProps } from "@/app/types/interfaces";
 import styles from './ChapterNavHeader.module.css'
 import { useChapters } from "@/app/hooks/useChapters";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 export default function ChapterNavHeader({
     storyId,
@@ -27,7 +27,7 @@ export default function ChapterNavHeader({
         updateSuccess
     } = useChapters(storyId)
 
-    const handleClickNext = () => {
+    const handleClickNext = useCallback(() => {
         if (!nextChapterId) {
             create({ 
                 title: "Double click to change the title...", 
@@ -36,7 +36,7 @@ export default function ChapterNavHeader({
              return
         }
         router.push(`/chapters/${storyId}/${nextChapterId}`)
-    }
+    }, [router, nextChapterId, storyId, create])
 
     const handleDoubleClick = () => {
         setUpdatingTitle(true)
@@ -58,7 +58,6 @@ export default function ChapterNavHeader({
         }
     }
 
-    // FIXED: Use the created chapter ID from the mutation response
     useEffect(() => {
         if (creationSuccess && createdChapter?.id) {
             router.push(`/chapters/${storyId}/${createdChapter.id}`)
@@ -85,6 +84,20 @@ export default function ChapterNavHeader({
         }
     }, [updateError])
 
+    useEffect(() => {
+        const handleShortcut = (e) => {
+             if (e.ctrlKey && e.key === "ArrowRight") {
+                handleClickNext()
+            }
+            if (e.ctrlKey && e.key === "ArrowLeft" && prevChapterId) {
+                router.push(`/chapters/${storyId}/${prevChapterId}`)
+            }
+        }
+        document.addEventListener('keydown', handleShortcut)
+
+        return () => document.removeEventListener('keydown', handleShortcut)
+    }, [handleClickNext, prevChapterId, storyId, router])
+
     return (
         <div 
             onDoubleClick={handleDoubleClick}
@@ -106,6 +119,7 @@ export default function ChapterNavHeader({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentTitle(e.target.value)}
                     value={currentTitle}
                     type="text" 
+                    autoFocus
                 />
             ) : (
                 <>
