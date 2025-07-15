@@ -27,7 +27,7 @@ export default function ChapterNavHeader({
         updateSuccess
     } = useChapters(storyId)
 
-    const handleClickNext = useCallback(() => {
+    const handleClickNext = () => {
         if (!nextChapterId) {
             create({ 
                 title: "Double click to change the title...", 
@@ -36,7 +36,7 @@ export default function ChapterNavHeader({
              return
         }
         router.push(`/chapters/${storyId}/${nextChapterId}`)
-    }, [router, nextChapterId, storyId, create])
+    }
 
      // Navigate to next chapter (keyboard shortcut only)
     const handleNavigateNext = useCallback(() => {
@@ -100,7 +100,7 @@ export default function ChapterNavHeader({
     }, [updateError])
 
     useEffect(() => {
-        const handleShortcut = (e) => {
+        const handleShortcut = (e: KeyboardEvent) => {
              if (e.ctrlKey && e.key === "ArrowRight") {
                 e.preventDefault()
                 handleNavigateNext()

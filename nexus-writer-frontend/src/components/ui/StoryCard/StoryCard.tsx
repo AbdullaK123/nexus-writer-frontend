@@ -47,7 +47,7 @@ export default function StoryCard({
         if (creationSuccess && createdChapter.id) {
             router.push(`/chapters/${id}/${createdChapter.id}`)
         }
-    }, [router, creationSuccess, createdChapter])
+    }, [router, creationSuccess, createdChapter, id])
 
     useEffect(() => {
         if (deleteError) {
@@ -60,7 +60,7 @@ export default function StoryCard({
         if (!isInView) {
             closeMenu()
         }
-    }, [isInView])
+    }, [isInView, closeMenu])
 
      useEffect(() => {
         if (!menu.visible) return;

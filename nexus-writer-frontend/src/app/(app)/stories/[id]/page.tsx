@@ -34,7 +34,7 @@ export default function Page() {
             alert(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`)
             router.push('/dashboard')
         }
-    }, [isError])
+    }, [isError, router, storyId])
 
     useEffect(() => {
           if (creationError) {

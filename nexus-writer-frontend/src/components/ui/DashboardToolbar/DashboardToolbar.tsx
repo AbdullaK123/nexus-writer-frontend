@@ -4,9 +4,20 @@ import { DashboardToolBarProps } from '@/app/types/interfaces';
 import { StoryCreateRequest } from '@/app/types/stories';
 import styles from './DashboardToolbar.module.css'
 
-export default function DashboardToolbar({ username, onCreateStory}: DashboardToolBarProps ) {
+const filterOptions = [
+    {label: 'Ongoing', value: 'Ongoing'},
+    {label: 'On Hiatus', value: 'On Hiatus'},
+    {label: 'Complete', value: 'Complete'}
+]
+
+export default function DashboardToolbar({
+    username, 
+    onCreateStory,
+    onFilterChange
+}: DashboardToolBarProps ) {
 
     const [story, setStory] = useState<StoryCreateRequest>({ title: "" })
+    const [filter, setFilter] = useState(undefined)
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStory({ title: e.target.value })
     }
@@ -17,6 +28,13 @@ export default function DashboardToolbar({ username, onCreateStory}: DashboardTo
         }
         onCreateStory(story)
         setStory({ title: ""})
+    }
+
+    const handleOnFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newFilter = e.target.value
+        console.info(newFilter)
+        setFilter(newFilter)
+        onFilterChange(filter)
     }
 
     return (
@@ -37,6 +55,23 @@ export default function DashboardToolbar({ username, onCreateStory}: DashboardTo
                 >
                     Create Story
                 </button>
+                <div>
+                    <label htmlFor='filter'>Filter by: </label>
+                    <select
+                        id='filter'
+                        name='filter'
+                        onChange={handleOnFilterChange}
+                        value={filter}
+                    >
+                        {filterOptions.map((item) => {
+                            return (
+                                <option key={item.value} value={item.value}>
+                                    {item.label}
+                                </option>
+                            )
+                        })}
+                    </select>
+                </div>
             </div>
         </div>
     )

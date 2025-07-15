@@ -58,7 +58,9 @@ export default function EditorToolbar() {
             const selection = $getSelection()
             if ($isRangeSelection(selection)) {
                 $patchStyleText(selection, {
-                    'font-weight': isBold ? 'bold' : 'normal'
+                    'font-weight': isBold ? '700' : 'normal',
+                    'color': isBold ? '#00ffff': '#ffffff',
+                    'text-shadow': isBold ? '0 0 3px #00ffff': null
                 })
             }
         })
@@ -72,7 +74,9 @@ export default function EditorToolbar() {
             const selection = $getSelection()
             if ($isRangeSelection(selection)) {
                 $patchStyleText(selection, {
-                    'font-style': isItalic ? 'italic' : 'normal'
+                    'font-style': isItalic ? 'italic' : 'normal',
+                    'color': isItalic ? '#00ff41': '#ffffff',
+                    'text-shadow': isItalic ? '0 0 2px #00ff41': null
                 })
             }
         })
@@ -115,7 +119,7 @@ export default function EditorToolbar() {
             </div>
             <div className={styles['toolbar-element']}>
                 <button 
-                    className={styles['toolbar-button']}
+                    className={`${styles['toolbar-button']} ${!isBold ? styles['bold-active'] : undefined}`}
                     onClick={handleOnFontBold}
                 >
                     B
@@ -123,7 +127,7 @@ export default function EditorToolbar() {
             </div>
             <div className={styles['toolbar-element']}>
                 <button 
-                    className={styles['toolbar-button']}
+                    className={`${styles['toolbar-button']} ${!isItalic ? styles['italic-active'] : undefined}`}
                     onClick={handleOnFontItalic}
                 >
                     I

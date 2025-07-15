@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 export function useContextMenu() {
     // state with menu visibility and coordinates
@@ -15,13 +15,13 @@ export function useContextMenu() {
     }
 
     // handler to close the menu
-    const closeMenu = () => {
+    const closeMenu = useCallback(() => {
         setMenu({
             visible: false,
             x: 0,
             y: 0
         })
-    }
+    }, [])
 
     // return the state and the handlers
     return {

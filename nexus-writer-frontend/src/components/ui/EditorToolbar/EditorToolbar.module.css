@@ -350,3 +350,14 @@
       inset 0 1px 0 rgba(255,255,255,0.05);
     background-color: rgba(0, 212, 255, 0.05);
 }
+
+.bold-active {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+
+.italic-active {
+  color: var(--success);
+  font-weight: 700;
+}

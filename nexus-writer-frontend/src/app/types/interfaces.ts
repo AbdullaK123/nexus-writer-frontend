@@ -179,12 +179,13 @@ export interface UpdateStoryRequest {
 export interface DashboardToolBarProps {
   username: string;
   onCreateStory: (story: StoryCreateRequest) => void;
+  onFilterChange: (filter: string) => void;
 }
 
 export interface ModalProps {
   children: React.ReactNode;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (filter: string) => void;
 }
 
 export interface AuthWrapperProps {
