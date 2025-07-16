@@ -64,6 +64,12 @@ export default function StoryDetailHeader({
                      id="title"
                      type="text"
                      onChange={handleOnChange}
+                     onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault()
+                            handleOnCreateChapter()
+                        }
+                     }}
                      placeholder='Enter a chapter title...'
                      value={chapterTitle}
                  />
