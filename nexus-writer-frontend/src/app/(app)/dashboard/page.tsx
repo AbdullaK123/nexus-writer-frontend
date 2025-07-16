@@ -5,7 +5,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import { useStories } from "@/app/hooks/useStories"
 import StoryCard from "@/components/ui/StoryCard/StoryCard"
 import { StoryCardProps } from "@/app/types/interfaces"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Dashboard() {
     const { user } = useAuth()
@@ -19,47 +19,29 @@ export default function Dashboard() {
          isCreating
     } = useStories()
 
-    const [filteredStories, setFilteredStories] = useState<StoryCardProps[]>([])
+    const [filter, setFilter] = useState('')
 
-    // Update filtered stories when stories data changes
-    useEffect(() => {
-        if (stories) {
-            setFilteredStories(stories)
-        }
-    }, [stories])
-
-    const onFilterChange = (filter: string) => {
-        console.log('Filter changed to:', filter)
-        console.log('Available stories:', JSON.stringify(stories))
-        
-        if (!stories) {
-            console.log('No stories available')
-            return
-        }
-
-        if (!filter || filter === '') {
-            // Show all stories
-            setFilteredStories(stories)
-        } else {
-            // Filter by status
-            const filtered = stories.filter((story) => story.status === filter)
-            console.log('Filtered stories:', JSON.stringify(filtered))
-            setFilteredStories(filtered)
-        }
+    const getStoriesToShow = () => {
+        if (!stories) return []
+        if (!filter) return stories
+        return stories.filter((story) => story.status === filter)
     }
+
+    const storiesToShow = getStoriesToShow()
+
 
     return (
         <>
             <DashboardToolbar
                 username={user.username}
                 onCreateStory={create}
-                onFilterChange={onFilterChange}
+                onFilterChange={setFilter}
             />
             {isCreating && (<h2>Creating new story...</h2>)}
             <div className={styles['flex-wrap-container']}>
                 {isError && (<h1>Failed to fetch stories. There might be an issue with the server.</h1>) }
                 {isLoading && (<h1>Loading your stories...</h1>)}
-                {isSuccess && filteredStories && filteredStories.map((story: StoryCardProps) => {
+                {isSuccess && storiesToShow && storiesToShow.map((story: StoryCardProps) => {
                         return (
                             <StoryCard 
                                 key={story.id} 
@@ -80,7 +62,7 @@ export default function Dashboard() {
                         </div>
                     </div>
                 )}
-                {isSuccess && stories && stories.length > 0 && filteredStories.length === 0 && (
+                {isSuccess && stories && stories.length > 0 && storiesToShow.length === 0 && (
                     <div className={styles['empty-state']}>
                         <div className={styles['empty-state-icon']}>🔍</div>
                         <h2>No stories match your filter</h2>

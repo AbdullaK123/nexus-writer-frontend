@@ -1,42 +1,25 @@
 'use client'
-import { useState } from "react"
 
 type FilterDropdownProps = {
     onFilterChange: (filter: string) => void;
-    filterOptions: Record<string, string>[]
+    filterOptions: { label: string; value: string }[]
 }
 
-export default function FilterDropdown({
-    onFilterChange,
-    filterOptions
-}: FilterDropdownProps) {
-
-    const [filter, setFilter] = useState('')
-
-    const handleOnFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const newFilter = e.target.value
-        console.info('New filter:', newFilter)
-        setFilter(newFilter)
-        onFilterChange(newFilter) 
-    }
-
-
+export default function FilterDropdown({ onFilterChange, filterOptions }: FilterDropdownProps) {
     return (
-         <div>
+        <div>
             <label htmlFor='filter'>Filter by: </label>
             <select
                 id='filter'
                 name='filter'
-                onChange={handleOnFilterChange}
-                value={filter}
+                onChange={(e) => onFilterChange(e.target.value)}
+                defaultValue="" // Start with "All Stories"
             >
-                {filterOptions.map((item) => {
-                    return (
-                        <option key={item.value} value={item.value}>
-                            {item.label}
-                        </option>
-                    )
-                })}
+                {filterOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
             </select>
         </div>
     )

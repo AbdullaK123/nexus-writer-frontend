@@ -43,6 +43,12 @@ export default function DashboardToolbar({
                     value={story.title}
                     placeholder='Enter a title...'
                     onChange={handleOnChange}
+                    onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === "Enter") {
+                            e.preventDefault()
+                            handleOnClick()
+                        }
+                    }}
                 />
                 <button
                     className='btn-primary'
