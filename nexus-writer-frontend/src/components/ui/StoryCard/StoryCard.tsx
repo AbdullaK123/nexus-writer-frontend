@@ -28,19 +28,16 @@ export default function StoryCard({
     const router = useRouter()
     const {menu, openMenu, closeMenu} = useContextMenu()
     const containerRef = useRef<HTMLDivElement>(null)
-    const [isInView, elementRef] = useInView(1)
+    const [isInView] = useInView(1)
     const {
         deleteStory,
         isDeleting,
-        isDeleted,
         deleteError
     } = useStories()
     const {
         create,
         createdChapter,
-        isCreating,
-        creationSuccess,
-        creationError
+        creationSuccess
     } = useChapters(id)
 
     useEffect(() => {

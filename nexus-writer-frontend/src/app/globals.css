@@ -115,7 +115,8 @@ h1 {
 input[type="email"],
 input[type="password"],
 input[type="text"],
-textarea {
+textarea,
+select {
   background: var(--background-secondary);
   border: 1px solid var(--accent-primary);
   border-radius: 8px;
@@ -127,7 +128,139 @@ textarea {
     0 0 5px rgba(0, 212, 255, 0.3),
     inset 0 0 5px rgba(0, 212, 255, 0.1);
   transition: all 0.3s ease;
-  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Select-specific styling */
+select {
+  appearance: none; /* Remove default arrow */
+  cursor: pointer;
+  padding-right: 2.5rem; /* Make room for custom arrow */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2300d4ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+  position: relative;
+}
+
+/* Custom dropdown arrow glow effect */
+select::after {
+  content: "";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid var(--accent-primary);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 2px var(--accent-primary));
+}
+
+/* Option styling */
+select option {
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  padding: 0.75rem;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+/* Option hover/focus states (WebKit browsers) */
+select option:hover,
+select option:focus {
+  background: var(--accent-primary);
+  color: var(--background-primary);
+  outline: none;
+}
+
+/* Selected option styling */
+select option:checked {
+  background: var(--accent-primary);
+  color: var(--background-primary);
+  font-weight: 600;
+}
+
+/* Firefox-specific option styling */
+@-moz-document url-prefix() {
+  select option {
+    background: var(--background-primary);
+    color: var(--text-primary);
+  }
+  
+  select option:hover,
+  select option:focus {
+    background: var(--accent-primary);
+    color: var(--background-primary);
+  }
+}
+
+/* Focus states */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+  box-shadow: 
+    0 0 10px var(--accent-primary),
+    0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+/* Hover states */
+select:hover {
+  border-color: var(--accent-secondary);
+  box-shadow: 
+    0 0 8px rgba(0, 212, 255, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  background-color: rgba(0, 212, 255, 0.05);
+}
+
+select:hover::after {
+  border-top-color: var(--accent-secondary);
+  filter: drop-shadow(0 0 4px var(--accent-secondary));
+}
+
+/* Disabled states */
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--background-primary);
+  border-color: var(--text-muted);
+}
+
+select:disabled option {
+  color: var(--text-muted);
+  background: var(--background-primary);
+}
+
+/* Multiple select styling */
+select[multiple] {
+  padding: 0.5rem;
+  background-image: none; /* Remove arrow for multiple select */
+  padding-right: 0.75rem;
+}
+
+select[multiple] option {
+  padding: 0.5rem 0.75rem;
+  margin: 0.125rem 0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+select[multiple] option:hover {
+  background: rgba(0, 212, 255, 0.2);
+}
+
+select[multiple] option:checked {
+  background: var(--accent-primary);
+  color: var(--background-primary);
 }
 
 input:focus,

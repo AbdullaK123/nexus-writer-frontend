@@ -5,12 +5,9 @@ import { useAuth } from '@/app/hooks/useAuth';
 import { useStories } from "@/app/hooks/useStories"
 import StoryCard from "@/components/ui/StoryCard/StoryCard"
 import { StoryCardProps } from "@/app/types/interfaces"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Dashboard() {
-
-  
-
     const { user } = useAuth()
 
     const {
@@ -22,13 +19,33 @@ export default function Dashboard() {
          isCreating
     } = useStories()
 
-    const [filteredStories, setFilteredStories] = useState<StoryCardProps[]>(stories)
+    const [filteredStories, setFilteredStories] = useState<StoryCardProps[]>([])
+
+    // Update filtered stories when stories data changes
+    useEffect(() => {
+        if (stories) {
+            setFilteredStories(stories)
+        }
+    }, [stories])
 
     const onFilterChange = (filter: string) => {
-        setFilteredStories((prev) => {
-            console.log(prev)
-            return filter ? prev.filter((props) => props.status === filter) : stories
-        })
+        console.log('Filter changed to:', filter)
+        console.log('Available stories:', JSON.stringify(stories))
+        
+        if (!stories) {
+            console.log('No stories available')
+            return
+        }
+
+        if (!filter || filter === '') {
+            // Show all stories
+            setFilteredStories(stories)
+        } else {
+            // Filter by status
+            const filtered = stories.filter((story) => story.status === filter)
+            console.log('Filtered stories:', JSON.stringify(filtered))
+            setFilteredStories(filtered)
+        }
     }
 
     return (
@@ -51,7 +68,7 @@ export default function Dashboard() {
                         )
                     })
                 }
-                {isSuccess && stories.length === 0 && (
+                {isSuccess && stories && stories.length === 0 && (
                      <div className={styles['empty-state']}>
                         <div className={styles['empty-state-icon']}>🚀</div>
                         <h2>Ready to begin your first story?</h2>
@@ -61,6 +78,13 @@ export default function Dashboard() {
                                 Start with a compelling title - you can always change it later
                             </div>
                         </div>
+                    </div>
+                )}
+                {isSuccess && stories && stories.length > 0 && filteredStories.length === 0 && (
+                    <div className={styles['empty-state']}>
+                        <div className={styles['empty-state-icon']}>🔍</div>
+                        <h2>No stories match your filter</h2>
+                        <p>Try selecting a different status or clear the filter to see all stories.</p>
                     </div>
                 )}
             </div>

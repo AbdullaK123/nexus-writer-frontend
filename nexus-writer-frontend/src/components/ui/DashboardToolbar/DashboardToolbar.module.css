@@ -8,12 +8,6 @@
     width: 100%;
     max-width: 1200px;
     min-height: 60px;
-    /* background: linear-gradient(var(--background-primary), var(--background-secondary));
-    border: 1px solid var(--accent-primary);
-    box-shadow: 
-        0 0 5px var(--accent-primary),     
-        0 0 10px var(--accent-secondary),   
-        inset 0 1px 0 rgba(255,255,255,0.1); */
     gap: 1rem;
 }
 
