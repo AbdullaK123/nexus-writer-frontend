@@ -14,12 +14,6 @@
     gap: 1rem;
     padding: 2rem;
     border-radius: 16px;
-    /* border: 1px solid var(--accent-primary);
-    background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
-    box-shadow: 
-        0 0 5px var(--accent-primary),     
-        0 0 10px var(--accent-secondary),   
-        inset 0 1px 0 rgba(255,255,255,0.1); */
 }
 
 .chapter-title {

@@ -56,7 +56,7 @@ export default function EditableStatus({
         document.addEventListener('mousedown', handleClickOutside)
 
         return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
+    }, [isEdititing])
 
     const getStatusSpan = (status: string) => {
         const baseClass = styles['status-badge'];
