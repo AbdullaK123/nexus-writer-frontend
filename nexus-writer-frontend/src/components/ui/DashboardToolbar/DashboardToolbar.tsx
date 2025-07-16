@@ -6,7 +6,7 @@ import styles from './DashboardToolbar.module.css'
 import FilterDropdown from '../FilterDropdown/FilterDropdown';
 
 const filterOptions = [
-    {label: 'All Stories', value: ''}, // Add "All" option
+    {label: 'All Stories', value: ''},
     {label: 'Ongoing', value: 'Ongoing'},
     {label: 'On Hiatus', value: 'On Hiatus'},
     {label: 'Complete', value: 'Complete'}
@@ -35,6 +35,10 @@ export default function DashboardToolbar({
     return (
         <div className={styles.toolbar}>
             <h3>{`Hello ${username}`}</h3>
+             <FilterDropdown 
+                onFilterChange={onFilterChange}
+                filterOptions={filterOptions}
+            />
             <div className={styles['story-create-bar-container']}>
                 <input
                     id="title"
@@ -57,10 +61,6 @@ export default function DashboardToolbar({
                     Create Story
                 </button>
             </div>
-            <FilterDropdown 
-                onFilterChange={onFilterChange}
-                filterOptions={filterOptions}
-            />
         </div>
     )
 }

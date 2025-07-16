@@ -11,13 +11,14 @@ import {
     getChapterStatus
  } from "@/app/types/interfaces";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 export default function Page() {
     const router = useRouter()
     const params = useParams()
     const storyId = params?.id as string
+    const [filter, setFilter] = useState('')
 
     const {
         chapters,
@@ -79,6 +80,14 @@ export default function Page() {
         }
     })
 
+    const getChaptersToShow = () => {
+        if (!chapters) return []
+        if (!filter) return chaptersWithStatusAndNumbers
+        return chaptersWithStatusAndNumbers.filter((chapter) => chapter.status === filter)
+    }
+
+    const chaptersToShow = getChaptersToShow()
+
     const storyInfo: StoryInfoCardProps = {
         status: chapters?.storyStatus || "Ongoing",
         totalChapters: numChapters,
@@ -101,13 +110,14 @@ export default function Page() {
                 storyId={storyId} 
                 title={chapters.storyTitle} 
                 onCreateChapter={onCreateChapter}
+                onFilterChange={setFilter}
                 isCreating={isCreating}
                 creationSuccess={creationSuccess}
             />
             <div className={styles['story-content-layout']}>
                 <StoryDetailSidebar
                     storyInfo={storyInfo}
-                    chapters={chaptersWithStatusAndNumbers}
+                    chapters={chaptersToShow}
                 />
                 {isLoadingChapter ? (
                     <div className={styles['centered']}>

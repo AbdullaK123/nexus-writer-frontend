@@ -1,14 +1,24 @@
 'use client'
 import styles from './StoryDetailHeader.module.css'
-import { StoryDetailHeaderProps, CreateChapterRequest } from '@/app/types/interfaces'
+import { StoryDetailHeaderProps } from '@/app/types/interfaces'
 import { useRouter } from 'next/navigation'
-import { useChapters } from '@/app/hooks/useChapters'
 import React, { useState, useEffect } from 'react'
+import FilterDropdown from '../FilterDropdown/FilterDropdown'
+
+
+const filterOptions = [
+    {label: 'All Chapters', value: ''},
+    {label: 'Draft', value: 'draft'},
+    {label: 'Outline', value: 'outline'},
+    {label: 'Published', value: 'published'}
+]
+
 
 export default function StoryDetailHeader({
-     storyId, 
+    //  storyId, 
      title, 
      onCreateChapter, 
+     onFilterChange,
      isCreating, 
      creationSuccess
  } : StoryDetailHeaderProps) {
@@ -44,6 +54,10 @@ export default function StoryDetailHeader({
                 </button>
                 <h2>{title}</h2>
             </div>
+            <FilterDropdown 
+                onFilterChange={onFilterChange}
+                filterOptions={filterOptions}
+            />
             <div className={styles['chapter-create-container']}>
                 <input 
                      name="title"

@@ -78,6 +78,7 @@ export interface StoryDetailHeaderProps {
   title: string;
   storyId: string; 
   onCreateChapter: (chapterInfo: CreateChapterRequest) => void;
+  onFilterChange: (filter: string) => void;
   isCreating: boolean,
   creationSuccess: boolean
 }
