@@ -351,7 +351,7 @@
     background-color: rgba(0, 212, 255, 0.05);
 }
 
-.bold-active {
+.toolbar-button:focus {
   color: var(--accent-primary);
   font-weight: 700;
 }

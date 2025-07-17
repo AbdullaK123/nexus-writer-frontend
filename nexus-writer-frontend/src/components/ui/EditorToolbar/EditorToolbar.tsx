@@ -9,23 +9,16 @@ const sciFiFonts = [
     { name: 'Inter', label: 'Inter (Default)' },
     { name: 'Orbitron', label: 'Orbitron (Futuristic)' },
     { name: 'Exo 2', label: 'Exo 2 (Modern)' },
-    { name: 'Rajdhani', label: 'Rajdhani (Geometric)' },
-    { name: 'Saira', label: 'Saira (Technical)' },
-    { name: 'Space Mono', label: 'Space Mono (Terminal)' },
     { name: 'JetBrains Mono', label: 'JetBrains Mono (Code)' }
 ]
 
 export default function EditorToolbar() {
     const [editor] = useLexicalComposerContext()
     const [fontSize, setFontSize] = useState(16)
-    const [font, setFont] = useState('Inter (Default)')
-    const [isBold, setIsBold] = useState(false)
-    const [isItalic, setIsItalic] = useState(false)
 
     const handleOnFontChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const fontLabel = e.currentTarget.value;
         const newFont = sciFiFonts.filter((font) => font.label === fontLabel)[0].name
-        setFont(newFont)
 
         editor.update(() => {
             const selection = $getSelection()
@@ -49,38 +42,6 @@ export default function EditorToolbar() {
                 })
             }
         })
-    }
-
-    const handleOnFontBold = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setIsBold(prevIsBold => !prevIsBold)
-
-        editor.update(() => {
-            const selection = $getSelection()
-            if ($isRangeSelection(selection)) {
-                $patchStyleText(selection, {
-                    'font-weight': isBold ? '700' : 'normal',
-                    'color': isBold ? '#00ffff': '#ffffff',
-                    'text-shadow': isBold ? '0 0 3px #00ffff': null
-                })
-            }
-        })
-
-    }
-
-    const handleOnFontItalic = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setIsItalic(prevIsItalic => !prevIsItalic)
-
-        editor.update(() => {
-            const selection = $getSelection()
-            if ($isRangeSelection(selection)) {
-                $patchStyleText(selection, {
-                    'font-style': isItalic ? 'italic' : 'normal',
-                    'color': isItalic ? '#00ff41': '#ffffff',
-                    'text-shadow': isItalic ? '0 0 2px #00ff41': null
-                })
-            }
-        })
-
     }
 
     return (
@@ -116,22 +77,6 @@ export default function EditorToolbar() {
                         )
                     })}
                 </select>
-            </div>
-            <div className={styles['toolbar-element']}>
-                <button 
-                    className={`${styles['toolbar-button']} ${!isBold ? styles['bold-active'] : undefined}`}
-                    onClick={handleOnFontBold}
-                >
-                    B
-                </button>
-            </div>
-            <div className={styles['toolbar-element']}>
-                <button 
-                    className={`${styles['toolbar-button']} ${!isItalic ? styles['italic-active'] : undefined}`}
-                    onClick={handleOnFontItalic}
-                >
-                    I
-                </button>
             </div>
         </div>
     )

@@ -1,10 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useChapters } from "@/app/hooks/useChapters";
-import { 
-    KEY_DOWN_COMMAND,
-    COMMAND_PRIORITY_HIGH
-} from "lexical";
 
 interface AutoSavePluginProps {
     storyId: string;
@@ -17,7 +13,6 @@ export default function AutoSavePlugin({ storyId, chapterId, intervalMs = 2000 }
     const lastContentRef = useRef<string>('')
     const {
         update,
-        isUpdating,
         updateError,
         updateSuccess
     } = useChapters(storyId);

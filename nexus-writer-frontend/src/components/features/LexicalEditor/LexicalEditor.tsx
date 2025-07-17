@@ -4,20 +4,14 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
-import { TRANSFORMERS } from '@lexical/markdown'
+import { HEADING } from '@lexical/markdown'
 import { HeadingNode } from '@lexical/rich-text'
-import { ListNode, ListItemNode } from '@lexical/list'
-import { CodeNode } from '@lexical/code'
-import { QuoteNode } from '@lexical/rich-text'
-import { AutoLinkNode, LinkNode } from '@lexical/link'
-import { ListPlugin } from '@lexical/react/LexicalListPlugin'
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin'
-import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin'
 import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical'
 import styles from './LexicalEditor.module.css'
 import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
 import AutoSavePlugin from './plugins/AutoSavePlugin'
+import LiveWordCountPlugin from './plugins/LiveWordCountPlugin'
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -31,23 +25,10 @@ const sciFiTheme = {
   },
   text: {
     bold: 'lexical-bold',
-    italic: 'lexical-italic',
-    strikethrough: 'lexical-strikethrough',
-    underline: 'lexical-underline',
-    code: 'lexical-inline-code'
+    italic: 'lexical-italic'
   },
   paragraph: 'lexical-paragraph',
-  quote: 'lexical-quote',
-  list: {
-    nested: {
-      listitem: 'lexical-nested-listitem'
-    },
-    ol: 'lexical-list-ol',
-    ul: 'lexical-list-ul',
-    listitem: 'lexical-listitem'
-  },
-  link: 'lexical-link',
-  code: 'lexical-code'
+  quote: 'lexical-quote'
 }
 
 interface LexicalEditorProps {
@@ -68,7 +49,7 @@ function createInitialState(content?: string) {
         }
 
     } catch (error) {
-        console.error('Failed to parse content as lexical json')
+        console.error(`Failed to parse content as lexical json: ${error}`)
     }
 
    return () => {
@@ -93,12 +74,6 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
         theme: sciFiTheme,
         nodes: [
             HeadingNode,
-            ListNode,
-            ListItemNode,
-            QuoteNode,
-            CodeNode,
-            AutoLinkNode,
-            LinkNode
         ],
         onError: (error: Error) => {
             console.error('Lexical Editor Error:', error)
@@ -111,6 +86,7 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
             <LexicalComposer initialConfig={initialConfig}>
                 <EditorToolbar />
                 <div className={styles['editor-shell']}>
+                    <LiveWordCountPlugin />
                     <RichTextPlugin 
                         contentEditable={
                             <ContentEditable 
@@ -118,17 +94,12 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
                             />
                         }
                         placeholder={
-                            <div className={styles['editor-placeholder']}>
-                                Begin your sci-fi story...
-                            </div>
+                            null
                         }
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     <HistoryPlugin />
-                    <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                    <ListPlugin />
-                    <LinkPlugin />
-                    <CheckListPlugin />
+                    <MarkdownShortcutPlugin transformers={[HEADING]} />
                     <IndentOnNewLinePlugin />
                     <AutoSavePlugin 
                         chapterId={chapterId}
