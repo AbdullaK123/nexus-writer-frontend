@@ -39,7 +39,7 @@ export function useStories() {
     })
 
     // single story fetch
-    const getStory = (storyId: string) => useQuery({
+    const useStory = (storyId: string) => useQuery({
         queryKey: ['stories', storyId],
         queryFn: () => fetch(`${API_URL}/stories/${storyId}`, {
             credentials: 'include'
@@ -100,7 +100,7 @@ export function useStories() {
     // return everything
     return {
         stories,
-        getStory,
+        useStory,
         create: createStoryMutation.mutate,
         update: updateStoryMutation.mutate,
         updatedStory: updateStoryMutation.data,

@@ -24,7 +24,7 @@ export default function AuthWrapper({
                 router.push(redirectTo)
             }
         }
-    }, [user, isLoading, isError, router, redirectTo])
+    }, [user, isLoading, isError, router, redirectTo, requireAuth])
    
 
     // if loading show the loading state

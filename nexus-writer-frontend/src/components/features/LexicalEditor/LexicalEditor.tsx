@@ -25,10 +25,9 @@ const sciFiTheme = {
   },
   text: {
     bold: 'lexical-bold',
-    italic: 'lexical-italic'
+    italic: 'lexical-italic',
   },
-  paragraph: 'lexical-paragraph',
-  quote: 'lexical-quote'
+  paragraph: 'lexical-paragraph'
 }
 
 interface LexicalEditorProps {
@@ -73,7 +72,7 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
         namespace: 'SciFiChapterEditor',
         theme: sciFiTheme,
         nodes: [
-            HeadingNode,
+            HeadingNode
         ],
         onError: (error: Error) => {
             console.error('Lexical Editor Error:', error)

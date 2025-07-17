@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import {
-    $createTextNode,
+    $createTabNode,
     $getSelection,
     $isRangeSelection,
     COMMAND_PRIORITY_HIGH,
@@ -13,7 +13,7 @@ export default function IndentOnNewLinePlugin() {
 
     const [editor] = useLexicalComposerContext();
 
-    const handlerFn = (e: KeyboardEvent | null) => {
+    const handlerFn = useCallback((e: KeyboardEvent | null) => {
 
         /* Ignore Shift+Enter (soft break) */
         if (e?.shiftKey) return false;
@@ -30,21 +30,17 @@ export default function IndentOnNewLinePlugin() {
 
             if ($isRangeSelection(selection) && selection.isCollapsed()) {
 
-                const indentText = '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'
-                const indentNode = $createTextNode(indentText);
+                const indentNode = $createTabNode()
                 selection.insertNodes([indentNode]);
 
                 /* 3. move caret just after the indent */
-                const offset = indentText.length;   // = 2
-                selection.setTextNodeRange(
-                    indentNode, offset,
-                    indentNode, offset
-                );
+                selection.anchor.set(selection.anchor.key, selection.anchor.offset, 'text');
+                selection.focus.set(selection.focus.key, selection.focus.offset, 'text');
             }
         });
 
         return true;  // tell Lexical we handled this Enter
-    };
+    }, [editor])
 
     useEffect(() => {
         return editor.registerCommand(
@@ -52,7 +48,7 @@ export default function IndentOnNewLinePlugin() {
             handlerFn,
             COMMAND_PRIORITY_HIGH
         );
-    }, [editor]);
+    }, [editor, handlerFn]);
 
     return null;
 }
