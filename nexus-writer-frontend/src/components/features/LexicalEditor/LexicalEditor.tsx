@@ -12,6 +12,7 @@ import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
 import AutoSavePlugin from './plugins/AutoSavePlugin'
 import LiveWordCountPlugin from './plugins/LiveWordCountPlugin'
+import TypingDetectorPlugin from './plugins/TypingDetectorPlugin'
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -103,6 +104,11 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
                     <AutoSavePlugin 
                         chapterId={chapterId}
                         storyId={storyId}
+                    />
+                    <TypingDetectorPlugin 
+                        onStart={() => console.info("I am typing...")}
+                        onStop={() => console.info("I am not typing anymore...")}
+                        delay={500}
                     />
                 </div>
             </LexicalComposer>

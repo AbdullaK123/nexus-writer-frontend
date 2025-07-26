@@ -20,7 +20,6 @@ export default function LiveWordCountPlugin() {
         setWordCount(getWordCount(editorContent))
     })
 
-
     return (
         <div className={styles['flex-end-container']}>
             <h4>

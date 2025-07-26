@@ -4,10 +4,12 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/app/hooks/useAuth';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
 
     const { user, logout, isLoggingOut } = useAuth() 
+    const path = usePathname()
 
     return (
         <nav className={styles.navbar}>
@@ -23,10 +25,10 @@ export default function Navbar() {
             </div>
             {user ? (
                 <div className={styles['links-container']}>
-                    <span className={styles['navbar-link']}>
+                    <span className={styles['welcome-text']}>
                         Welcome, {user.username}
                     </span>
-                    <Link className={styles['navbar-link']} href={'/dashboard'}>
+                    <Link className={`${styles['navbar-link']} ${(path === '/dashboard') ? styles['active'] : undefined}`} href={'/dashboard'}>
                         Dashboard
                     </Link>
                     <a
@@ -38,8 +40,8 @@ export default function Navbar() {
                 </div>
             ) : (
                 <div className={styles['links-container']}>
-                    <Link className={styles['navbar-link']} href={'/login'}>Login</Link>
-                    <Link className={styles['navbar-link']} href={'/register'}>Register</Link>
+                    <Link className={`${styles['navbar-link']} ${(path === '/login') ? styles['active'] : undefined}`} href={'/login'}>Login</Link>
+                    <Link className={`${styles['navbar-link']} ${(path === '/register') ? styles['active'] : undefined}`} href={'/register'}>Register</Link>
                 </div>
             )}
         </nav>

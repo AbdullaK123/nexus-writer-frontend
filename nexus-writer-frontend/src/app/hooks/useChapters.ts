@@ -1,4 +1,3 @@
-// app/hooks/useChapters.ts - OPTIMIZED WITH SMART CACHING
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCacheInvalidation } from './useCacheInvalidation'
 import { 
@@ -15,8 +14,7 @@ export function useChapters(storyId: string) {
     const queryClient = useQueryClient()
     const { 
         invalidateChapter, 
-        optimisticChapterUpdate, 
-        prefetchAdjacentChapters 
+        optimisticChapterUpdate
     } = useCacheInvalidation()
 
     // ========================================

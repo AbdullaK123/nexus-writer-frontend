@@ -61,12 +61,22 @@
         0 0 7.5px var(--accent-primary);
 }
 
+.welcome-text {
+    text-decoration: none;
+    color: var(--accent-primary);
+    font-weight: 600;
+    text-shadow: 
+        0 0 2.5px var(--accent-primary),
+        0 0 5px var(--accent-primary),
+        0 0 7.5px var(--accent-primary);
+}
+
 .navbar-link:hover {
     transform: translateY(-3px);
     transition: all 0.1s ease-in-out
 }
 
-.navbar-link:active {
+.active {
   color: var(--success); /* #00ff41 */
   text-shadow: 
     0 0 8px var(--success),
