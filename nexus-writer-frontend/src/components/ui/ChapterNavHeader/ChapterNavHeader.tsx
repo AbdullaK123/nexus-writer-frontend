@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { ChapterNavHeaderProps } from "@/app/types/interfaces";
+import { ChapterNavHeaderProps } from "@/app/types/misc";
 import styles from './ChapterNavHeader.module.css'
 import { useChapters } from "@/app/hooks/useChapters";
 import React, { useEffect, useState, useCallback } from "react";

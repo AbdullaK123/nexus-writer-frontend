@@ -4,7 +4,7 @@ import styles from '@/app/(app)/AppLayout.module.css'
 import { useAuth } from '@/app/hooks/useAuth';
 import { useStories } from "@/app/hooks/useStories"
 import StoryCard from "@/components/ui/StoryCard/StoryCard"
-import { StoryCardProps } from "@/app/types/interfaces"
+import { StoryCardProps } from "@/app/types/components"
 import { useState } from "react";
 
 export default function Dashboard() {

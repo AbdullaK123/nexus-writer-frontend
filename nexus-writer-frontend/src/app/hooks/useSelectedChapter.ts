@@ -1,10 +1,11 @@
 import { useState, useCallback } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { ChapterPreviewProps, transformChapterResponse } from "../types/interfaces"
+import { ChapterPreviewProps, transformChapterResponse } from "@/app/types"
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function useSelectedChapter(storyId: string) {
     const [selectedChapter, setSelectedChapter] = useState<ChapterPreviewProps>()
     const [isLoadingChapter, setIsLoadingChapter] = useState(false)
@@ -26,7 +27,10 @@ export function useSelectedChapter(storyId: string) {
             })
 
             if (apiResponse) {
-                setSelectedChapter(transformChapterResponse(apiResponse))
+                setSelectedChapter({
+                    ...transformChapterResponse(apiResponse),
+                    onStatusUpdate: () => {} 
+                })
             }
         } catch (error) {
             console.error('Failed to fetch chapter:', error)

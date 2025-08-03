@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
-import { DashboardToolBarProps } from '@/app/types/interfaces';
-import { StoryCreateRequest } from '@/app/types/stories';
+import { DashboardToolBarProps } from '@/app/types/misc';
+import { StoryCreateRequest } from '@/app/types/story';
 import styles from './DashboardToolbar.module.css'
 import FilterDropdown from '../FilterDropdown/FilterDropdown';
 

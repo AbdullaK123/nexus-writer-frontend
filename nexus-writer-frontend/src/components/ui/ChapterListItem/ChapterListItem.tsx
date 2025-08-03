@@ -1,4 +1,4 @@
-import { ChapterListItemProps } from "@/app/types/interfaces";
+import { ChapterListItemProps } from "@/app/types/misc";
 import styles from './ChapterListItem.module.css'
 import ContextMenu from "../ContextMenu/ContextMenu";
 import { useContextMenu } from "@/app/hooks/useContextMenu";

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { StoryCreateRequest, StoryUpdateRequest } from "../types/stories"
-import { ApiStory } from "../types/interfaces"
+import { StoryCreateRequest, StoryUpdateRequest } from "../types/story"
+import { ApiStory } from "../types/misc"
 
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN

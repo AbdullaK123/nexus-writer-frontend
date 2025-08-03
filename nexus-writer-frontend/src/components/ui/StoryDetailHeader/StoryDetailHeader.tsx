@@ -1,6 +1,6 @@
 'use client'
 import styles from './StoryDetailHeader.module.css'
-import { StoryDetailHeaderProps } from '@/app/types/interfaces'
+import { StoryDetailHeaderProps } from '@/app/types/misc'
 import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import FilterDropdown from '../FilterDropdown/FilterDropdown'

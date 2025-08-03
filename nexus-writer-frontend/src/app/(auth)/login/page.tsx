@@ -8,7 +8,7 @@ import Image from 'next/image'
 export default function LoginPage() {
 
     const [credentials, setCredentials] = useState({email: "", password: ""});
-    const {user, login, isLoggingIn, loginError, loginSuccess} = useAuth()
+    const {login, isLoggingIn, loginError, loginSuccess} = useAuth()
     const router = useRouter()
 
     useEffect(() => {
@@ -30,7 +30,6 @@ export default function LoginPage() {
         })
     }
 
-    //TODO: we'll worry about this later
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         login(credentials)

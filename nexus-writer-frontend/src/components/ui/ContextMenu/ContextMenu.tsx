@@ -1,4 +1,4 @@
-import { ChapterContextMenuProps } from "@/app/types/interfaces";
+import { ChapterContextMenuProps } from "@/app/types/misc";
 
 export default function ChapterContextMenu( {
     x,

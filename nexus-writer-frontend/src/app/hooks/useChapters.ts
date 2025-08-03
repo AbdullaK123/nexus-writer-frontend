@@ -6,7 +6,7 @@ import {
     ApiChapterListResponse,
     ApiChapterContentResponse,
     UpdateMutationArgs
-} from '../types/interfaces'
+} from '../types/misc'
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 

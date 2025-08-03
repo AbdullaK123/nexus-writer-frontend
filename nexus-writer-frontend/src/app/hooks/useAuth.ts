@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { credentials, registrationInfo } from "../types/auth";
-
+import { credentials, registrationInfo } from "@/app/types"
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN;
 
 

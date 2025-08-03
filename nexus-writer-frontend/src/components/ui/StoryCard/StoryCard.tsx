@@ -1,5 +1,5 @@
 'use client'
-import { StoryCardProps } from "@/app/types/interfaces";
+import { StoryCardProps } from "@/app/types/misc";
 import styles from './StoryCard.module.css'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from "next/navigation";

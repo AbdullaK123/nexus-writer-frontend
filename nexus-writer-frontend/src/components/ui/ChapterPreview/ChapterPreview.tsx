@@ -1,6 +1,6 @@
 'use client'
 import styles from './ChapterPreview.module.css'
-import { ChapterPreviewProps } from '@/app/types/interfaces'
+import { ChapterPreviewProps } from '@/app/types/misc'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useChapters } from '@/app/hooks/useChapters'

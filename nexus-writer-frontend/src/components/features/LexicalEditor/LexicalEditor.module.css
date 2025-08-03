@@ -10,27 +10,27 @@
 .editor-shell {
   width: 80vw;
   position: relative;
-  border: 1px solid var(--accent-primary);
+  /* border: 1px solid var(--accent-primary); */
   border-radius: 16px;
-  box-shadow: 
+  /* box-shadow: 
     0 0 5px var(--accent-primary),
     0 0 15px var(--accent-secondary),
     inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 0 20px rgba(0, 212, 255, 0.05);
+    inset 0 0 20px rgba(0, 212, 255, 0.05); */
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-.editor-shell:focus-within {
+/* .editor-shell:focus-within {
   border-color: var(--accent-secondary);
   box-shadow: 
     0 0 10px var(--accent-primary),
     0 0 25px rgba(0, 212, 255, 0.4),
     inset 0 1px 0 rgba(255,255,255,0.15),
     inset 0 0 30px rgba(0, 212, 255, 0.08);
-}
+} */
 
-.editor-shell::before {
+/* .editor-shell::before {
   content: "";
   position: absolute;
   top: 0;
@@ -44,29 +44,31 @@
   );
   animation: shimmer 3s ease-in-out infinite;
   z-index: 1;
-}
+} */
 
 .editor-input {
   min-height: 500px;
-  padding: 2.5rem;
+  padding: 0rem;
   font-family: var(--font-body);
   font-size: 1.1rem;
   line-height: 1.8;
   color: var(--text-primary);
   background: transparent;
-  border: none;
+  padding: 3rem;
   outline: none;
   resize: none;
   caret-color: var(--accent-primary);
   word-wrap: break-word;
   overflow-wrap: break-word;
+  height: auto;
 }
 
 .editor-placeholder {
   position: absolute;
-  top: 2.5rem;
-  left: 2.5rem;
+  top: 2rem;
+  left: 1rem;
   color: var(--text-muted);
+  border: 1px solid var(--accent-primary);
   font-style: italic;
   pointer-events: none;
   font-size: 1.1rem;

@@ -47,7 +47,11 @@ function useEditorListener(editor: LexicalEditor, callback: Callback) {
     }, [editor, callback])
 }
 
-export default function TypingDetectorPlugin({ onStart, onStop, delay }: TypingDetectorPluginProps) {
+export default function TypingDetectorPlugin({ 
+    onStart, 
+    onStop, 
+    delay
+ }: TypingDetectorPluginProps) {
     const [editor] = useLexicalComposerContext()
     const { handleOnTyping, scheduleStop } = useTypingState(onStart, onStop)
 

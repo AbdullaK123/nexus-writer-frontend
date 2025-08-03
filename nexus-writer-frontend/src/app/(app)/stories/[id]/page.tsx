@@ -5,11 +5,8 @@ import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
 import { useChapters } from "@/app/hooks/useChapters";
 import { useSelectedChapter } from "@/app/hooks/useSelectedChapter";
-import { 
-    CreateChapterRequest,
-    StoryInfoCardProps, 
-    getChapterStatus
- } from "@/app/types/interfaces";
+import { StoryInfoCardProps } from "@/app/types/components";
+import { getChapterStatus, CreateChapterRequest } from "@/app/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -69,16 +66,17 @@ export default function Page() {
 
     const numChapters = chapters.chapters.length 
     const wordCount = chapters.chapters.reduce((acc, current) => acc + current.wordCount, 0) 
-    const chaptersWithStatusAndNumbers = chapters.chapters.map((chapter, index) => {
-        return {
-            ...chapter,
-            storyId: storyId,
-            chapterNumber: index + 1,
-            status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-            handleOnClick: () => selectChapter(chapter.id),
-            handleClearSelection: clearSelection
-        }
-    })
+    const chaptersWithStatusAndNumbers = 
+        chapters.chapters.map((chapter, index) => {
+            return {
+                ...chapter,
+                storyId: storyId,
+                chapterNumber: index + 1,
+                status: getChapterStatus(chapter.published, chapter.wordCount > 0),
+                handleOnClick: () => selectChapter(chapter.id),
+                handleClearSelection: clearSelection
+            }
+        })
 
     const getChaptersToShow = () => {
         if (!chapters) return []

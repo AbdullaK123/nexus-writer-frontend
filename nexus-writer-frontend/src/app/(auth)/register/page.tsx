@@ -66,6 +66,7 @@ export default function RegisterPage() {
 
     useEffect(() => {
         if (registerSuccess) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const {confirmPassword, username, ...credentials} = userInfo
             login(credentials)
             setUserInfo({
@@ -75,7 +76,8 @@ export default function RegisterPage() {
                 confirmPassword: ""
             })
         }
-    }, [registerSuccess])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [login, registerSuccess])
     
     const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
 
@@ -113,6 +115,7 @@ export default function RegisterPage() {
             return 
         }
         
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {confirmPassword, ...registrationData} = userInfo
         register(registrationData)
     }
