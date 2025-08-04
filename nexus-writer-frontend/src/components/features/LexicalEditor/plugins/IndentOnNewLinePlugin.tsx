@@ -1,13 +1,14 @@
 import { useEffect, useCallback } from 'react';
 import {
-    $createTabNode,
+    $createTextNode,
     $getSelection,
     $isRangeSelection,
     COMMAND_PRIORITY_HIGH,
     INSERT_PARAGRAPH_COMMAND,
-    KEY_ENTER_COMMAND,
+    KEY_ENTER_COMMAND
 } from 'lexical';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+
 
 export default function IndentOnNewLinePlugin() {
 
@@ -26,11 +27,11 @@ export default function IndentOnNewLinePlugin() {
             editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND, undefined);
 
             /* 2. insert indent into the new paragraph */
-            const selection = $getSelection();
+            const selection = $getSelection()
 
             if ($isRangeSelection(selection) && selection.isCollapsed()) {
 
-                const indentNode = $createTabNode()
+                const indentNode = $createTextNode('\u00A0\u00A0\u00A0\u00A0')
                 selection.insertNodes([indentNode]);
 
                 /* 3. move caret just after the indent */
