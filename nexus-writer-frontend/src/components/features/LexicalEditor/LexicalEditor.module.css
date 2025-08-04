@@ -10,57 +10,35 @@
 .editor-shell {
   width: 80vw;
   position: relative;
-  /* border: 1px solid var(--accent-primary); */
   border-radius: 16px;
-  /* box-shadow: 
-    0 0 5px var(--accent-primary),
-    0 0 15px var(--accent-secondary),
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 0 20px rgba(0, 212, 255, 0.05); */
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-/* .editor-shell:focus-within {
-  border-color: var(--accent-secondary);
-  box-shadow: 
-    0 0 10px var(--accent-primary),
-    0 0 25px rgba(0, 212, 255, 0.4),
-    inset 0 1px 0 rgba(255,255,255,0.15),
-    inset 0 0 30px rgba(0, 212, 255, 0.08);
-} */
-
-/* .editor-shell::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    var(--accent-primary), 
-    var(--accent-secondary), 
-    var(--accent-primary)
-  );
-  animation: shimmer 3s ease-in-out infinite;
-  z-index: 1;
-} */
-
 .editor-input {
   min-height: 500px;
-  padding: 0rem;
-  font-family: var(--font-body);
-  font-size: 1.1rem;
+  padding: 3rem;
+  font-family: 'Orbitron', sans-serif; /* Changed from var(--font-body) */
+  font-size: 36px; /* Fixed font size */
   line-height: 1.8;
   color: var(--text-primary);
   background: transparent;
-  padding: 3rem;
   outline: none;
   resize: none;
   caret-color: var(--accent-primary);
   word-wrap: break-word;
   overflow-wrap: break-word;
   height: auto;
+  font-weight: 400; /* Add this for better readability */
+  letter-spacing: 0.02em; /* Slight letter spacing for sci-fi feel */
+}
+
+/* Add this new CSS class for root styling */
+.lexical-root {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  line-height: 1.8;
+  color: var(--text-primary);
 }
 
 .editor-placeholder {

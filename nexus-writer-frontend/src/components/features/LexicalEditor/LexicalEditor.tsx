@@ -4,15 +4,30 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
-import { HEADING } from '@lexical/markdown'
-import { HeadingNode } from '@lexical/rich-text'
-import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical'
+import { BOLD_STAR, BOLD_UNDERSCORE, CODE, HEADING, ITALIC_STAR,  LINK, QUOTE, STRIKETHROUGH, UNORDERED_LIST } from '@lexical/markdown'
+import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import styles from './LexicalEditor.module.css'
-import EditorToolbar from '@/components/ui/EditorToolbar/EditorToolbar'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
 import AutoSavePlugin from './plugins/AutoSavePlugin'
 import LiveWordCountPlugin from './plugins/LiveWordCountPlugin'
 import TypingDetectorPlugin from './plugins/TypingDetectorPlugin'
+import { CodeHighlightNode, CodeNode } from '@lexical/code'
+import { ListItemNode, ListNode } from '@lexical/list'
+import { LinkNode } from '@lexical/link'
+import MarkdownPastePlugin from './plugins/MarkdownPastePlugin'
+
+const MY_TRANSFORMERS = 
+    [
+        HEADING, 
+        QUOTE, 
+        CODE,
+        ITALIC_STAR,
+        BOLD_STAR,
+        UNORDERED_LIST,
+        LINK,
+        STRIKETHROUGH,
+        BOLD_UNDERSCORE
+    ]
 
 // Sci-fi themed editor configuration
 const sciFiTheme = {
@@ -28,7 +43,15 @@ const sciFiTheme = {
     bold: 'lexical-bold',
     italic: 'lexical-italic',
   },
-  paragraph: 'lexical-paragraph'
+  list: {
+    nested: {
+        listitem: 'lexical-listitem'
+    },
+    ul: 'lexical-list-ul'
+  },
+  link: 'lexical-link',
+  paragraph: 'lexical-paragraph',
+  root: 'lexical-root'
 }
 
 interface LexicalEditorProps {
@@ -52,20 +75,6 @@ function createInitialState(content?: string) {
         console.error(`Failed to parse content as lexical json: ${error}`)
     }
 
-   return () => {
-    const root = $getRoot()
-    const paragraphs = content.split('\n\n')
-    
-    paragraphs.forEach(paragraphText => {
-      if (paragraphText.trim()) {
-        const paragraph = $createParagraphNode()
-        const textNode = $createTextNode(paragraphText.trim())
-        paragraph.append(textNode)
-        root.append(paragraph)
-      }
-    })
-  }
-
 }
 
 export default function LexicalEditor({ initialContent, chapterId, storyId }: LexicalEditorProps) {
@@ -73,7 +82,13 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
         namespace: 'SciFiChapterEditor',
         theme: sciFiTheme,
         nodes: [
-            HeadingNode
+            HeadingNode,
+            QuoteNode,
+            CodeNode,
+            CodeHighlightNode,
+            ListNode,
+            ListItemNode,
+            LinkNode
         ],
         onError: (error: Error) => {
             console.error('Lexical Editor Error:', error)
@@ -84,7 +99,6 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
     return (
         <div className={styles['lexical-editor-container']}>
             <LexicalComposer initialConfig={initialConfig}>
-                <EditorToolbar />
                 <div className={styles['editor-shell']}>
                     <LiveWordCountPlugin />
                     <RichTextPlugin 
@@ -99,7 +113,12 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     <HistoryPlugin />
-                    <MarkdownShortcutPlugin transformers={[HEADING]} />
+                    <MarkdownShortcutPlugin 
+                        transformers={MY_TRANSFORMERS} 
+                    />
+                    <MarkdownPastePlugin 
+                        transformers={MY_TRANSFORMERS}
+                    />
                     <IndentOnNewLinePlugin />
                     <AutoSavePlugin 
                         chapterId={chapterId}

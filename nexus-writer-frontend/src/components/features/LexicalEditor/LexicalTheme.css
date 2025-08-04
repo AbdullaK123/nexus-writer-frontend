@@ -1,212 +1,397 @@
-/* Lexical Editor Theme Styles for Sci-Fi Writing */
+/* Complete Lexical Editor Theme - Sci-Fi Orbitron Style */
 
-/* Headings */
+/* ROOT - Default styling for all editor content */
+.lexical-root {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* PARAGRAPHS - Main body text */
+.lexical-paragraph {
+  margin: 0 0 1.5rem 0;
+  line-height: 1.8;
+  color: var(--text-primary);
+  text-shadow: 0 0 3px rgba(255,255,255,0.1);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* HEADINGS - Glowing sci-fi headers */
 .lexical-h1 {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
   font-weight: 700;
   color: var(--accent-primary);
   text-shadow: 
     0 0 5px var(--accent-primary),
-    0 0 10px var(--accent-primary);
+    0 0 10px var(--accent-primary),
+    0 0 15px var(--accent-primary);
   margin: 2rem 0 1rem 0;
   letter-spacing: 0.05em;
   line-height: 1.2;
+  animation: subtle-flicker 3s ease-in-out infinite;
 }
 
 .lexical-h2 {
-  font-family: var(--font-heading);
-  font-size: 2rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--accent-primary);
   text-shadow: 
     0 0 3px var(--accent-primary),
-    0 0 6px var(--accent-primary);
+    0 0 6px var(--accent-primary),
+    0 0 12px var(--accent-primary);
   margin: 1.75rem 0 0.75rem 0;
   letter-spacing: 0.03em;
   line-height: 1.3;
 }
 
 .lexical-h3 {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
   font-weight: 600;
   color: var(--accent-secondary);
-  text-shadow: 0 0 3px var(--accent-secondary);
+  text-shadow: 
+    0 0 3px var(--accent-secondary),
+    0 0 8px var(--accent-secondary);
   margin: 1.5rem 0 0.5rem 0;
+  letter-spacing: 0.02em;
   line-height: 1.4;
 }
 
 .lexical-h4 {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--accent-secondary);
+  text-shadow: 0 0 3px var(--accent-secondary);
   margin: 1.25rem 0 0.5rem 0;
   line-height: 1.4;
 }
 
 .lexical-h5 {
-  font-family: var(--font-heading);
-  font-size: 1.125rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-accent);
+  text-shadow: 0 0 2px var(--text-accent);
   margin: 1rem 0 0.5rem 0;
   line-height: 1.4;
 }
 
 .lexical-h6 {
-  font-family: var(--font-heading);
-  font-size: 1rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--text-accent);
+  text-shadow: 0 0 2px var(--text-accent);
   margin: 1rem 0 0.5rem 0;
   line-height: 1.4;
 }
 
-/* Paragraphs */
-.lexical-paragraph {
-  margin: 0 0 1.5rem 0;
-  line-height: 1.8;
-  color: var(--text-primary);
-  text-shadow: 0 0 3px rgba(255,255,255,0.1);
-}
-
-/* Text Formatting */
+/* TEXT FORMATTING - Glowing emphasis */
 .lexical-bold {
   font-weight: 700;
   color: var(--accent-secondary);
-  text-shadow: 0 0 3px var(--accent-secondary);
+  text-shadow: 
+    0 0 3px var(--accent-secondary),
+    0 0 6px var(--accent-secondary);
+  font-family: 'Orbitron', sans-serif;
+  font-size: inherit;
 }
 
 .lexical-italic {
   font-style: italic;
   color: var(--success);
-  text-shadow: 0 0 2px var(--success);
-}
-
-.lexical-strikethrough {
-  text-decoration: line-through;
-  color: var(--error);
-  opacity: 0.8;
+  text-shadow: 
+    0 0 2px var(--success),
+    0 0 5px var(--success);
+  font-family: 'Orbitron', sans-serif;
+  font-size: inherit;
 }
 
 .lexical-underline {
   text-decoration: underline;
   text-decoration-color: var(--warning);
   text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  text-shadow: 0 0 2px var(--warning);
 }
 
-.lexical-inline-code {
-  background: rgba(0, 212, 255, 0.15);
+.lexical-strikethrough {
+  text-decoration: line-through;
+  text-decoration-color: var(--error);
+  color: var(--error);
+  opacity: 0.8;
+  text-decoration-thickness: 2px;
+}
+
+/* QUOTES - Holographic message blocks */
+.lexical-quote {
+  margin: 2rem 0;
+  padding: 2rem 2.5rem;
+  position: relative;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  line-height: 1.6;
   color: var(--accent-secondary);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(0, 255, 255, 0.05), 
+    rgba(0, 212, 255, 0.1)
+  );
+  border-left: 4px solid var(--accent-primary);
+  border-radius: 0 12px 12px 0;
+  box-shadow: 
+    0 0 20px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  font-style: italic;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  overflow: hidden;
 }
 
-/* Lists */
+/* Animated quote border */
+.lexical-quote::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent,
+    var(--accent-secondary), 
+    var(--accent-primary),
+    var(--accent-secondary),
+    transparent
+  );
+  animation: data-flow 4s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Holographic quotation mark */
+.lexical-quote::after {
+  content: '"';
+  position: absolute;
+  top: -0.5rem;
+  right: 1rem;
+  font-size: 4rem;
+  color: var(--accent-primary);
+  opacity: 0.3;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  text-shadow: 
+    0 0 10px var(--accent-primary),
+    0 0 20px var(--accent-primary);
+  animation: quote-mark-glow 2s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+/* LISTS - Structured data display */
 .lexical-list-ul,
 .lexical-list-ol {
   margin: 1rem 0;
   padding-left: 2rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
 }
 
 .lexical-listitem {
   margin: 0.5rem 0;
   color: var(--text-primary);
   line-height: 1.6;
+  text-shadow: 0 0 2px rgba(255,255,255,0.1);
 }
 
 .lexical-list-ul .lexical-listitem::marker {
   color: var(--accent-primary);
+  font-weight: 700;
 }
 
 .lexical-list-ol .lexical-listitem::marker {
   color: var(--accent-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .lexical-nested-listitem {
   margin: 0.25rem 0;
+  font-size: 0.95em;
 }
 
-/* Links */
+/* LINKS - Network connections */
 .lexical-link {
   color: var(--accent-primary);
   text-decoration: underline;
   text-decoration-color: var(--accent-primary);
-  text-underline-offset: 2px;
-  transition: all 0.2s ease;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 3px var(--accent-primary);
 }
 
 .lexical-link:hover {
   color: var(--accent-secondary);
   text-decoration-color: var(--accent-secondary);
-  text-shadow: 0 0 5px var(--accent-secondary);
+  text-shadow: 
+    0 0 5px var(--accent-secondary),
+    0 0 10px var(--accent-secondary);
 }
 
-/* Responsive adjustments for theme elements */
+/* CODE - Terminal/console styling */
+.lexical-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  line-height: 1.5;
+  background: rgba(0, 0, 0, 0.8);
+  color: var(--success);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent-primary);
+  box-shadow: 
+    0 0 10px rgba(0, 212, 255, 0.3),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 3px var(--success);
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.lexical-inline-code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--accent-secondary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  text-shadow: 0 0 2px var(--accent-secondary);
+}
+
+/* ANIMATIONS */
+@keyframes subtle-flicker {
+  0%, 100% { 
+    text-shadow: 
+      0 0 5px var(--accent-primary),
+      0 0 10px var(--accent-primary);
+    opacity: 1;
+  }
+  50% { 
+    text-shadow: 
+      0 0 8px var(--accent-primary),
+      0 0 15px var(--accent-primary),
+      0 0 20px var(--accent-secondary);
+    opacity: 0.95;
+  }
+}
+
+@keyframes data-flow {
+  0%, 100% { 
+    background-position: -200% 0;
+    opacity: 0.6;
+  }
+  50% { 
+    background-position: 200% 0;
+    opacity: 1;
+  }
+}
+
+@keyframes quote-mark-glow {
+  0% { 
+    opacity: 0.2;
+    text-shadow: 
+      0 0 5px var(--accent-primary);
+  }
+  100% { 
+    opacity: 0.4;
+    text-shadow: 
+      0 0 15px var(--accent-primary),
+      0 0 25px var(--accent-secondary);
+  }
+}
+
+/* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
+  .lexical-root,
+  .lexical-paragraph {
+    font-size: 32px;
+  }
+  
   .lexical-h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   
   .lexical-h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
   
   .lexical-h3 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
   
   .lexical-quote {
-    padding: 1rem;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
+    padding: 1.5rem 2rem;
+    font-size: 28px;
   }
   
-  .lexical-quote::before {
+  .lexical-quote::after {
     font-size: 3rem;
     top: -0.25rem;
-    left: 0.25rem;
+    right: 0.75rem;
   }
   
   .lexical-code {
+    font-size: 24px;
     padding: 1rem;
-    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
+  .lexical-root,
+  .lexical-paragraph {
+    font-size: 28px;
+  }
+  
   .lexical-h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     margin: 1.5rem 0 0.75rem 0;
   }
   
   .lexical-h2 {
-    font-size: 1.375rem;
+    font-size: 1.75rem;
     margin: 1.25rem 0 0.5rem 0;
   }
   
   .lexical-h3 {
-    font-size: 1.125rem;
+    font-size: 1.375rem;
     margin: 1rem 0 0.5rem 0;
   }
   
   .lexical-quote {
+    margin: 1rem 0;
+    padding: 1.25rem 1.5rem;
+    font-size: 24px;
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .lexical-quote::after {
+    font-size: 2.5rem;
+    top: -0.125rem;
+    right: 0.5rem;
+  }
+  
+  .lexical-code {
+    font-size: 20px;
     padding: 0.75rem;
-    margin: 0.75rem 0;
   }
   
   .lexical-list-ul,
   .lexical-list-ol {
+    font-size: 28px;
     padding-left: 1.5rem;
-  }
-  
-  .lexical-code {
-    padding: 0.75rem;
-    margin: 1rem 0;
   }
 }
