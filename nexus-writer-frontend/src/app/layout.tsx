@@ -3,6 +3,7 @@ import Navbar from "@/components/ui/Navbar/Navbar";
 import HolographicBackground from "@/components/ui/Background/HolographicBackground";
 import ClientProvider from "@/components/features/QueryClientProvider/QueryClientProvider";
 import "./globals.css";
+import { SocketProvider } from "./hooks/useWebsocket";
 
 export const metadata: Metadata = {
   title: "Nexus Writer",
@@ -19,8 +20,10 @@ export default function RootLayout({
       <body>
         <HolographicBackground/>
         <ClientProvider>
-          <Navbar />
-          {children}
+          <SocketProvider>
+            <Navbar />
+            {children}
+          </SocketProvider>
         </ClientProvider>
       </body>
     </html>
