@@ -6,7 +6,7 @@ import {
     ApiChapterListResponse,
     ApiChapterContentResponse,
     UpdateMutationArgs
-} from '../types/misc'
+} from '../types'
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 
@@ -71,7 +71,7 @@ export function useChapters(storyId: string) {
     })
 
     // Get individual chapter with prefetching
-    const getChapter = (chapterId: string, as_lexical_json: boolean) => useQuery({
+    const useChapter = (chapterId: string, as_lexical_json: boolean) => useQuery({
         queryKey: getChapterCacheKey(chapterId, as_lexical_json),
         queryFn: async () => {
             const response = await fetch(`${API_URL}/chapters/${chapterId}/?as_lexical_json=${as_lexical_json ? 'True' : 'False'}`, {
@@ -126,6 +126,7 @@ export function useChapters(storyId: string) {
             const previousChapters = queryClient.getQueryData(getChapterListCacheKey(storyId))
             
             // directly modify cache
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             queryClient.setQueryData(getChapterListCacheKey(storyId), (old: any) => {
                 if (!old) return old
                 
@@ -216,7 +217,7 @@ export function useChapters(storyId: string) {
         isLoading,
         isError,
         isSuccess,
-        getChapter,
+        useChapter,
         create: createMutation.mutate,
         isCreating: createMutation.isPending,
         creationError: createMutation.isError,

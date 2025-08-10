@@ -10,7 +10,7 @@ export default function Page() {
 
     const params = useParams()
     const [storyId, chapterId] = params.id as string[]
-    const { getChapter } = useChapters(storyId)
+    const { useChapter } = useChapters(storyId)
     const router = useRouter()
 
     const {
@@ -18,7 +18,7 @@ export default function Page() {
         isSuccess,
         isError,
         isLoading
-    } = getChapter(chapterId, true)
+    } = useChapter(chapterId, true)
 
     // Handle missing params
     if (!storyId || !chapterId) {

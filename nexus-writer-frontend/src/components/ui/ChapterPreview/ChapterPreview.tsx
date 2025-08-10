@@ -1,6 +1,6 @@
 'use client'
 import styles from './ChapterPreview.module.css'
-import { ChapterPreviewProps } from '@/app/types/misc'
+import { ChapterPreviewProps } from '@/app/types'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useChapters } from '@/app/hooks/useChapters'
@@ -14,9 +14,6 @@ export default function ChapterPreview({
     updatedAt,
     previewContent,
     storyId,
-    storyTitle,
-    previousChapterId,
-    nextChapterId,
     onStatusUpdate
 }: ChapterPreviewProps) {
 

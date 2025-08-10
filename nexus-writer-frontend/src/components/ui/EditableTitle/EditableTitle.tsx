@@ -12,7 +12,7 @@ export default function EditableStoryTitle({
 }: EditableStoryTitleProps) {
 
     const [storyTitle, setStoryTitle] = useState(title)
-    const [isEdititing, setIsEditing] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
     const componentRef = useRef(null)
     const {
         update,
@@ -44,7 +44,7 @@ export default function EditableStoryTitle({
 
     useEffect(() => {
 
-        if (!isEdititing) return;
+        if (!isEditing) return;
 
         const handleClickOutside = (e) => {
             if (componentRef.current && !componentRef.current.contains(e.target)) {
@@ -56,7 +56,7 @@ export default function EditableStoryTitle({
         document.addEventListener('mousedown', handleClickOutside)
 
         return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [isEdititing])
+    }, [isEditing])
 
 
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
@@ -86,7 +86,7 @@ export default function EditableStoryTitle({
             onDoubleClick={handleOnDoubleClick}
             ref={componentRef} 
         >
-           {isEdititing ? (
+           {isEditing ? (
                 <input
                     id="title"
                     name="title"
