@@ -13,7 +13,5 @@ export type TypingDetectorPluginProps = {
     storyId: string;
     chapterId: string;
     userId: string;
-    onStart: Callback;
-    onStop: Callback;
     delay: number;
 }

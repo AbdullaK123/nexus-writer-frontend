@@ -12,7 +12,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     const [socket, setSocket] = useState<Socket | null>(null);
     
     useEffect(() => {
-        const newSocket = io(`${API_URL}/ws/analytics`);
+        const newSocket = io(`${API_URL}/analytics`);
         setSocket(newSocket);
         
         return () => {

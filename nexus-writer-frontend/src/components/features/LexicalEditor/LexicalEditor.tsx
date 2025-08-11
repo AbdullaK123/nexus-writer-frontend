@@ -16,7 +16,6 @@ import { LinkNode } from '@lexical/link'
 import MarkdownPastePlugin from './plugins/MarkdownPastePlugin'
 import { RemoveIndentPlugin } from './plugins/RemoveIndentPlugin'
 import { useAuth } from '@/app/hooks/useAuth'
-import { useWritingSessionTracking } from '@/app/hooks/useWritingSessionTracking'
 
 // Update the transformer array order - BOLD_STAR should come before ITALIC_STAR
 const MY_TRANSFORMERS = [
@@ -80,8 +79,7 @@ function createInitialState(content?: string) {
 export default function LexicalEditor({ initialContent, chapterId, storyId }: LexicalEditorProps) {
 
     const { user } = useAuth()
-    const { handleWebSocketEvent } = useWritingSessionTracking(storyId, chapterId, user.id)
-
+    
     const initialConfig = {
         namespace: 'SciFiChapterEditor',
         theme: sciFiTheme,
@@ -131,8 +129,6 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
                         storyId={storyId}
                         chapterId={chapterId}
                         userId={user.id}
-                        onStart={() => handleWebSocketEvent('session_start')}
-                        onStop={() => handleWebSocketEvent('session_end')}
                         delay={500}
                     />
                 </div>
