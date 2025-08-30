@@ -31,12 +31,14 @@ export default function StoryCard({
         closeMenu,
         containerRef,
         isDeleting,
-        handleOnAction
+        handleOnAction,
+        elementRef
     } = useStoryContextMenuActions(id)
-    
+
     return (
         <div ref={containerRef}>
              <div 
+                ref={elementRef}
                 onContextMenu={(e: React.MouseEvent) => openMenu(e)}
                 className={`${styles['story-card-container']} ${menu.visible && styles['no-hover']}`}
             >

@@ -1,11 +1,9 @@
 import { ChapterListItemProps } from "@/app/types"
 import styles from './ChapterListItem.module.css'
 import ContextMenu from "../ContextMenu/ContextMenu";
-import { useContextMenu } from "@/app/hooks/useContextMenu";
-import { useChapters } from "@/app/hooks/useChapters"; 
-import React, { useState, useEffect, useRef } from "react";
 import { useInView } from "@/app/hooks/useInView";
 import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib/utils";
+import { useChapterTitleActions } from "@/app/hooks/useChapterTitleActions";
 
 
 export default function ChapterListItem({
@@ -19,88 +17,28 @@ export default function ChapterListItem({
     status
 }: ChapterListItemProps) {
 
-    const { menu, openMenu, closeMenu } = useContextMenu()
-    const { 
-        deleteChapter,
-        isDeleting,
-        deleteError,
-        deleteSuccess,
-        update,
+    const {
+        menu,
+        openMenu,
+        closeMenu,
+        chapterTitle,
+        updatingTitle,
+        inputRef,
         isUpdating,
-        updateError,
-        updateSuccess
-    } = useChapters(storyId)
-    const [updatingTitle, setUpdatingTitle] = useState(false)
-    const [chapterTitle, setChapterTitle] = useState(title)
-    const inputRef = useRef<HTMLInputElement>(null)
-    const [isInView, elementRef] = useInView(1)
-
-    useEffect(() => {
-        if (updatingTitle) {
-            inputRef.current?.focus()
-            inputRef.current?.select()
-        }
-    }, [updatingTitle])
-
-    useEffect(() => {
-        if (updateSuccess) {
-            setUpdatingTitle(false)
-            handleOnClick()
-        }
-    }, [updateSuccess])
-
-    useEffect(() => {
-        if (deleteSuccess) {
-            handleClearSelection()
-        }
-    }, [deleteSuccess])
-
-    useEffect(() => {
-        if (!isInView) {
-            closeMenu()
-        }
-    }, [isInView])
-
-    useEffect(() => {
-        if (updateError) {
-            alert(`Failed to update chapter. Check server logs.`)
-            return
-        }
-    }, [updateError])
-
-    useEffect(() => {
-        if (deleteError) {
-            alert('Failed to delete chapter. Check server logs.')
-            return
-        }
-    }, [deleteError])
-
-    const handleOnAction = (action: string) => {
-        if (action !== 'delete') return;
-        deleteChapter(id)
-        closeMenu()
-    }
-
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setChapterTitle(e.target.value)
-    }
-
-    const handleOnDoubleClick = () => {
-        setUpdatingTitle(true)
-    }
-
-    const handleOnEnterDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") {
-            e.preventDefault()
-            setUpdatingTitle(false)
-            update({ chapterId: id, requestBody: { title: chapterTitle} })
-        }
-        if (e.key === "Escape") {
-            setUpdatingTitle(false)
-            setChapterTitle(title) 
-        }
-    }
-
+        isDeleting,
+        handleOnChange,
+        handleOnAction,
+        handleOnDoubleClick,
+        handleOnEnterDown
+    } = useChapterTitleActions(
+        storyId, 
+        id, 
+        title, 
+        handleOnClick, 
+        handleClearSelection
+    )
+    const { elementRef } = useInView(1, closeMenu)
+    
     return (
         <div
             ref={elementRef} 
@@ -127,7 +65,10 @@ export default function ChapterListItem({
                                 onChange={handleOnChange}
                                 onKeyDown={handleOnEnterDown}
                             />
-                        ): (isUpdating === false) && (isDeleting === false) && <h3>{title}</h3>}
+                        ): (isUpdating === false) && 
+                           (isDeleting === false) && 
+                           <h3>{title}</h3>
+                        }
                         {isUpdating && (<h3>Updating Title...</h3>)}
                         {isDeleting && (<h3>Deleting Chapter...</h3>)}
                         <div className={styles['chapter-stats']}>

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { StoryCreateRequest, StoryUpdateRequest } from "../types/story"
-import { ApiStory } from "../types/misc"
+import { ApiStory } from "../types"
 
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
@@ -33,7 +33,6 @@ export function useStories() {
                 totalChapters: story.total_chapters,
                 wordCount: story.word_count
             }))
-            console.log(JSON.stringify(transformedStories))
             return transformedStories || []
         })
     })

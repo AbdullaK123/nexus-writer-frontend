@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-export function useInView(threshold: number) {
+export function useInView(threshold: number, onIntersect: () => void) {
     const [isInView, setIsInView] = useState(false)
     const elementRef = useRef<HTMLDivElement>(null)
 
@@ -21,5 +21,15 @@ export function useInView(threshold: number) {
         }
     }, [threshold])
 
-    return [isInView, elementRef] as const
+    useEffect(() => {
+        console.log(`Are we in view?: ${isInView}`)
+        if (!isInView) {
+            onIntersect()
+        }
+    }, [isInView])
+
+    return {
+        isInView,
+        elementRef
+    }
 }

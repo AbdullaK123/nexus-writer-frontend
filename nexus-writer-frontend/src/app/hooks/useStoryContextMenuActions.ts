@@ -6,7 +6,7 @@ import { useStories } from "./useStories"
 export function useStoryContextMenuActions(storyId: string) {
     const {menu, openMenu, closeMenu} = useContextMenu()
     const containerRef = useRef<HTMLDivElement>(null)
-    const [isInView] = useInView(1)
+    const {isInView, elementRef} = useInView(1, closeMenu)
     const {
         deleteStory,
         isDeleting,
@@ -56,7 +56,8 @@ export function useStoryContextMenuActions(storyId: string) {
         containerRef,
         isDeleting,
         handleOnAction,
-        isInView
+        isInView,
+        elementRef
      }
 
 }
