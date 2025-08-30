@@ -1,16 +1,12 @@
 'use client'
-import { StoryCardProps } from "@/app/types/misc";
+import { StoryCardProps } from "@/app/types";
 import styles from './StoryCard.module.css'
-import { formatDistanceToNow } from 'date-fns'
-import { useRouter } from "next/navigation";
 import EditableStoryTitle from "../EditableTitle/EditableTitle";
 import EditableStatus from "../EditableStatus/EditableStatus";
-import { useContextMenu } from "@/app/hooks/useContextMenu";
 import ContextMenu from '../ContextMenu/ContextMenu'
-import { useStories } from "@/app/hooks/useStories";
-import React, { useEffect, useRef } from "react";
-import { useInView } from "@/app/hooks/useInView";
-import { useChapters } from "@/app/hooks/useChapters";
+import { formatWordCountStory, getDuration } from "@/app/lib/utils";
+import { useStoryNavigation } from "@/app/hooks/useStoryNavigation";
+import { useStoryContextMenuActions } from "@/app/hooks/useStoryContextMenuActions";
 
 
 export default function StoryCard({ 
@@ -25,123 +21,18 @@ export default function StoryCard({
     latestChapter
  }: StoryCardProps) {
 
-    const router = useRouter()
-    const {menu, openMenu, closeMenu} = useContextMenu()
-    const containerRef = useRef<HTMLDivElement>(null)
-    const [isInView] = useInView(1)
     const {
-        deleteStory,
+        getBtnProps
+    } = useStoryNavigation(id, latestChapterId)
+
+    const {
+        menu,
+        openMenu,
+        closeMenu,
+        containerRef,
         isDeleting,
-        deleteError
-    } = useStories()
-    const {
-        create,
-        createdChapter,
-        creationSuccess
-    } = useChapters(id)
-
-    useEffect(() => {
-        if (creationSuccess && createdChapter.id) {
-            router.push(`/chapters/${id}/${createdChapter.id}`)
-        }
-    }, [router, creationSuccess, createdChapter, id])
-
-    useEffect(() => {
-        if (deleteError) {
-            alert('Failed to delete story. Check server logs')
-            return
-        }
-    }, [deleteError])
-
-    useEffect(() =>  {
-        if (!isInView) {
-            closeMenu()
-        }
-    }, [isInView, closeMenu])
-
-     useEffect(() => {
-        if (!menu.visible) return;
-
-        const handleClickOutside = (e: MouseEvent) => {
-            const target = e.target as HTMLElement;
-            
-            // Only close if click is outside the entire container
-            if (containerRef.current && !containerRef.current.contains(target)) {
-                closeMenu();
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [menu.visible, closeMenu]);
-
-    const goToStoryPage = () => {
-        router.push(`/stories/${id}`)
-    }
-
-    const getDuration = (date: Date) => {
-        return formatDistanceToNow(date, { addSuffix: true })
-    }
-
-    const formatWordCount = (count: number | undefined) => {
-        if (!count) return 0;
-
-        if (count >= 1000) {
-            return `${(count / 1000).toFixed(1)}k`
-        }
-        return count.toString()
-    }
-
-    const goToLatestChapter = () => {
-        if (latestChapterId) {
-            router.push(`/chapters/${id}/${latestChapterId}`)
-        } else (
-             create({
-                title: "Double click to change the title...",
-                content: ""
-            })
-        )
-    }
-
-    const handlePrefetch = () => {
-        if (latestChapterId) {
-            console.log('🚀 Prefetching chapter:', latestChapterId)
-            router.prefetch(`/chapters/${id}/${latestChapterId}`)
-        }
-    }
-
-    const getBtnProps = (status: string) => {
-        switch (status) {
-            case 'Complete':
-                return [
-                    { text: 'Read', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'Chapters', css: 'btn-primary', onClick: goToStoryPage, onMouseEnter: undefined},
-                    { text: 'Sequel', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'Publish', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined}
-                ]
-            case 'On Hiatus':
-                return [
-                    { text: 'Resume', css: 'btn-primary', onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
-                    { text: 'Outline', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'Research', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'AI', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined }
-                ]
-            default:
-                return [
-                    { text: 'Continue', css: 'btn-primary', onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
-                    { text: 'Chapters', css: 'btn-secondary', onClick: goToStoryPage, onMouseEnter: undefined },
-                    { text: 'Settings', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'AI', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined  }
-                ]
-        }
-    }
-
-    const handleOnAction = (action: string) => {
-        if (action === 'delete') {
-            deleteStory(id)
-            closeMenu()
-        }
-    }
+        handleOnAction
+    } = useStoryContextMenuActions(id)
     
     return (
         <div ref={containerRef}>
@@ -172,7 +63,7 @@ export default function StoryCard({
 
                 <div className={styles['story-stats-container']}>
                     <p>Chapters: {totalChapters || 0}</p>
-                    <p>Words: {formatWordCount(wordCount)}</p>
+                    <p>Words: {formatWordCountStory(wordCount)}</p>
                     <p>{latestChapter}</p>
                 </div>
 

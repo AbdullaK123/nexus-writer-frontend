@@ -5,6 +5,7 @@ import { useContextMenu } from "@/app/hooks/useContextMenu";
 import { useChapters } from "@/app/hooks/useChapters"; 
 import React, { useState, useEffect, useRef } from "react";
 import { useInView } from "@/app/hooks/useInView";
+import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib/utils";
 
 
 export default function ChapterListItem({
@@ -74,27 +75,6 @@ export default function ChapterListItem({
         }
     }, [deleteError])
 
-    const getBadgeCss = (status: string) => {
-        const normalizedStatus = status.toLowerCase();
-        if (normalizedStatus === 'published') return 'published-chapter-number-badge';
-        if (normalizedStatus === 'draft') return 'draft-chapter-number-badge';
-        return 'outline-chapter-number-badge';
-    }
-
-    const getStatusIndicatorClass = (status: string) => {
-        const normalizedStatus = status.toLowerCase();
-        if (normalizedStatus === 'published') return 'published';
-        if (normalizedStatus === 'draft') return 'draft';
-        return 'outline';
-    }
-
-    const formatWordCount = (count: number) => {
-        if (!count) return '0 words'
-        if (count === 0) return '0 words';
-        if (count >= 1000) return `${(count / 1000).toFixed(1)}k words`;
-        return `${count} words`;
-    }
-
     const handleOnAction = (action: string) => {
         if (action !== 'delete') return;
         deleteChapter(id)
@@ -105,7 +85,7 @@ export default function ChapterListItem({
         setChapterTitle(e.target.value)
     }
 
-    const handleOnDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const handleOnDoubleClick = () => {
         setUpdatingTitle(true)
     }
 
@@ -115,9 +95,9 @@ export default function ChapterListItem({
             setUpdatingTitle(false)
             update({ chapterId: id, requestBody: { title: chapterTitle} })
         }
-         if (e.key === "Escape") {
+        if (e.key === "Escape") {
             setUpdatingTitle(false)
-            setChapterTitle(title) // Reset to original
+            setChapterTitle(title) 
         }
     }
 

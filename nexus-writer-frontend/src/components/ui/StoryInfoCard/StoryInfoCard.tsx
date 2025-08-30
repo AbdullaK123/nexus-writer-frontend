@@ -1,5 +1,4 @@
-// src/components/ui/StoryInfoCard/StoryInfoCard.tsx
-import { StoryInfoCardProps } from "@/app/types/misc";
+import { StoryInfoCardProps } from "@/app/types";
 import { formatDistanceToNow } from "date-fns";
 import styles from './StoryInfoCard.module.css'
 
