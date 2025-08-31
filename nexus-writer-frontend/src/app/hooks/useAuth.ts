@@ -1,70 +1,34 @@
+// src/app/hooks/useAuth.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { credentials, registrationInfo } from "@/app/types"
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN;
-
+import * as authService from '@/app/services/authService';
 
 export function useAuth() {
+    const queryClient = useQueryClient();
 
-    const queryClient = useQueryClient()
-
-    const {data: user, isLoading, isError, isSuccess} = useQuery({
+    const { data: user, isLoading, isError, isSuccess } = useQuery({
         queryKey: ['auth'],
-        queryFn: () => fetch(
-            `${API_URL}/auth/me`, {
-                 credentials: 'include' 
-            }
-        ).then(
-            (res) => {
-                if (!res.ok) throw new Error("Not authenticated");
-                return res.json()
-            }
-        ),
+        queryFn: authService.getMe, 
         retry: false,
-        staleTime: 5*60*1000
-    })
+        staleTime: 5 * 60 * 1000,
+    });
 
     const registerMutation = useMutation({
-        mutationFn: (userInfo : registrationInfo) => fetch(
-            `${API_URL}/auth/register`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include',
-                body: JSON.stringify(userInfo)
-            }
-        ).then(
-            (res) => {
-                if (!res.ok) throw new Error("Failed to register.");
-                return res.json()
-            }
-        ),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] })
-    })
+        mutationFn: authService.register,
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
+    });
 
     const loginMutation = useMutation({
-        mutationFn: (creds: credentials) => fetch(
-            `${API_URL}/auth/login`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(creds)
-            }
-        ).then((res) => {
-            if (!res.ok) throw new Error("Invalid Credentials.")
-            return res.json()
-        }),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] })
-    })
+        mutationFn: authService.login, 
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
+    });
 
     const logoutMutation = useMutation({
-        mutationFn: () => fetch(`${API_URL}/auth/logout`, {
-            method: 'POST',
-            credentials: 'include'
-        }),
+        mutationFn: authService.logout, 
         onSuccess: () => {
-            queryClient.setQueryData(['auth'], null)
-            queryClient.clear()
-        }
-    })
+            queryClient.setQueryData(['auth'], null);
+            queryClient.clear();
+        },
+    });
 
     return {
         user,
@@ -82,7 +46,6 @@ export function useAuth() {
         logoutSuccess: logoutMutation.isSuccess,
         isRegistering: registerMutation.isPending,
         registerError: registerMutation.error,
-        registerSuccess: registerMutation.isSuccess
-    }
-
+        registerSuccess: registerMutation.isSuccess,
+    };
 }

@@ -16,9 +16,9 @@ export function RemoveIndentPlugin() {
                         const anchor = selection.anchor
                         const anchorNode = anchor.getNode() as TextNode
                         const anchorTextContent = anchorNode.getTextContent()
-                        if (anchorTextContent.startsWith('\u00A0\u00A0\u00A0\u00A0')) {
+                        if (anchorTextContent === '\u00A0\u00A0\u00A0\u00A0') {
                             e.preventDefault()
-                            anchorNode.setTextContent("")
+                            anchorNode.setTextContent(anchorTextContent.slice(4))
                             selection.setTextNodeRange(anchorNode, 0, anchorNode, 0)
                         }
                     }

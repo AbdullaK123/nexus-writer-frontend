@@ -1,16 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { StoryCreateRequest, StoryUpdateRequest } from "../types/story"
-import { ApiStory } from "../types"
-
-
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
-
+// src/app/hooks/useStories.ts
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import * as storyService from '../services/storyService';
 
 export function useStories() {
+    const queryClient = useQueryClient();
 
-    const queryClient = useQueryClient()
-
-    // getting all stories for a user
+    // This query is now much simpler!
     const { 
         data: stories, 
         isLoading, 
@@ -18,85 +13,31 @@ export function useStories() {
         isSuccess 
     } = useQuery({
         queryKey: ['stories'],
-        queryFn: () => fetch(`${API_URL}/stories`, {
-            credentials: 'include'
-        }).then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch stories")
-            return res.json()
-        }).then((data) => {
-            const rawStories = data.stories
-            const transformedStories = rawStories?.map((story: ApiStory) => ({
-                ...story,
-                latestChapterId: story.latest_chapter_id,
-                createdAt: new Date(story.created_at + 'Z'),
-                updatedAt: new Date(story.updated_at + 'Z'),
-                totalChapters: story.total_chapters,
-                wordCount: story.word_count
-            }))
-            return transformedStories || []
-        })
-    })
+        queryFn: storyService.getStories, // It just calls the service
+        // The `select` function for transformation is now gone
+    });
 
-    // single story fetch
     const useStory = (storyId: string) => useQuery({
         queryKey: ['stories', storyId],
-        queryFn: () => fetch(`${API_URL}/stories/${storyId}`, {
-            credentials: 'include'
-        }).then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch story")
-            return res.json()
-        })
-    })
+        queryFn: () => storyService.getStory(storyId)
+    });
 
-
-    // post mutation
     const createStoryMutation = useMutation({
-        mutationFn: (storyInfo : StoryCreateRequest) => fetch(`${API_URL}/stories`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(storyInfo)
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to create story')
-            return res.json()
-        }),
+        mutationFn: storyService.createStory,
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories'] })
-    })
+    });
 
-
-    // delete mutation
     const deleteStoryMutation = useMutation({
-        mutationFn: (storyId : string) => fetch(`${API_URL}/stories/${storyId}`, {
-            method: 'DELETE',
-            credentials: 'include'
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to delete story')
-            return res.json()
-        }),
+        mutationFn: storyService.deleteStory,
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories'] })
-    })
+    });
 
-
-    // put mutation
     const updateStoryMutation = useMutation({
-        mutationFn: ({ body, storyId } : StoryUpdateRequest) => fetch(`${API_URL}/stories/${storyId}`, {
-            method: 'PUT',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        }).then((res) => {
-            if (!res.ok) throw new Error('Failed to update story')
-            return res.json()
-        }),
+        mutationFn: storyService.updateStory,
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories'] })
-    })
+    });
 
-
-    // return everything
+    // The rest of the hook remains the same...
     return {
         stories,
         useStory,
@@ -116,6 +57,5 @@ export function useStories() {
         isCreated: createStoryMutation.isSuccess,
         isUpdated: updateStoryMutation.isSuccess,
         isDeleted: deleteStoryMutation.isSuccess
-    }
-
+    };
 }

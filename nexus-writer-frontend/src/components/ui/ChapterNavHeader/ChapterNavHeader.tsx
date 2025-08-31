@@ -20,7 +20,7 @@ export default function ChapterNavHeader({
         isCreating,
         creationError,
         creationSuccess,
-        createdChapter, // Add this to get the created chapter data
+        createdChapter, 
         update,
         isUpdating,
         updateError,

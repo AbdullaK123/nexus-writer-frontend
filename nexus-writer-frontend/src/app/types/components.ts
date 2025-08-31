@@ -41,6 +41,8 @@ export interface ChapterListItemProps {
   title: string;
   wordCount: number;
   status: "published" | "draft" | "outline";
+  published?: boolean;
+  updatedAt?: Date;
   handleOnClick: () => void;
   handleClearSelection: () => void;
 }

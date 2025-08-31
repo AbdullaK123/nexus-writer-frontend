@@ -17,7 +17,6 @@ import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
 import AutoSavePlugin from './plugins/AutoSavePlugin'
 import LiveWordCountPlugin from './plugins/LiveWordCountPlugin'
 import TypingDetectorPlugin from './plugins/TypingDetectorPlugin'
-import { ListNode, ListItemNode } from "@lexical/list"
 import MarkdownPastePlugin from './plugins/MarkdownPastePlugin'
 import { RemoveIndentPlugin } from './plugins/RemoveIndentPlugin'
 import { useAuth } from '@/app/hooks/useAuth'
@@ -88,9 +87,7 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
         theme: sciFiTheme,
         nodes: [
             HeadingNode,
-            QuoteNode,
-            ListNode,
-            ListItemNode
+            QuoteNode
         ],
         onError: (error: Error) => {
             console.error('Lexical Editor Error:', error)
