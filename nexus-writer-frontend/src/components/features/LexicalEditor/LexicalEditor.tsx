@@ -4,29 +4,32 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin'
-import { BOLD_STAR, BOLD_UNDERSCORE, CODE, HEADING, ITALIC_STAR,  LINK, QUOTE, STRIKETHROUGH } from '@lexical/markdown'
+import { 
+    BOLD_STAR, 
+    BOLD_UNDERSCORE, 
+    HEADING, 
+    ITALIC_STAR, 
+    QUOTE
+} from '@lexical/markdown'
 import { HeadingNode, QuoteNode } from '@lexical/rich-text'
 import styles from './LexicalEditor.module.css'
 import IndentOnNewLinePlugin from './plugins/IndentOnNewLinePlugin'
 import AutoSavePlugin from './plugins/AutoSavePlugin'
 import LiveWordCountPlugin from './plugins/LiveWordCountPlugin'
 import TypingDetectorPlugin from './plugins/TypingDetectorPlugin'
-import { CodeHighlightNode, CodeNode } from '@lexical/code'
-import { LinkNode } from '@lexical/link'
+import { ListNode, ListItemNode } from "@lexical/list"
 import MarkdownPastePlugin from './plugins/MarkdownPastePlugin'
 import { RemoveIndentPlugin } from './plugins/RemoveIndentPlugin'
 import { useAuth } from '@/app/hooks/useAuth'
+import ManualSavePlugin from './plugins/ManualSavePlugin'
 
 // Update the transformer array order - BOLD_STAR should come before ITALIC_STAR
 const MY_TRANSFORMERS = [
     HEADING, 
     QUOTE, 
-    CODE,
     BOLD_STAR,        // Move this before ITALIC_STAR
     ITALIC_STAR,      // This should come after BOLD_STAR
-    BOLD_UNDERSCORE,
-    LINK,
-    STRIKETHROUGH
+    BOLD_UNDERSCORE
 ]
 
 // Sci-fi themed editor configuration
@@ -86,9 +89,8 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
         nodes: [
             HeadingNode,
             QuoteNode,
-            CodeNode,
-            CodeHighlightNode,
-            LinkNode
+            ListNode,
+            ListItemNode
         ],
         onError: (error: Error) => {
             console.error('Lexical Editor Error:', error)
@@ -122,6 +124,10 @@ export default function LexicalEditor({ initialContent, chapterId, storyId }: Le
                     <IndentOnNewLinePlugin />
                     <RemoveIndentPlugin />
                     <AutoSavePlugin 
+                        chapterId={chapterId}
+                        storyId={storyId}
+                    />
+                    <ManualSavePlugin 
                         chapterId={chapterId}
                         storyId={storyId}
                     />

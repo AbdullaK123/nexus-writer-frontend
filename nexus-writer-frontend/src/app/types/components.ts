@@ -92,3 +92,14 @@ export interface ChapterContextMenuProps {
   onAction: (action: string) => void;
   onClose: () => void;
 }
+
+export interface ManualSavePluginProps {
+  storyId: string,
+  chapterId: string
+}
+
+export interface AutoSavePluginProps {
+    storyId: string;
+    chapterId: string;
+    intervalMs?: number;
+}
