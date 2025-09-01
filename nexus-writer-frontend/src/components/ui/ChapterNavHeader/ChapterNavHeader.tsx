@@ -3,6 +3,7 @@ import { ChapterNavHeaderProps } from "@/app/types"
 import styles from './ChapterNavHeader.module.css'
 import { useChapters } from "@/app/hooks/useChapters";
 import React, { useEffect, useState, useCallback } from "react";
+import { useShortcut } from "@/app/hooks/useShortcut"; // Import the new hook
 
 export default function ChapterNavHeader({
     storyId,
@@ -11,10 +12,9 @@ export default function ChapterNavHeader({
     prevChapterId,
     nextChapterId,
 }: ChapterNavHeaderProps) {
-
-    const [updatingTitle, setUpdatingTitle] = useState(false)
-    const [currentTitle, setCurrentTitle] = useState(chapterTitle)
-    const router = useRouter()
+    const [updatingTitle, setUpdatingTitle] = useState(false);
+    const [currentTitle, setCurrentTitle] = useState(chapterTitle);
+    const router = useRouter();
     const {
         create,
         isCreating,
@@ -25,95 +25,72 @@ export default function ChapterNavHeader({
         isUpdating,
         updateError,
         updateSuccess
-    } = useChapters(storyId)
+    } = useChapters(storyId);
 
-    const handleClickNext = () => {
-        if (!nextChapterId) {
-            create({ 
-                title: "Double click to change the title...", 
-                content: ""
-             })
-             return
-        }
-        router.push(`/chapters/${storyId}/${nextChapterId}`)
-    }
-
-     // Navigate to next chapter (keyboard shortcut only)
+    // --- Navigation Logic ---
     const handleNavigateNext = useCallback(() => {
         if (nextChapterId) {
-            router.push(`/chapters/${storyId}/${nextChapterId}`)
+            router.push(`/chapters/${storyId}/${nextChapterId}`);
         }
-        // If no next chapter, do nothing for keyboard shortcut
-    }, [router, nextChapterId, storyId])
+    }, [router, nextChapterId, storyId]);
 
-    // Navigate to previous chapter (keyboard shortcut only)
     const handleNavigatePrev = useCallback(() => {
         if (prevChapterId) {
-            router.push(`/chapters/${storyId}/${prevChapterId}`)
+            router.push(`/chapters/${storyId}/${prevChapterId}`);
         }
-    }, [router, prevChapterId, storyId])
+    }, [router, prevChapterId, storyId]);
 
-    const handleDoubleClick = () => {
-        setUpdatingTitle(true)
-    }
+    // ✅ Use the new hook for shortcuts
+    useShortcut([
+        { key: 'ArrowRight', ctrlKey: true, callback: handleNavigateNext },
+        { key: 'ArrowLeft', ctrlKey: true, callback: handleNavigatePrev },
+    ]);
+
+    // --- Component Logic ---
+    const handleClickNext = () => {
+        if (!nextChapterId) {
+            create({ title: "Double click to change the title...", content: "" });
+        } else {
+            handleNavigateNext();
+        }
+    };
+
+    const handleDoubleClick = () => setUpdatingTitle(true);
 
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Escape") {
-            setUpdatingTitle(false)
+            setUpdatingTitle(false);
         }
         if (e.key === "Enter") {
             e.preventDefault();
-            setUpdatingTitle(false)
+            setUpdatingTitle(false);
             update({
                 chapterId: chapterId,
-                requestBody: {
-                    title: currentTitle
-                }
-            })
+                requestBody: { title: currentTitle }
+            });
         }
-    }
+    };
 
+    // --- Effects ---
     useEffect(() => {
         if (creationSuccess && createdChapter?.id) {
-            router.push(`/chapters/${storyId}/${createdChapter.id}`)
+            router.push(`/chapters/${storyId}/${createdChapter.id}`);
         }
-    }, [creationSuccess, createdChapter?.id, router, storyId])
+    }, [creationSuccess, createdChapter?.id, router, storyId]);
 
     useEffect(() => {
-        if (updateSuccess) {
-            setUpdatingTitle(false)
-        }
-    }, [updateSuccess])
+        if (updateSuccess) setUpdatingTitle(false);
+    }, [updateSuccess]);
 
     useEffect(() => {
-        if (creationError) {
-            alert('Failed to create chapter. Check server logs')
-            return
-        }
-    }, [creationError])
+        if (creationError) alert('Failed to create chapter. Check server logs');
+    }, [creationError]);
 
     useEffect(() => {
-        if (updateError) {
-            alert('Failed to update chapter. Check server logs')
-            return
-        }
-    }, [updateError])
+        if (updateError) alert('Failed to update chapter. Check server logs');
+    }, [updateError]);
 
-    useEffect(() => {
-        const handleShortcut = (e: KeyboardEvent) => {
-             if (e.ctrlKey && e.key === "ArrowRight") {
-                e.preventDefault()
-                handleNavigateNext()
-            }
-            if (e.ctrlKey && e.key === "ArrowLeft") {
-                e.preventDefault()
-                handleNavigatePrev()
-            }
-        }
-        document.addEventListener('keydown', handleShortcut)
-
-        return () => document.removeEventListener('keydown', handleShortcut)
-    }, [handleNavigatePrev, handleNavigateNext])
+    // The old useEffect for shortcuts has been removed.
 
     return (
         <div 
@@ -124,7 +101,7 @@ export default function ChapterNavHeader({
                 <button
                     className={styles['nav-button']}
                     onMouseEnter={() => router.prefetch(`/chapters/${storyId}/${prevChapterId}`)}
-                    onClick={() => router.push(`/chapters/${storyId}/${prevChapterId}`)}
+                    onClick={handleNavigatePrev}
                 >
                     ←
                 </button>
@@ -133,7 +110,7 @@ export default function ChapterNavHeader({
                 <input 
                     name="title"
                     onKeyDown={handleOnKeyDown}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentTitle(e.target.value)}
+                    onChange={(e) => setCurrentTitle(e.target.value)}
                     value={currentTitle}
                     type="text" 
                     autoFocus
@@ -142,16 +119,16 @@ export default function ChapterNavHeader({
                 <>
                     {isCreating && (<h2>Creating new chapter...</h2>)}
                     {isUpdating && (<h2>Updating title...</h2>)}
-                    {(isCreating === false) && (isUpdating === false) && <h2>{chapterTitle}</h2>}
+                    {!isCreating && !isUpdating && <h2>{chapterTitle}</h2>}
                 </>
             )}
             <button
                 className={nextChapterId ? styles['nav-button'] : styles['create-button']}
                 onClick={handleClickNext}
-                onMouseEnter={ nextChapterId && (() => router.prefetch(`/chapters/${storyId}/${nextChapterId}`))}
+                onMouseEnter={nextChapterId ? () => router.prefetch(`/chapters/${storyId}/${nextChapterId}`) : undefined}
             >
-                {nextChapterId ? "→": "+"}
+                {nextChapterId ? "→" : "+"}
             </button>
         </div>
-    )
+    );
 }

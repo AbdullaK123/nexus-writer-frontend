@@ -23,5 +23,16 @@ export interface EditorState {
   isDirty: boolean; // Has unsaved changes
 }
 
+export type ShortcutCallback = (event: KeyboardEvent) => void;
+
+export interface Shortcut {
+    key: string;
+    ctrlKey?: boolean;
+    metaKey?: boolean; // For Command key on macOS
+    shiftKey?: boolean;
+    altKey?: boolean;
+    callback: ShortcutCallback;
+}
+
 
 

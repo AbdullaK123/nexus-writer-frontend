@@ -3,112 +3,39 @@ import StoryDetailSidebar from "@/components/ui/StoryDetailSidebar/StoryDetailSi
 import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHeader";
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
-import { useChapters } from "@/app/hooks/useChapters";
-import { useSelectedChapter } from "@/app/hooks/useSelectedChapter";
-import { StoryInfoCardProps } from "@/app/types/components";
-import { getChapterStatus, CreateChapterRequest } from "@/app/types";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useStoryDetail } from '@/app/hooks/useStoryDetail';
 
 export default function Page() {
-    const router = useRouter()
-    const params = useParams()
-    const storyId = params?.id as string
-    const [filter, setFilter] = useState('')
-
     const {
-        chapters,
+        storyId,
         isLoading,
-        isError,
-        create,
+        storyInfo,
+        chaptersToShow,
+        title,
+        onFilterChange,
+        onCreateChapter,
         isCreating,
-        creationError,
-        creationSuccess
-    } = useChapters(storyId)
-
-    useEffect(() => {
-        if (isError) {
-            alert(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`)
-            router.push('/dashboard')
-        }
-    }, [isError, router, storyId])
-
-    useEffect(() => {
-          if (creationError) {
-              alert('Failed to create chapter. Please check the server logs')
-              return
-          }
-    }, [creationError])
-
-    const { 
-        selectedChapter, 
-        selectChapter, 
+        creationSuccess,
+        selectedChapter,
         isLoadingChapter,
-        clearSelection
-     } = useSelectedChapter(storyId)
+        handleChapterStatusUpdate,
+    } = useStoryDetail();
 
-    // Don't run this check until we have a storyId
-    if (storyId && !chapters && !isLoading) {
-        alert(`Story with id ${storyId} not found!`)
-        router.push('/dashboard')
-        return
-    }
-
-    // Show loading state while resolving params or loading chapters
-    if (!storyId || isLoading) {
+    if (isLoading) {
         return (
             <div className={styles['centered']}>
                 <h1>Loading...</h1>
             </div>
-        )
+        );
     }
-
-    const numChapters = chapters.chapters.length 
-    const wordCount = chapters.chapters.reduce((acc, current) => acc + current.wordCount, 0) 
-    const chaptersWithStatusAndNumbers = 
-        chapters.chapters.map((chapter, index) => {
-            return {
-                ...chapter,
-                storyId: storyId,
-                chapterNumber: index + 1,
-                status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-                handleOnClick: () => selectChapter(chapter.id),
-                handleClearSelection: clearSelection
-            }
-        })
-
-    const getChaptersToShow = () => {
-        if (!chapters) return []
-        if (!filter) return chaptersWithStatusAndNumbers
-        return chaptersWithStatusAndNumbers.filter((chapter) => chapter.status === filter)
-    }
-
-    const chaptersToShow = getChaptersToShow()
-
-    const storyInfo: StoryInfoCardProps = {
-        status: chapters?.storyStatus || "Ongoing",
-        totalChapters: numChapters,
-        wordCount: wordCount,
-        updatedAt: chapters?.storyLastUpdated || new Date()
-    }
-
-    const onCreateChapter = (chapterInfo: CreateChapterRequest) => {
-        if(!chapterInfo.title.trim()) {
-            alert('Chapter title can not be empty!')
-            return
-        }
-        create(chapterInfo)
-    }
-
 
     return (
         <div className={styles['story-detail-page']}>
             <StoryDetailHeader 
                 storyId={storyId} 
-                title={chapters.storyTitle} 
+                title={title} 
                 onCreateChapter={onCreateChapter}
-                onFilterChange={setFilter}
+                onFilterChange={onFilterChange}
                 isCreating={isCreating}
                 creationSuccess={creationSuccess}
             />
@@ -124,7 +51,7 @@ export default function Page() {
                 ) : selectedChapter ? (
                     <ChapterPreview 
                         {...selectedChapter} 
-                        onStatusUpdate={() => selectChapter(selectedChapter.id)}
+                        onStatusUpdate={handleChapterStatusUpdate}
                     />
                 ) : (
                     <div className={styles['centered']}>
@@ -133,5 +60,5 @@ export default function Page() {
                 )}
             </div>
         </div>
-    )
+    );
 }

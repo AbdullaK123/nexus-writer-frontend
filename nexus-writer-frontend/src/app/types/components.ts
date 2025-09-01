@@ -105,3 +105,9 @@ export interface AutoSavePluginProps {
     chapterId: string;
     intervalMs?: number;
 }
+
+export interface LexicalEditorProps {
+    storyId: string;
+    chapterId: string;
+    initialContent?: string
+}

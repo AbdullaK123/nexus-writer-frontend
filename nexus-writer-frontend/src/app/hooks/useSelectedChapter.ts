@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { ChapterPreviewProps, transformChapterResponse } from "@/app/types"
+import { ChapterPreviewProps } from "@/app/types"
+import { transformChapterResponse } from "../lib/utils"
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 
