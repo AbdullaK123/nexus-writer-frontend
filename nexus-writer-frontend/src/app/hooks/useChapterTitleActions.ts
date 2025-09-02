@@ -1,6 +1,8 @@
-import { useEffect, useState, useRef } from "react"
-import { useChapters } from "./useChapters"
-import { useContextMenu } from "./useContextMenu"
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useChapters } from "./useChapters";
+import { useContextMenu } from "./useContextMenu";
+import { useEditable } from "./useEditable"; // Import the new hook
+import { useEffect } from "react";
 
 export function useChapterTitleActions(
     storyId: string, 
@@ -9,94 +11,73 @@ export function useChapterTitleActions(
     handleOnClick: () => void, 
     handleClearSelection: () => void
 ) {
-    const { menu, openMenu, closeMenu } = useContextMenu()
+    const { menu, openMenu, closeMenu } = useContextMenu();
     const { 
-        deleteChapter,
-        isDeleting,
-        deleteError,
-        deleteSuccess,
-        update,
+        deleteChapter, 
+        isDeleting, 
+        deleteError, 
+        deleteSuccess, 
+        update, 
         isUpdating,
-        updateError,
+        updateError, 
         updateSuccess
-    } = useChapters(storyId)
-    const [updatingTitle, setUpdatingTitle] = useState(false)
-    const [chapterTitle, setChapterTitle] = useState(title)
-    const inputRef = useRef<HTMLInputElement>(null)
+     } = useChapters(storyId);
 
+    const handleSave = (newTitle: string) => {
+        update({ chapterId, requestBody: { title: newTitle } });
+    };
 
-    useEffect(() => {
-          if (updatingTitle) {
-              inputRef.current?.focus()
-              inputRef.current?.select()
-          }
-    }, [updatingTitle])
+    const { 
+        isEditing, 
+        value, 
+        setValue, 
+        ref, 
+        handleDoubleClick, 
+        handleKeyDown
+     } = useEditable({
+        initialValue: title,
+        onSave: handleSave,
+    });
 
     useEffect(() => {
         if (updateSuccess) {
-            setUpdatingTitle(false)
-            handleOnClick()
+            handleOnClick();
         }
-    }, [updateSuccess])
-    
+    }, [updateSuccess]);
+
     useEffect(() => {
         if (deleteSuccess) {
-            handleClearSelection()
+            handleClearSelection();
         }
-    }, [deleteSuccess])
+    }, [deleteSuccess]);
 
     useEffect(() => {
-        if (updateError) {
-            alert(`Failed to update chapter. Check server logs.`)
-            return
-        }
-    }, [updateError])
-    
-    useEffect(() => {
-        if (deleteError) {
-            alert('Failed to delete chapter. Check server logs.')
-            return
-        }
-    }, [deleteError])
+        if (updateError) alert(`Failed to update chapter. Check server logs.`);
+    }, [updateError]);
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setChapterTitle(e.target.value)
-    }
-    
-    const handleOnDoubleClick = () => {
-        setUpdatingTitle(true)
-    }
-    
-    const handleOnEnterDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") {
-            e.preventDefault()
-            setUpdatingTitle(false)
-            update({ chapterId: chapterId, requestBody: { title: chapterTitle} })
-        }
-        if (e.key === "Escape") {
-            setUpdatingTitle(false)
-            setChapterTitle(title) 
-        }
-    }
+    useEffect(() => {
+        if (deleteError) alert('Failed to delete chapter. Check server logs.');
+    }, [deleteError]);
 
     const handleOnAction = (action: string) => {
-        if (action !== 'delete') return;
-        deleteChapter(chapterId)
-        closeMenu()
-    }
+        if (action === 'delete') {
+            deleteChapter(chapterId);
+            closeMenu();
+        }
+    };
 
     return {
         menu,
         openMenu,
         closeMenu,
-        chapterTitle,
-        updatingTitle,
+        isEditingTitle: isEditing, 
+        titleValue: value,        
+        setTitleValue: setValue,  
+        containerRef: ref,        
         isUpdating,
         isDeleting,
-        inputRef,
-        handleOnChange,
-        handleOnDoubleClick,
-        handleOnEnterDown,
-        handleOnAction
-    }
+        handleOnAction,
+        handleTitleDoubleClick: handleDoubleClick, 
+        handleTitleKeyDown: handleKeyDown,         
+    };
 }

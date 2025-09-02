@@ -111,3 +111,8 @@ export interface LexicalEditorProps {
     chapterId: string;
     initialContent?: string
 }
+
+export type EditableStoryTitleProps = {
+    storyId: string;
+    title: string;
+};

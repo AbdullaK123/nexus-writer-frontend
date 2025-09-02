@@ -1,10 +1,10 @@
-import { ChapterListItemProps } from "@/app/types"
-import styles from './ChapterListItem.module.css'
+import { ChapterListItemProps } from "@/app/types";
+import styles from './ChapterListItem.module.css';
 import ContextMenu from "../ContextMenu/ContextMenu";
 import { useInView } from "@/app/hooks/useInView";
 import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib/utils";
 import { useChapterTitleActions } from "@/app/hooks/useChapterTitleActions";
-
+import { useCallback, useRef, useEffect } from "react";
 
 export default function ChapterListItem({
     storyId,
@@ -21,34 +21,47 @@ export default function ChapterListItem({
         menu,
         openMenu,
         closeMenu,
-        chapterTitle,
-        updatingTitle,
-        inputRef,
+        isEditingTitle,
+        titleValue,
+        setTitleValue,
+        containerRef, // From useEditable
         isUpdating,
         isDeleting,
-        handleOnChange,
         handleOnAction,
-        handleOnDoubleClick,
-        handleOnEnterDown
+        handleTitleDoubleClick,
+        handleTitleKeyDown
     } = useChapterTitleActions(
         storyId, 
         id, 
         title, 
         handleOnClick, 
         handleClearSelection
-    )
-    const { elementRef } = useInView(1, closeMenu)
-    
+    );
+
+    const { elementRef } = useInView(1, closeMenu);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    // This callback ref assigns the DOM node to both refs
+    const combinedRef = useCallback((node: HTMLDivElement) => {
+        elementRef.current = node;
+        (containerRef as React.MutableRefObject<HTMLDivElement>).current = node;
+    }, [elementRef, containerRef]);
+
+    // Focus the input when editing starts
+    useEffect(() => {
+        if (isEditingTitle) {
+            inputRef.current?.focus();
+            inputRef.current?.select();
+        }
+    }, [isEditingTitle]);
+
     return (
-        <div
-            ref={elementRef} 
-            onClick={closeMenu}
-        >
+        <div ref={combinedRef}>
             <div 
                 onClick={handleOnClick} 
                 className={`${styles['chapter-list-item-container']} ${menu.visible && styles['no-hover']}`}
                 onContextMenu={openMenu}
-                onDoubleClick={handleOnDoubleClick}
+                onDoubleClick={handleTitleDoubleClick} // Use the handler from the hook
             > 
                 <div className={`${styles['status-indicator']} ${styles[getStatusIndicatorClass(status)]}`} />
                 <div className={styles['chapter-metadata-container']}> 
@@ -56,21 +69,22 @@ export default function ChapterListItem({
                         {chapterNumber}
                     </span>
                     <div className={styles['flex-col-container']}>
-                        {updatingTitle ? (
+                        {isEditingTitle ? (
                             <input 
                                 ref={inputRef}
                                 name="title"
                                 type="text"
-                                value={chapterTitle}
-                                onChange={handleOnChange}
-                                onKeyDown={handleOnEnterDown}
+                                value={titleValue} // Use value from the hook
+                                onChange={(e) => setTitleValue(e.target.value)} // Use setter from the hook
+                                onKeyDown={handleTitleKeyDown} // Use the handler from the hook
                             />
-                        ): (isUpdating === false) && 
-                           (isDeleting === false) && 
-                           <h3>{title}</h3>
-                        }
-                        {isUpdating && (<h3>Updating Title...</h3>)}
-                        {isDeleting && (<h3>Deleting Chapter...</h3>)}
+                        ) : (
+                           <>
+                            {isUpdating && <h3>Updating Title...</h3>}
+                            {isDeleting && <h3>Deleting Chapter...</h3>}
+                            {!isUpdating && !isDeleting && <h3>{title}</h3>}
+                           </>
+                        )}
                         <div className={styles['chapter-stats']}>
                             <span>{formatWordCount(wordCount)}</span>
                             <span>{status}</span>
@@ -90,5 +104,5 @@ export default function ChapterListItem({
                 />
             )}
         </div>
-    )
+    );
 }

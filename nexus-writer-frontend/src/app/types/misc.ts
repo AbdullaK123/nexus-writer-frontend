@@ -34,5 +34,10 @@ export interface Shortcut {
     callback: ShortcutCallback;
 }
 
+export interface UseEditableProps {
+    initialValue: string;
+    onSave: (newValue: string) => void;
+}
+
 
 

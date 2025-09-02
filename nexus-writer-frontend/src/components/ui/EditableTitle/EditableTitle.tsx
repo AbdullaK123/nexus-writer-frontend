@@ -1,104 +1,32 @@
-import { useState, useEffect, useRef } from "react"
 import { useStories } from "@/app/hooks/useStories"
+import { EditableStoryTitleProps } from "@/app/types";
+import { useEditable } from "@/app/hooks/useEditable";
 
-type EditableStoryTitleProps = {
-    storyId: string;
-    title: string;
-}
+export default function EditableStoryTitle({ storyId, title }: EditableStoryTitleProps) {
+    const { update, isUpdating } = useStories();
 
-export default function EditableStoryTitle({
-    storyId,
-    title
-}: EditableStoryTitleProps) {
+    const handleSave = (newTitle: string) => {
+        update({ storyId, body: { title: newTitle } });
+    };
 
-    const [storyTitle, setStoryTitle] = useState(title)
-    const [isEditing, setIsEditing] = useState(false)
-    const componentRef = useRef(null)
-    const {
-        update,
-        updatedStory,
-        isUpdated,
-        updateError,
-        isUpdating
-    } = useStories()
-
-    useEffect(() => {
-        if (updateError) {
-            alert('Failed to update story title')
-            return
-        }
-    }, [updateError])
-
-    useEffect(() => {
-        if (isUpdated) {
-            alert('Successfully updated story title')
-            return
-        }
-    }, [isUpdated])
-
-    useEffect(() => {
-        if (isUpdated && updatedStory?.title) {
-            setStoryTitle(updatedStory?.title)
-        }
-    }, [isUpdated, updatedStory])
-
-    useEffect(() => {
-
-        if (!isEditing) return;
-
-        const handleClickOutside = (e) => {
-            if (componentRef.current && !componentRef.current.contains(e.target)) {
-                console.log('Clicked outside!')
-                setIsEditing(false)
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside)
-
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [isEditing])
-
-
-    const handleOnKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            setIsEditing(false)
-            console.log('Updating story title...')
-            update({
-                storyId: storyId,
-                body: {
-                    title: storyTitle
-                }
-            })
-        }
-        if (e.key === "Escape") {
-            setIsEditing(false)
-            setStoryTitle(title)
-        }
-    }
-
-    const handleOnDoubleClick = () => {
-        setIsEditing(true)
-    }
+    const { isEditing, value, setValue, ref, handleDoubleClick, handleKeyDown } = useEditable({
+        initialValue: title,
+        onSave: handleSave,
+    });
 
     return (
-        <div
-            onDoubleClick={handleOnDoubleClick}
-            ref={componentRef} 
-        >
-           {isEditing ? (
+        <div onDoubleClick={handleDoubleClick} ref={ref}>
+            {isEditing ? (
                 <input
-                    id="title"
-                    name="title"
                     type="text"
-                    value={storyTitle}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStoryTitle(e.target.value)}
-                    onKeyDown={handleOnKeyDown}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     autoFocus
                 />
-            ): (
-                <h2>{isUpdating ? 'Updating story title...' : storyTitle}</h2>
+            ) : (
+                <h2>{isUpdating ? 'Updating...' : title}</h2>
             )}
         </div>
-    )
+    );
 }
