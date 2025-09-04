@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useChapters } from "./useChapters";
 import { useContextMenu } from "./useContextMenu";
 import { useEditable } from "./useEditable"; // Import the new hook
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function useChapterTitleActions(
     storyId: string, 
@@ -11,6 +10,12 @@ export function useChapterTitleActions(
     handleOnClick: () => void, 
     handleClearSelection: () => void
 ) {
+    const handleOnClickRef = useRef(handleOnClick);
+    const handleClearSelectionRef = useRef(handleClearSelection);
+    
+    // Update refs when callbacks change
+    handleOnClickRef.current = handleOnClick;
+    handleClearSelectionRef.current = handleClearSelection;
     const { menu, openMenu, closeMenu } = useContextMenu();
     const { 
         deleteChapter, 
@@ -41,13 +46,13 @@ export function useChapterTitleActions(
 
     useEffect(() => {
         if (updateSuccess) {
-            handleOnClick();
+            handleOnClickRef.current()
         }
     }, [updateSuccess]);
 
     useEffect(() => {
         if (deleteSuccess) {
-            handleClearSelection();
+            handleClearSelectionRef.current()
         }
     }, [deleteSuccess]);
 

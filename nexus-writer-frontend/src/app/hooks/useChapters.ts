@@ -14,7 +14,7 @@ export function useChapters(storyId: string) {
     });
 
     const useChapter = (chapterId: string, asLexicalJson: boolean) => useQuery({
-        queryKey: ['chapters', chapterId, asLexicalJson ? 'True' : 'False'], // This key is more specific, keep it here
+        queryKey: ['chapters', chapterId, asLexicalJson ? 'True' : 'False'],
         queryFn: () => chapterService.getChapter(chapterId, asLexicalJson),
     });
 
@@ -38,18 +38,24 @@ export function useChapters(storyId: string) {
             if (context?.previousListData) {
                 cache.rollback(cache.CACHE_KEYS.chapterList(storyId), context.previousListData);
             }
-            if (context?.previousChapterData) {
-                cache.rollback(cache.CACHE_KEYS.chapter(variables.chapterId, true), context.previousChapterData);
-                cache.rollback(cache.CACHE_KEYS.chapter(variables.chapterId, false), context.previousChapterData);
+            if (context?.previousChapterDataTrue) {
+                cache.rollback(cache.CACHE_KEYS.chapter(variables.chapterId, true), context.previousChapterDataTrue);
+            }
+            if (context?.previousChapterDataFalse) {
+                cache.rollback(cache.CACHE_KEYS.chapter(variables.chapterId, false), context.previousChapterDataFalse);
             }
         },
-        onSettled: () => cache.invalidateChapterList(storyId),
+        onSettled: (data, error, variables) => {
+            cache.invalidateChapterList(storyId);
+            if (variables.chapterId) {
+                cache.invalidateChapter(variables.chapterId);
+            }
+        },
     });
 
     const deleteMutation = useMutation({
         mutationFn: chapterService.deleteChapter,
         onSuccess: () => {
-            // For delete, simple invalidation is often sufficient and safer
             cache.invalidateChapterList(storyId);
             cache.invalidateStories();
         },
@@ -69,7 +75,7 @@ export function useChapters(storyId: string) {
         update: updateMutation.mutate,
         isUpdating: updateMutation.isPending,
         updateSuccess: updateMutation.isSuccess,
-        updateError: updateMutation.isError,
+        updateError: updateMutation.error,
         updatedChapter: updateMutation.data,
         deleteChapter: deleteMutation.mutate,
         isDeleting: deleteMutation.isPending,

@@ -4,6 +4,10 @@ export function useInView(threshold: number, onIntersect: () => void) {
     const [isInView, setIsInView] = useState(false)
     const elementRef = useRef<HTMLDivElement>(null)
 
+    // to prevent infinite loops
+    const onIntersectRef = useRef(onIntersect)
+    onIntersectRef.current = onIntersect
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -24,7 +28,7 @@ export function useInView(threshold: number, onIntersect: () => void) {
     useEffect(() => {
         console.log(`Are we in view?: ${isInView}`)
         if (!isInView) {
-            onIntersect()
+            onIntersectRef.current()
         }
     }, [isInView])
 

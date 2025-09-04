@@ -42,13 +42,19 @@ export function useCacheInvalidation() {
 
     const optimisticChapterUpdate = useCallback(async (storyId: string, chapterId: string, updates: Partial<ChapterListItemProps>) => {
         const listKey = CACHE_KEYS.chapterList(storyId);
-        const chapterKey = CACHE_KEYS.chapter(chapterId, true);
+        const chapterKeyTrue = CACHE_KEYS.chapter(chapterId, true);
+        const chapterKeyFalse = CACHE_KEYS.chapter(chapterId, false);
+
 
         await queryClient.cancelQueries({ queryKey: listKey });
-        await queryClient.cancelQueries({ queryKey: chapterKey });
+        await queryClient.cancelQueries({ queryKey: chapterKeyTrue });
+        await queryClient.cancelQueries({ queryKey: chapterKeyFalse });
+
 
         const previousListData = queryClient.getQueryData(listKey);
-        const previousChapterData = queryClient.getQueryData(chapterKey);
+        const previousChapterDataTrue = queryClient.getQueryData(chapterKeyTrue);
+        const previousChapterDataFalse = queryClient.getQueryData(chapterKeyFalse);
+
 
         // Update chapter in the list
         queryClient.setQueryData(listKey, (oldData: any) => {
@@ -62,9 +68,11 @@ export function useCacheInvalidation() {
         });
 
         // Update individual chapter
-        queryClient.setQueryData(chapterKey, (oldData: any) => oldData ? { ...oldData, ...updates } : undefined);
+        queryClient.setQueryData(chapterKeyTrue, (oldData: any) => oldData ? { ...oldData, ...updates } : undefined);
+        queryClient.setQueryData(chapterKeyFalse, (oldData: any) => oldData ? { ...oldData, ...updates } : undefined);
 
-        return { previousListData, previousChapterData };
+
+        return { previousListData, previousChapterDataTrue, previousChapterDataFalse };
     }, [queryClient]);
 
 
@@ -78,6 +86,12 @@ export function useCacheInvalidation() {
         return queryClient.invalidateQueries({ queryKey: CACHE_KEYS.chapterList(storyId) });
     }, [queryClient]);
 
+    const invalidateChapter = useCallback((chapterId: string) => {
+        queryClient.invalidateQueries({ queryKey: CACHE_KEYS.chapter(chapterId, true) });
+        queryClient.invalidateQueries({ queryKey: CACHE_KEYS.chapter(chapterId, false) });
+    }, [queryClient]);
+
+
     const rollback = useCallback((queryKey: any[], previousData: unknown) => {
         queryClient.setQueryData(queryKey, previousData);
     }, [queryClient]);
@@ -89,6 +103,7 @@ export function useCacheInvalidation() {
         optimisticChapterUpdate,
         invalidateStories,
         invalidateChapterList,
+        invalidateChapter,
         rollback,
     };
 }

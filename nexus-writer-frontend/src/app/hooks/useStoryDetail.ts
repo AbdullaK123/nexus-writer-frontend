@@ -29,6 +29,9 @@ export function useStoryDetail() {
         clearSelection
      } = useSelectedChapter(storyId);
 
+     const stableChapterSelect = useCallback((chapterId: string) => selectChapter(chapterId), [selectChapter])
+     const stableClearSelection = useCallback(() => clearSelection(), [clearSelection])
+
     useEffect(() => {
         if (isError) {
             alert(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`);
@@ -50,19 +53,19 @@ export function useStoryDetail() {
 
     const chapters = useMemo(() => {
         if (!chapterData?.chapters) return [];
-
+    
         const chaptersWithStatusAndNumbers = chapterData.chapters.map((chapter, index) => ({
             ...chapter,
             storyId: storyId,
             chapterNumber: index + 1,
             status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-            handleOnClick: () => selectChapter(chapter.id),
-            handleClearSelection: clearSelection,
+            handleOnClick: () => stableChapterSelect(chapter.id),
+            handleClearSelection: stableClearSelection,
         }));
 
         if (!filter) return chaptersWithStatusAndNumbers;
         return chaptersWithStatusAndNumbers.filter((chapter) => chapter.status === filter);
-    }, [chapterData, filter, storyId, selectChapter, clearSelection]);
+    }, [chapterData, filter, storyId, stableChapterSelect, stableClearSelection]);
 
     const storyInfo = useMemo(() => {
         if (!chapterData) return null;
