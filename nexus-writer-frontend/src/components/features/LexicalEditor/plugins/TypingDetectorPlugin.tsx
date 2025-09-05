@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useTypingState } from '@/app/hooks/useTypingState';
 import { useEditorListener } from '@/app/hooks/useEditorListener';
