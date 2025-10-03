@@ -1,11 +1,12 @@
-import { ChapterContextMenuProps } from "@/app/types";
+import { ContextMenuProps } from "@/app/types";
+import {Button} from "@/components/ui/Button";
 
 export default function ChapterContextMenu( {
     x,
     y,
     onAction,
     onClose
-}: ChapterContextMenuProps ) {
+}: ContextMenuProps ) {
     return (
         <div onClick={() => onClose()}>
              <div
@@ -16,12 +17,15 @@ export default function ChapterContextMenu( {
                     zIndex: 1000 
                 }}  
             >
-                <button 
+                <Button
                     className='btn-secondary'
                     onClick={() => onAction('delete')}
                 >
                     Delete
-                </button>
+                </Button>
+                 <Button>
+                     Test
+                 </Button>
             </div>
         </div>
     )

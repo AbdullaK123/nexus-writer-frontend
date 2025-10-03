@@ -1,5 +1,6 @@
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
+import {TargetResponse} from "@/app/types/analytics";
 
 export interface StoryDetailHeaderProps {
   title: string;
@@ -48,12 +49,13 @@ export interface ChapterListItemProps {
 }
 
 export interface StoryListItemProps {
-  id: string;
+  storyId: string;
   title: string;
   status: "Complete" | "On Hiatus" | "Ongoing";
   wordCount: number;
   handleOnClick: () => void;
   handleClearSelection: () => void;
+  handleOnShowTargetForm: (mode: 'creating' | 'editing' | 'deleting', target?: TargetResponse) => void;
 }
 
 export interface ChapterPreviewProps {
@@ -97,7 +99,7 @@ export interface AuthWrapperProps {
   requireAuth?: boolean;
 }
 
-export interface ChapterContextMenuProps {
+export interface ContextMenuProps {
   x: number;
   y: number;
   onAction: (action: string) => void;
@@ -125,3 +127,17 @@ export type EditableStoryTitleProps = {
     storyId: string;
     title: string;
 };
+
+export type TargetFormProps = {
+  storyId: string
+  isOpen: boolean
+  onClose: () => void
+  onSave: () => void
+  onCancel: () => void
+  mode: 'creating' | 'editing' | 'deleting'
+  target?: TargetResponse
+}
+
+export type StoryListProps = {
+  stories: StoryListItemProps[];
+}

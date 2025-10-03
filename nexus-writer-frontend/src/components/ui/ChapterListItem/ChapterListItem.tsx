@@ -4,7 +4,7 @@ import ContextMenu from "../ContextMenu/ContextMenu";
 import { useInView } from "@/app/hooks/useInView";
 import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib/utils";
 import { useChapterTitleActions } from "@/app/hooks/useChapterTitleActions";
-import { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/Input";
 
 export default function ChapterListItem({
@@ -45,7 +45,7 @@ export default function ChapterListItem({
     // This callback ref assigns the DOM node to both refs
     const combinedRef = useCallback((node: HTMLDivElement) => {
         elementRef.current = node;
-        (containerRef as React.MutableRefObject<HTMLDivElement>).current = node;
+        (containerRef as React.RefObject<HTMLDivElement>).current = node;
     }, [elementRef, containerRef]);
 
     // Focus the input when editing starts

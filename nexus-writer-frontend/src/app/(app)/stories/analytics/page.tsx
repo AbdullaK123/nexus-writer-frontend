@@ -21,18 +21,18 @@ The Components we need:
     7. BarChart -> Displays writing output over time. Reacts to changes in the FilterBar component (well all dashboard components do). The target line should be visible and indicate
        how often and when the user is going above or below the target
     8. FilterBar -> Dynamic filter for dashboard. User can filter select different frequencies (daily, weekly, monthly), along with date ranges.
-    9. CreateTargetForm -> Form where user can create, edit, or delete targets for a story. It is wrapped in a modal, and it gets triggered whenever a user clicks on a StoryListItem corresponding to a
+    9. TargetForm -> Form where user can create, edit, or delete targets for a story. It is wrapped in a modal, and it gets triggered whenever a user clicks on a StoryListItem corresponding to a
        story with no target set. We need extensive error handling to stay in line with the backend. We need think about how we handle the create, edit, and delete states. Maybe a seperate form for each?
-    10. AnalyticsContextMenu -> A context menu that appears when we right click a StoryListItem Component. It provides access to the Target Form Component and the options should be 
+    10. AnalyticsContextMenu.tsx -> A context menu that appears when we right click a StoryListItem Component. It provides access to the Target Form Component and the options should be
         Create Target, Update Target, Delete Target. Each option takes us to the appropriate modal form.
 
 The hooks we will need:
 
     1. useStoryAnalytics -> uses react query to fetch analytics data from /stories/analytics/ in the backend. It should have everything we need for all dashboard components
     2. useSelectedStory -> very similar to useSelectedChapter. It will power selection for different story analytics dashboards.
-    3. useTargets -> Will be essential for the CreateTargetForm Component
+    3. useTargets -> Will be essential for the TargetForm Component
     4. useContextMenu -> This hook already exists but we will need to reuse it.
-    5. useModal -> To manage the modal wrapper around CreateTargetForm
+    5. useModal -> To manage the modal wrapper around TargetForm
     6. useStories -> To fetch a user's stories and their titles.
 */
 'use client'

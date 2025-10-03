@@ -1,20 +1,41 @@
 import { StoryListItemProps } from "@/app/types";
 import styles from "./StoryListItem.module.css";
 import { formatWordCount } from "@/app/lib/utils";
+import {useInView} from "@/app/hooks/useInView";
+import {useStoryListItemActions} from "@/app/hooks/useStoryListItemActions";
+import AnalyticsContextMenu from "@/components/ui/AnalyticsContextMenu/AnalyticsContextMenu";
 
 export default function StoryListItem({
-    id,
+    storyId,
     title,
     status,
     wordCount,
     handleOnClick,
-    handleClearSelection
+    handleClearSelection,
+    handleOnShowTargetForm
 }: StoryListItemProps) {
+    const {
+        menu,
+        closeMenu,
+        openMenu,
+        handleOnAction
+    } = useStoryListItemActions(
+        storyId,
+        handleOnClick,
+        handleClearSelection,
+        handleOnShowTargetForm
+    )
+    const {elementRef} = useInView(1, closeMenu)
+
     return (
-        <div>
-            <div className={styles['story-metadata-container']}>
+        <div ref={elementRef}>
+            <div
+                onClick={handleOnClick}
+                className={styles['story-metadata-container']}
+                onContextMenu={openMenu}
+            >
                 <div className={styles['flex-col-container']}>
-                    <h3>{title}</h3>
+                    <h2>{title}</h2>
                     <div>
                         <span>{formatWordCount(wordCount)}</span>
                         <span>{status}</span>
@@ -24,6 +45,14 @@ export default function StoryListItem({
                     →
                 </div>
             </div>
+            {menu.visible && (
+                <AnalyticsContextMenu 
+                    x={menu.x}
+                    y={menu.y}
+                    onClose={closeMenu}
+                    onAction={handleOnAction}   
+                />
+            )}
         </div>
     )
 }

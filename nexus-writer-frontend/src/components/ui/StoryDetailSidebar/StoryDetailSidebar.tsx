@@ -1,6 +1,6 @@
 import StoryInfoCard from "../StoryInfoCard/StoryInfoCard";
 import ChapterListItem from "../ChapterListItem/ChapterListItem";
-import { StoryDetailSideBarProps } from "@/app/types/misc";
+import { StoryDetailSideBarProps } from "@/app/types";
 import styles from './StoryDetailSidebar.module.css'
 
 export default function StoryDetailSidebar({ 

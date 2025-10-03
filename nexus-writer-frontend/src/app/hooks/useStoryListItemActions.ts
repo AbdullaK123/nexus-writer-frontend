@@ -1,11 +1,13 @@
 import {useContextMenu} from "@/app/hooks/useContextMenu";
 import {useRef} from "react";
+import {TargetResponse} from "@/app/types";
 
 
 export function useStoryListItemActions(
     storyId: string,
     handleOnClick: () => void,
     handleClearSelection: () => void,
+    handleOnShowTargetForm: (mode: string, target?: TargetResponse) => void
 ) {
 
     const {
@@ -14,27 +16,30 @@ export function useStoryListItemActions(
         closeMenu
     } = useContextMenu()
 
-    const handleOnClickRef = useRef(handleOnClick);
-    const handleClearSelectionRef = useRef(handleClearSelection);
-    handleOnClickRef.current = handleOnClick;
-    handleClearSelectionRef.current = handleClearSelection;
+    const handleOnShowTargetFormRef = useRef(handleOnShowTargetForm);
+    handleOnShowTargetFormRef.current = handleOnShowTargetForm;
 
-    const handleOnAction = (action: string) => {
-        if (action === 'Create Target') {
+    const handleOnAction = (
+        action: 'Create a Target' | 'Update a Target' | 'Delete a Target',
+        target?: TargetResponse
+    ) => {
+        if (action === 'Create a Target') {
             // logic for showing modal form for creating target
-        } else if (action === 'Update Target') {
+            handleOnShowTargetFormRef.current('creating')
+        } else if (action === 'Update a Target') {
             // logic for showing modal form for updating target
+            handleOnShowTargetFormRef.current('updating', target!)
         } else {
             // logic for showing target delete form
+            handleOnShowTargetFormRef.current('deleting', target!)
         }
+        closeMenu();
     }
 
     return {
         menu,
         openMenu,
         closeMenu,
-        handleOnAction,
-        handleOnClick: handleOnClickRef.current,
-        handleClearSelection: handleClearSelectionRef.current
+        handleOnAction
     }
 }
