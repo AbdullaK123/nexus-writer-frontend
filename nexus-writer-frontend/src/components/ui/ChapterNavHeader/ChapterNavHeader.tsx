@@ -4,6 +4,8 @@ import styles from './ChapterNavHeader.module.css'
 import { useChapters } from "@/app/hooks/useChapters";
 import React, { useEffect, useState, useCallback } from "react";
 import { useShortcut } from "@/app/hooks/useShortcut"; // Import the new hook
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 export default function ChapterNavHeader({
     storyId,
@@ -98,16 +100,17 @@ export default function ChapterNavHeader({
             className={styles['chapter-nav-container']}
         >
             {prevChapterId && (
-                <button
+                <Button
+                    variant="secondary"
                     className={styles['nav-button']}
                     onMouseEnter={() => router.prefetch(`/chapters/${storyId}/${prevChapterId}`)}
                     onClick={handleNavigatePrev}
                 >
                     ←
-                </button>
+                </Button>
             )}
             {updatingTitle ? (
-                <input 
+                <Input 
                     name="title"
                     onKeyDown={handleOnKeyDown}
                     onChange={(e) => setCurrentTitle(e.target.value)}
@@ -122,13 +125,14 @@ export default function ChapterNavHeader({
                     {!isCreating && !isUpdating && <h2>{chapterTitle}</h2>}
                 </>
             )}
-            <button
+            <Button
+                variant={nextChapterId ? "secondary" : "primary"}
                 className={nextChapterId ? styles['nav-button'] : styles['create-button']}
                 onClick={handleClickNext}
                 onMouseEnter={nextChapterId ? () => router.prefetch(`/chapters/${storyId}/${nextChapterId}`) : undefined}
             >
                 {nextChapterId ? "→" : "+"}
-            </button>
+            </Button>
         </div>
     );
 }

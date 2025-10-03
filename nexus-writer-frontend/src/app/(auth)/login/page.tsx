@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/app/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 
 export default function LoginPage() {
 
@@ -52,7 +54,7 @@ export default function LoginPage() {
                 >
                     Email:
                 </label>
-                <input
+                <Input
                     type='email'
                     name='email'
                     id='email'
@@ -67,7 +69,7 @@ export default function LoginPage() {
                 >
                     Password:
                 </label>
-                <input
+                <Input
                     type='password'
                     name='password'
                     id='password'
@@ -76,9 +78,9 @@ export default function LoginPage() {
                     disabled={isLoggingIn}
                 />
             </div>
-            <button className='btn-primary'>
+            <Button variant="primary">
                 Submit
-            </button>
+            </Button>
             {loginError && (<span className={styles['error-badge']}>{loginError.message}</span>)}
             {isLoggingIn && (<span className={styles['info-badge']}>Logging you in...</span>)}
             {loginSuccess && (<span className={styles['success-badge']}>Success. Redirecting to dashboard...</span>)}

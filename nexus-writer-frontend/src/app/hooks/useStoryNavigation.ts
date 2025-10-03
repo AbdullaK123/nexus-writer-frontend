@@ -44,24 +44,24 @@ export function useStoryNavigation(storyId: string, latestChapterId: string) {
         switch (status) {
             case 'Complete':
                 return [
-                    { text: 'Read', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'Chapters', css: 'btn-primary', onClick: goToStoryPage, onMouseEnter: undefined},
-                    { text: 'Sequel', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'Publish', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined}
+                    { text: 'Read', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
+                    { text: 'Chapters', variant: 'primary' as const, onClick: goToStoryPage, onMouseEnter: undefined},
+                    { text: 'Sequel', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
+                    { text: 'Publish', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined}
                 ]
             case 'On Hiatus':
                 return [
-                    { text: 'Resume', css: 'btn-primary', onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
-                    { text: 'Outline', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'Research', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'AI', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined }
+                    { text: 'Resume', variant: 'primary' as const, onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
+                    { text: 'Outline', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
+                    { text: 'Research', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
+                    { text: 'AI', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined }
                 ]
             default:
                 return [
-                    { text: 'Continue', css: 'btn-primary', onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
-                    { text: 'Chapters', css: 'btn-secondary', onClick: goToStoryPage, onMouseEnter: undefined },
-                    { text: 'Settings', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined },
-                    { text: 'AI', css: 'btn-secondary', onClick: undefined, onMouseEnter: undefined  }
+                    { text: 'Continue', variant: 'primary' as const, onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
+                    { text: 'Chapters', variant: 'secondary' as const, onClick: goToStoryPage, onMouseEnter: undefined },
+                    { text: 'Settings', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
+                    { text: 'AI', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined  }
                 ]
         }
     }

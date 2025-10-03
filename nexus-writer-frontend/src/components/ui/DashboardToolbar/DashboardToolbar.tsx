@@ -4,6 +4,8 @@ import { DashboardToolBarProps } from '@/app/types';
 import { StoryCreateRequest } from '@/app/types/story';
 import styles from './DashboardToolbar.module.css'
 import FilterDropdown from '../FilterDropdown/FilterDropdown';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 const filterOptions = [
     {label: 'All Stories', value: ''},
@@ -40,7 +42,7 @@ export default function DashboardToolbar({
                 filterOptions={filterOptions}
             />
             <div className={styles['story-create-bar-container']}>
-                <input
+                <Input
                     id="title"
                     name="title"
                     type="text"
@@ -54,12 +56,12 @@ export default function DashboardToolbar({
                         }
                     }}
                 />
-                <button
-                    className='btn-primary'
+                <Button
+                    variant="primary"
                     onClick={handleOnClick}
                 >
                     Create Story
-                </button>
+                </Button>
             </div>
         </div>
     )

@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { z } from 'zod';
 import Link from 'next/link';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 const registrationFormSchema = z.object({
     username: z.string()
@@ -138,7 +140,7 @@ export default function RegisterPage() {
                 >
                     Username:
                 </label>
-                <input
+                <Input
                     type='text'
                     name='username'
                     id='username'
@@ -154,7 +156,7 @@ export default function RegisterPage() {
                 >
                     Email:
                 </label>
-                <input
+                <Input
                     type='email'
                     name='email'
                     id='email'
@@ -170,7 +172,7 @@ export default function RegisterPage() {
                 >
                     Password:
                 </label>
-                <input
+                <Input
                     type='password'
                     name='password'
                     id='password'
@@ -186,7 +188,7 @@ export default function RegisterPage() {
                 >
                     Confirm Password:
                 </label>
-                <input
+                <Input
                     type='password'
                     name='confirmPassword'
                     id='confirm-password'
@@ -196,12 +198,12 @@ export default function RegisterPage() {
                 />
                 {errors.confirmPassword && (<span className={styles['error-badge']}>{errors.confirmPassword}</span>)}
             </div>
-            <button 
-                className='btn-primary'
+            <Button 
+                variant="primary"
                 disabled={isProcessing}
             >
                 {isProcessing ? 'Processing...' : 'Submit'}
-            </button>
+            </Button>
             {isRegistering && !registerError && (
                 <span className={styles['info-badge']}>Creating your account...</span>
             )}

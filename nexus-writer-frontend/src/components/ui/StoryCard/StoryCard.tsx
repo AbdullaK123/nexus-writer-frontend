@@ -7,6 +7,7 @@ import ContextMenu from '../ContextMenu/ContextMenu'
 import { formatWordCountStory, getDuration } from "@/app/lib/utils";
 import { useStoryNavigation } from "@/app/hooks/useStoryNavigation";
 import { useStoryContextMenuActions } from "@/app/hooks/useStoryContextMenuActions";
+import { Button } from "@/components/ui/Button";
 
 
 export default function StoryCard({ 
@@ -71,14 +72,14 @@ export default function StoryCard({
 
                 <div className={styles['actions-container']}>
                     {getBtnProps(status).map((prop, key) => (
-                        <button 
+                        <Button 
                             key={key} 
-                            className={prop.css}
+                            variant={prop.variant}
                             onClick={prop.onClick}
                             onMouseEnter={prop.onMouseEnter}
                         >
                             {prop.text}
-                        </button>
+                        </Button>
                     ))}
                 </div>
             </div>

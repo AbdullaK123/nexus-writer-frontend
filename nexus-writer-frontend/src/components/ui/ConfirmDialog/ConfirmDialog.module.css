@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.message {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.danger .message {
+  color: var(--error);
+}
+
+.warning .message {
+  color: var(--warning);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.actions button {
+  min-width: 120px;
+}

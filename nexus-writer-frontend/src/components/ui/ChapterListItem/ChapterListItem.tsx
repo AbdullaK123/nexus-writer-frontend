@@ -5,6 +5,7 @@ import { useInView } from "@/app/hooks/useInView";
 import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib/utils";
 import { useChapterTitleActions } from "@/app/hooks/useChapterTitleActions";
 import { useCallback, useRef, useEffect } from "react";
+import { Input } from "@/components/ui/Input";
 
 export default function ChapterListItem({
     storyId,
@@ -70,7 +71,7 @@ export default function ChapterListItem({
                     </span>
                     <div className={styles['flex-col-container']}>
                         {isEditingTitle ? (
-                            <input 
+                            <Input 
                                 ref={inputRef}
                                 name="title"
                                 type="text"

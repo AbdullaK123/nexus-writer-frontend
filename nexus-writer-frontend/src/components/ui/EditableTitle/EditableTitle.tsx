@@ -1,6 +1,7 @@
 import { useStories } from "@/app/hooks/useStories"
 import { EditableStoryTitleProps } from "@/app/types";
 import { useEditable } from "@/app/hooks/useEditable";
+import { Input } from "@/components/ui/Input";
 
 export default function EditableStoryTitle({ storyId, title }: EditableStoryTitleProps) {
     const { update, isUpdating } = useStories();
@@ -17,7 +18,7 @@ export default function EditableStoryTitle({ storyId, title }: EditableStoryTitl
     return (
         <div onDoubleClick={handleDoubleClick} ref={ref}>
             {isEditing ? (
-                <input
+                <Input
                     type="text"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}

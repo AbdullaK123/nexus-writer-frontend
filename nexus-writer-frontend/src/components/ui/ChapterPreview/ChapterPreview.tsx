@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from 'next/navigation'
 import { useChapters } from '@/app/hooks/useChapters'
 import { useEffect } from 'react'
+import { Button } from '@/components/ui/Button'
 
 export default function ChapterPreview({ 
     id,
@@ -85,20 +86,20 @@ export default function ChapterPreview({
     const getActionButtons = () => {
 
         const baseButtons = [
-            { text: 'Edit Chapter', class: 'btn-primary', onclick: () => router.push(`/chapters/${storyId}/${id}`) },
-            { text: 'Chapter Settings', class: 'btn-secondary', onclick: () => {} }
+            { text: 'Edit Chapter', variant: 'primary' as const, onclick: () => router.push(`/chapters/${storyId}/${id}`) },
+            { text: 'Chapter Settings', variant: 'secondary' as const, onclick: () => {} }
         ];
 
         if (status && status.toLowerCase() === 'published') {
             return [...baseButtons, {
                 text: isUpdating ? 'Unpublishing...' : 'Unpublish', 
-                class: 'btn-secondary', 
+                variant: 'secondary' as const, 
                 onclick: handleUnpublish
             }];
         } else {
             return [...baseButtons, { 
                 text: isUpdating? 'Publishing...': 'Publish' , 
-                class: 'btn-primary', 
+                variant: 'primary' as const, 
                 onclick: handlePublish
              }];
         }
@@ -140,13 +141,13 @@ export default function ChapterPreview({
 
             <div className={styles['chapter-actions']}>
                 {getActionButtons().map((button, index) => (
-                    <button 
+                    <Button 
                         key={index} 
-                        className={button.class}
+                        variant={button.variant}
                         onClick={button.onclick}
                     >
                         {button.text}
-                    </button>
+                    </Button>
                 ))}
             </div>
         </div>

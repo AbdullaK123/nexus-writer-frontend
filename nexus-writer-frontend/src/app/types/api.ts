@@ -37,3 +37,29 @@ export interface ApiChapterContentResponse {
     previous_chapter_id: string;
     next_chapter_id: string;
 }
+
+export interface ApiTargetResponse {
+    quota: number;
+    frequency: "Daily" | "Weekly" | "Monthly";
+    from_date: string;
+    to_date: string;
+    story_id: string;
+    target_id: string;
+}
+
+export interface ApiKpisResponse {
+    total_words: number;
+    total_duration: number;
+    avg_words_per_minute: number;
+}
+
+export interface ApiWordsWrittenRecord {
+    date: string;
+    total_words: number;
+}
+
+export interface ApiStoryAnalyticsResponse {
+    kpis: ApiKpisResponse;
+    words_over_time: ApiWordsWrittenRecord[];
+    target: ApiTargetResponse;
+}

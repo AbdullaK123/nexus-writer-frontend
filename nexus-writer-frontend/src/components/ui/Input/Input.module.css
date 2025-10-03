@@ -1,0 +1,32 @@
+.input {
+  background: var(--background-secondary);
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  padding: 0.75rem;
+  width: 100%;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  box-shadow: 
+    0 0 5px rgba(0, 212, 255, 0.3),
+    inset 0 0 5px rgba(0, 212, 255, 0.1);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+  box-shadow: 
+    0 0 10px var(--accent-primary),
+    0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  border-color: var(--error);
+  box-shadow: 0 0 5px rgba(255, 0, 64, 0.3);
+}

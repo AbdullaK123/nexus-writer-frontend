@@ -47,6 +47,15 @@ export interface ChapterListItemProps {
   handleClearSelection: () => void;
 }
 
+export interface StoryListItemProps {
+  id: string;
+  title: string;
+  status: "Complete" | "On Hiatus" | "Ongoing";
+  wordCount: number;
+  handleOnClick: () => void;
+  handleClearSelection: () => void;
+}
+
 export interface ChapterPreviewProps {
   id?: string; // Chapter ID
   title?: string;

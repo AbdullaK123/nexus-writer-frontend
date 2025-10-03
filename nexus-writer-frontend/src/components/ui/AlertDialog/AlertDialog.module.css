@@ -1,0 +1,65 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.icon {
+  font-size: 3rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.info .icon {
+  background: rgba(0, 128, 255, 0.2);
+  color: var(--info);
+  text-shadow: 0 0 10px var(--info);
+}
+
+.success .icon {
+  background: rgba(0, 255, 65, 0.2);
+  color: var(--success);
+  text-shadow: 0 0 10px var(--success);
+}
+
+.warning .icon {
+  background: rgba(255, 128, 0, 0.2);
+  color: var(--warning);
+  text-shadow: 0 0 10px var(--warning);
+}
+
+.error .icon {
+  background: rgba(255, 0, 64, 0.2);
+  color: var(--error);
+  text-shadow: 0 0 10px var(--error);
+}
+
+.message {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

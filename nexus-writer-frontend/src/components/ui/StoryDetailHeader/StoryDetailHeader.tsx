@@ -1,9 +1,11 @@
 'use client'
 import styles from './StoryDetailHeader.module.css'
-import { StoryDetailHeaderProps } from '@/app/types/misc'
+import { StoryDetailHeaderProps } from '@/app/types'
 import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import FilterDropdown from '../FilterDropdown/FilterDropdown'
+import { Input } from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
 
 
 const filterOptions = [
@@ -45,13 +47,14 @@ export default function StoryDetailHeader({
     return (
         <div className={styles['story-detail-header']}>
             <div className={styles['title-and-arrow-back-container']}>
-                <button 
+                <Button 
                     onClick={() => router.push('/dashboard')}
                     className={styles['back-button']} 
                     aria-label="Go back"
+                    variant="secondary"
                 >
                     ←
-                </button>
+                </Button>
                 <h2>{title}</h2>
             </div>
             <FilterDropdown 
@@ -59,7 +62,7 @@ export default function StoryDetailHeader({
                 filterOptions={filterOptions}
             />
             <div className={styles['chapter-create-container']}>
-                <input 
+                <Input 
                      name="title"
                      id="title"
                      type="text"
@@ -73,13 +76,14 @@ export default function StoryDetailHeader({
                      placeholder='Enter a chapter title...'
                      value={chapterTitle}
                  />
-                 <button 
+                 <Button 
                      onClick={handleOnCreateChapter}
                      disabled={isCreating}
-                     className={`btn-primary ${styles['create-chapter-button']}`}
+                     variant="primary"
+                     className={styles['create-chapter-button']}
                  >
                      {isCreating ? 'Creating Chapter...': '+ Create Chapter'}
-                 </button>
+                 </Button>
             </div>
         </div>
     )
