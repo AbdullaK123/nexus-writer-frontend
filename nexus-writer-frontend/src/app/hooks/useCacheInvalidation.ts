@@ -87,7 +87,7 @@ export function useCacheInvalidation() {
     }, [queryClient]);
 
     const invalidateChapter = useCallback((chapterId: string) => {
-        queryClient.invalidateQueries({ queryKey: CACHE_KEYS.chapter(chapterId, true) });
+        queryClient.invalidateQueries({queryKey: CACHE_KEYS.chapter(chapterId, true)});
         queryClient.invalidateQueries({ queryKey: CACHE_KEYS.chapter(chapterId, false) });
     }, [queryClient]);
 

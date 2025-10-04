@@ -1,22 +1,28 @@
 import {useQueryClient} from "@tanstack/react-query";
 import {useCallback, useState} from "react";
-import {StoryAnalytics} from "@/app/types";
+import {DashboardFilter, StoryAnalytics} from "@/app/types";
 import {transformStoryAnalyticResponse} from "@/app/lib/utils";
 
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+
+function getUrl(storyId: string, filters: DashboardFilter): string {
+    const formattedFromDate = filters.fromDate.toISOString().split('T')[0]
+    const formattedToDate = filters.toDate.toISOString().split('T')[0]
+    return `${API_URL}/stories/${storyId}/analytics?frequency=${filters.frequency}&fromDate=${formattedFromDate}&toDate=${formattedToDate}`
+}
 
 export function useStoryAnalytics() {
     const [selectedStoryAnalytics, setSelectedStoryAnalytics] = useState<StoryAnalytics>()
     const [isLoadingStoryAnalytics, setIsLoadingStoryAnalytics] = useState(false)
     const queryClient = useQueryClient();
 
-    const selectStory = useCallback( async (storyId: string) => {
+    const selectStory = useCallback( async (storyId: string, filters: DashboardFilter) => {
         setIsLoadingStoryAnalytics(true)
         try {
             const response = await queryClient.fetchQuery({
                 queryKey: ['analytics', storyId],
-                queryFn: () => fetch(`${API_URL}/stories/${storyId}/analytics`, {
+                queryFn: () => fetch(getUrl(storyId, filters), {
                     credentials: 'include'
                 }).then((response) => {
                     if (!response.ok) {

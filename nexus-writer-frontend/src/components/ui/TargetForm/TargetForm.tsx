@@ -1,3 +1,4 @@
+'use client'
 import React, {ChangeEvent, FormEvent, useState, useEffect} from "react";
 import {Modal} from "@/components/ui/Modal";
 import {Frequency, TargetFormProps, TargetResponse} from "@/app/types";

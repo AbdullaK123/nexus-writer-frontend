@@ -1,3 +1,4 @@
+'use client'
 import { StoryListItemProps } from "@/app/types";
 import styles from "./StoryListItem.module.css";
 import { formatWordCount } from "@/app/lib/utils";

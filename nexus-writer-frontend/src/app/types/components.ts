@@ -1,6 +1,6 @@
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
-import {TargetResponse} from "@/app/types/analytics";
+import {Frequency, TargetResponse} from "@/app/types/analytics";
 
 export interface StoryDetailHeaderProps {
   title: string;
@@ -140,4 +140,20 @@ export type TargetFormProps = {
 
 export type StoryListProps = {
   stories: StoryListItemProps[];
+}
+
+export type TotalWordsCardProps = {
+  totalWords: number;
+  quota: number;
+}
+
+export type DashboardFilter = {
+    frequency: Frequency;
+    fromDate: Date;
+    toDate: Date;
+}
+
+export type DashboardFilterBarProps = {
+    filter: DashboardFilter;
+    onFilterChange: (filter: DashboardFilter) => void;
 }
