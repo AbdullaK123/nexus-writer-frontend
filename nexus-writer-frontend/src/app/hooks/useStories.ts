@@ -13,8 +13,7 @@ export function useStories() {
         isSuccess 
     } = useQuery({
         queryKey: ['stories'],
-        queryFn: storyService.getStories, // It just calls the service
-        // The `select` function for transformation is now gone
+        queryFn: storyService.getStories
     });
 
     const useStory = (storyId: string) => useQuery({

@@ -36,12 +36,182 @@ The hooks we will need:
     6. useStories -> To fetch a user's stories and their titles.
 */
 'use client'
+import {useStories} from "@/app/hooks/useStories";
+import {useStoryAnalytics} from "@/app/hooks/useStoryAnalytics";
+import {
+    BarChartConfig,
+    DashboardFilter,
+    DataPoint,
+    StoryCardProps,
+    TargetResponse,
+    WordsWrittenRecord
+} from "@/app/types";
+import {useState} from "react";
+import StoryList from "@/components/ui/StoryList/StoryList";
+import DashboardFilterBar from "@/components/ui/DashboardFilterBar/DashboardFilterBar";
+import TotalWordsCard from "@/components/ui/TotalWordsCard/TotalWordsCard";
+import AverageWordsPerMinuteCard from "@/components/ui/AverageWordsPerMinuteCard/AverageWordsPerMinuteCard";
+import TotalDurationCard from "@/components/ui/TotalDurationCard/TotalDurationCard";
+import BarChart from "@/components/ui/BarChart/BarChart";
+import TargetForm from "@/components/ui/TargetForm/TargetForm";
 
+type FormVisibilityState = {
+    visible: boolean,
+    mode: 'creating' | 'editing' | 'deleting',
+    selectedTarget?: TargetResponse
+}
 
 export default function Page() {
+
+    const {
+        stories,
+        isLoading,
+        isError,
+        isSuccess,
+    } = useStories()
+
+    const {
+        selectedStoryAnalytics,
+        isLoadingStoryAnalytics,
+        selectStory,
+        clearSelection
+    } = useStoryAnalytics()
+
+    const [filters, setFilters] = useState<DashboardFilter>({
+        frequency: 'daily' as Frequency,
+        fromDate: undefined,
+        toDate: undefined
+    })
+
+    const [formVisibilityState, setFormVisibilityState] = useState<FormVisibilityState>({
+        visible: false,
+        mode: 'creating',
+        selectedTarget: undefined
+    })
+
+    const handleOnShowTargetForm = (
+        mode: 'creating' | 'editing' | 'deleting',
+        selectedTarget?: TargetResponse
+    ) => {
+        switch (mode) {
+            case 'creating':
+                setFormVisibilityState({
+                    visible: true,
+                    mode: 'creating',
+                    selectedTarget: selectedTarget
+                })
+                break
+            case 'editing':
+                setFormVisibilityState({
+                    visible: true,
+                    mode: 'editing',
+                    selectedTarget: selectedTarget
+                })
+                break
+            case 'deleting':
+                setFormVisibilityState({
+                    visible: true,
+                    mode: 'deleting',
+                    selectedTarget: selectedTarget
+                })
+                break
+            default:
+                break
+        }
+    }
+
+    const getStoryListItemProps = (stories: StoryCardProps[], filters: DashboardFilter) => {
+        if (!stories) return []
+        return stories.map((story: StoryCardProps) => {
+                return {
+                    storyId: story.id,
+                    key: `${story.id}-${filters.frequency}-${filters.fromDate}-${filters.toDate}`,
+                    title: story.title,
+                    status: story.status,
+                    wordCount: story.wordCount,
+                    handleOnClick: () => selectStory(story.id, filters),
+                    handleClearSelection: clearSelection,
+                    handleOnShowTargetForm: handleOnShowTargetForm
+                };
+            }
+        )
+    }
+
+    const getTransformedTimeSeries = (data: WordsWrittenRecord[]): DataPoint[] => {
+        return data.map((record) => {
+            return {
+                name: record.date.toISOString().split('T')[0],
+                wordsWritten: record.wordsWritten
+            }
+        })
+    }
+        
+    const BARCHART_CONFIG: BarChartConfig = {
+        width: 800,
+        height: 400,
+        dataKey: 'wordsWritten',
+        barFill: '#8884d8',
+        // You can change this to match your app's color scheme
+        referenceLineConfig: {
+            value: selectedStoryAnalytics?.target?.quota || 0,
+            stroke: '#ff7300',
+            strokeWidth: 2,
+            strokeDashArray: '5 5',
+            label: {
+                value: 'Target',
+                position: 'right',
+                fill: '#ff7300',
+                fontSize: 14,
+                fontWeight: 600,
+                fontFamily: 'inherit',
+                offset: 10
+            }
+        }
+    }
+
     return (
         <div>
-            <h1>Coming soon...</h1>
+            {/* Sidebar with story list items */}
+            <StoryList
+                stories={getStoryListItemProps(stories, filters)}
+            />
+            {/* container for dashboard */}
+            <div>
+                {/* Dashboard filter bar */}
+                <DashboardFilterBar
+                    filter={filters}
+                    onFilterChange={(newFilters) => setFilters(newFilters)}
+                />
+                {/* KPI cards */}
+                <div>
+                    <TotalWordsCard
+                        totalWords={selectedStoryAnalytics.kpis.totalWords}
+                        quota={selectedStoryAnalytics.target.quota}
+                    />
+                    <AverageWordsPerMinuteCard
+                        averageWordsPerMinute={selectedStoryAnalytics.kpis.avgWordsPerMinute}
+                    />
+                    <TotalDurationCard
+                        totalDuration={selectedStoryAnalytics.kpis.totalDuration}
+                    />
+                </div>
+                {/* Bar chart */}
+                <div>
+                    <BarChart
+                        data={getTransformedTimeSeries(selectedStoryAnalytics.wordsOverTime)}
+                        config={BARCHART_CONFIG}
+                    />
+                </div>
+            </div>
+            {/* Modal for target form */}
+            <TargetForm
+                storyId={selectedStoryAnalytics.target.storyId}
+                isOpen={formVisibilityState.visible}
+                mode={formVisibilityState.mode}
+                onClose={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined})}
+                onSave={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined})}
+                onCancel={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined})}
+            />
         </div>
     )
 }

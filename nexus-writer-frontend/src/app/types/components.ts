@@ -1,6 +1,7 @@
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
-import {Frequency, TargetResponse} from "@/app/types/analytics";
+import {Frequency, TargetResponse, WordsWrittenRecord} from "@/app/types/analytics";
+import {number, string} from "zod";
 
 export interface StoryDetailHeaderProps {
   title: string;
@@ -156,4 +157,41 @@ export type DashboardFilter = {
 export type DashboardFilterBarProps = {
     filter: DashboardFilter;
     onFilterChange: (filter: DashboardFilter) => void;
+}
+
+export type ReferenceLineLabelConfig = {
+    value: string;
+    position: 'top' | 'bottom' | 'left' | 'right' | 'inside' | 'insideLeft' | 'insideRight' | 'insideTop' | 'insideBottom' | 'insideTopLeft' | 'insideTopRight' | 'insideBottomLeft' | 'insideBottomRight' | 'center';
+    fill: string;
+    fontSize: number;
+    fontWeight: number;
+    fontFamily: string;
+    offset: number;
+}
+
+
+export type ReferenceLineConfig = {
+    value: number;
+    stroke: string;
+    strokeWidth: number;
+    strokeDashArray: string;
+    label: ReferenceLineLabelConfig;
+}
+
+export type BarChartConfig = {
+    width: number;
+    height: number;
+    dataKey: string;
+    barFill: string;
+    referenceLineConfig: ReferenceLineConfig;
+}
+
+export type DataPoint = {
+    name: string;
+    [key: string]: number | string;
+}
+
+export type BarChartProps = {
+    data: DataPoint[];
+    config: BarChartConfig;
 }
