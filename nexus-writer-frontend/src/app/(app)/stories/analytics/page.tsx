@@ -41,12 +41,12 @@ import {useStoryAnalytics} from "@/app/hooks/useStoryAnalytics";
 import {
     BarChartConfig,
     DashboardFilter,
-    DataPoint,
+    DataPoint, Frequency,
     StoryCardProps,
     TargetResponse,
     WordsWrittenRecord
 } from "@/app/types";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import StoryList from "@/components/ui/StoryList/StoryList";
 import DashboardFilterBar from "@/components/ui/DashboardFilterBar/DashboardFilterBar";
 import TotalWordsCard from "@/components/ui/TotalWordsCard/TotalWordsCard";
@@ -66,8 +66,7 @@ export default function Page() {
     const {
         stories,
         isLoading,
-        isError,
-        isSuccess,
+        isError
     } = useStories()
 
     const {
@@ -88,6 +87,13 @@ export default function Page() {
         mode: 'creating',
         selectedTarget: undefined
     })
+
+    useEffect(() => {
+        if (isError) {
+            console.error('Error fetching analytics data:', isError);
+            alert('Error fetching analytics data. Please try again later.');
+        }
+    }, [isError])
 
     const handleOnShowTargetForm = (
         mode: 'creating' | 'editing' | 'deleting',
@@ -141,10 +147,19 @@ export default function Page() {
         return data.map((record) => {
             return {
                 name: record.date.toISOString().split('T')[0],
-                wordsWritten: record.wordsWritten
+                wordsWritten: record.totalWords
             }
         })
     }
+
+    const analyticsDataIsAvailable = (
+        selectedStoryAnalytics
+            && selectedStoryAnalytics.kpis.totalDuration
+            && selectedStoryAnalytics.kpis.totalWords
+            && selectedStoryAnalytics.target.quota
+            && selectedStoryAnalytics.kpis.avgWordsPerMinute
+            && selectedStoryAnalytics.wordsOverTime.length > 0
+    )
         
     const BARCHART_CONFIG: BarChartConfig = {
         width: 800,
@@ -173,6 +188,7 @@ export default function Page() {
         <div>
             {/* Sidebar with story list items */}
             <StoryList
+                storiesLoading={isLoading}
                 stories={getStoryListItemProps(stories, filters)}
             />
             {/* container for dashboard */}
@@ -182,26 +198,32 @@ export default function Page() {
                     filter={filters}
                     onFilterChange={(newFilters) => setFilters(newFilters)}
                 />
-                {/* KPI cards */}
-                <div>
-                    <TotalWordsCard
-                        totalWords={selectedStoryAnalytics.kpis.totalWords}
-                        quota={selectedStoryAnalytics.target.quota}
-                    />
-                    <AverageWordsPerMinuteCard
-                        averageWordsPerMinute={selectedStoryAnalytics.kpis.avgWordsPerMinute}
-                    />
-                    <TotalDurationCard
-                        totalDuration={selectedStoryAnalytics.kpis.totalDuration}
-                    />
-                </div>
-                {/* Bar chart */}
-                <div>
-                    <BarChart
-                        data={getTransformedTimeSeries(selectedStoryAnalytics.wordsOverTime)}
-                        config={BARCHART_CONFIG}
-                    />
-                </div>
+
+                {isLoadingStoryAnalytics && (<div>Loading...</div>)}
+                {analyticsDataIsAvailable && (
+                    <>
+                        {/* KPI cards */}
+                        <div>
+                            <TotalWordsCard
+                                totalWords={selectedStoryAnalytics.kpis.totalWords}
+                                quota={selectedStoryAnalytics.target.quota}
+                            />
+                            <AverageWordsPerMinuteCard
+                                averageWordsPerMinute={selectedStoryAnalytics.kpis.avgWordsPerMinute}
+                            />
+                            <TotalDurationCard
+                                totalDuration={selectedStoryAnalytics.kpis.totalDuration}
+                            />
+                        </div>
+                        {/* Bar chart */}
+                        <div>
+                            <BarChart
+                                data={getTransformedTimeSeries(selectedStoryAnalytics.wordsOverTime)}
+                                config={BARCHART_CONFIG}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
             {/* Modal for target form */}
             <TargetForm

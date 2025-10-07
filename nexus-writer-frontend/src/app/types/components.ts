@@ -140,7 +140,8 @@ export type TargetFormProps = {
 }
 
 export type StoryListProps = {
-  stories: StoryListItemProps[];
+    storiesLoading: boolean;
+    stories: StoryListItemProps[];
 }
 
 export type TotalWordsCardProps = {

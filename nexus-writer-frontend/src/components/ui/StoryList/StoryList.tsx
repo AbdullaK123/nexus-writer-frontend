@@ -3,10 +3,12 @@ import StoryListItem from "@/components/ui/StoryListItem/StoryListItem";
 import styles from "./StoryList.module.css"
 
 export default function StoryList({
+    storiesLoading,
     stories
 }: StoryListProps) {
     return (
         <aside className={`${styles['side-bar-section']} ${styles['story-items-container']}`}>
+            { storiesLoading && <div>Loading...</div>}
             {(stories && stories.length > 0) ? (
                 stories.map((story, index) => (
                     <StoryListItem

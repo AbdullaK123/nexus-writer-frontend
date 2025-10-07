@@ -31,6 +31,9 @@ export default function Navbar() {
                     <Link className={`${styles['navbar-link']} ${(path === '/dashboard') ? styles['active'] : undefined}`} href={'/dashboard'}>
                         Dashboard
                     </Link>
+                    <Link className={`${styles['navbar-link']} ${(path === '/stories/analytics') ? styles['active'] : undefined}`} href={'/stories/analytics'}>
+                        Analytics
+                    </Link>
                     <a
                         onClick={() => logout()} 
                         className={styles['logout-btn']}
