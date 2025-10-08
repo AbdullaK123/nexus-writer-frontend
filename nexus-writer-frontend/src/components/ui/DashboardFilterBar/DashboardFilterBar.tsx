@@ -6,8 +6,22 @@ export default function DashboardFilterBar({
     filter,
     onFilterChange,
 }: DashboardFilterBarProps) {
+    const formatDateLocal = (date: Date) => {
+        const pad = (n: number) => String(n).padStart(2, '0')
+        const yyyy = date.getFullYear()
+        const mm = pad(date.getMonth() + 1)
+        const dd = pad(date.getDate())
+        return `${yyyy}-${mm}-${dd}`
+    }
+
+    const parseLocalDate = (value: string) => {
+        // value is in YYYY-MM-DD; construct a Date in local time
+        const [y, m, d] = value.split('-').map(Number)
+        return new Date(y, (m as number) - 1, d as number)
+    }
+
     return (
-        <div className={styles.filtersContainer}>
+        <div className={styles['filters-container']}>
             {/* Drop down to select frequency */}
             <select
                 value={filter.frequency}
@@ -20,14 +34,14 @@ export default function DashboardFilterBar({
             {/* date picker to select from date */}
             <Input
                 type="date"
-                value={filter.fromDate.toISOString().split('T')[0]}
-                onChange={(e) => onFilterChange({...filter, fromDate: new Date(e.target.value)})}
+                value={formatDateLocal(filter.fromDate)}
+                onChange={(e) => onFilterChange({...filter, fromDate: parseLocalDate(e.target.value)})}
             />
             {/* date picker to select to date */}
             <Input
                 type="date"
-                value={filter.toDate.toISOString().split('T')[0]}
-                onChange={(e) => onFilterChange({...filter, toDate: new Date(e.target.value)})}
+                value={formatDateLocal(filter.toDate)}
+                onChange={(e) => onFilterChange({...filter, toDate: parseLocalDate(e.target.value)})}
             />
         </div>
     )

@@ -9,7 +9,7 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 function getUrl(storyId: string, filters: DashboardFilter): string {
     const formattedFromDate = filters.fromDate.toISOString().split('T')[0]
     const formattedToDate = filters.toDate.toISOString().split('T')[0]
-    return `${API_URL}/stories/${storyId}/analytics?frequency=${filters.frequency}&fromDate=${formattedFromDate}&toDate=${formattedToDate}`
+    return `${API_URL}/stories/${storyId}/analytics?frequency=${filters.frequency}&from_date=${formattedFromDate}&to_date=${formattedToDate}`
 }
 
 export function useStoryAnalytics() {

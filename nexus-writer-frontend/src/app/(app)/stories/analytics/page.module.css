@@ -1,0 +1,21 @@
+.story-analytics-page {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    height: 100%;
+    width: 100%;
+}
+
+.dashboard-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Alias to match usage in page.tsx */
+.kpi-cards {
+    display: flex;
+    flex: 1;
+    gap: 1rem;
+}

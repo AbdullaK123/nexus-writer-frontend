@@ -7,7 +7,7 @@ export function useStoryListItemActions(
     storyId: string,
     handleOnClick: () => void,
     handleClearSelection: () => void,
-    handleOnShowTargetForm: (mode: string, target?: TargetResponse) => void
+    handleOnShowTargetForm: (mode: 'creating' | 'editing' | 'deleting', target?: TargetResponse, storyId?: string) => void
 ) {
 
     const {
@@ -25,13 +25,13 @@ export function useStoryListItemActions(
     ) => {
         if (action === 'Create a Target') {
             // logic for showing modal form for creating target
-            handleOnShowTargetFormRef.current('creating')
+            handleOnShowTargetFormRef.current('creating', undefined, storyId)
         } else if (action === 'Update a Target') {
             // logic for showing modal form for updating target
-            handleOnShowTargetFormRef.current('updating', target!)
+            handleOnShowTargetFormRef.current('editing', target!, storyId)
         } else {
             // logic for showing target delete form
-            handleOnShowTargetFormRef.current('deleting', target!)
+            handleOnShowTargetFormRef.current('deleting', target!, storyId)
         }
         closeMenu();
     }

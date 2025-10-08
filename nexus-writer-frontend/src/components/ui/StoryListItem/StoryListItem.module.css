@@ -76,7 +76,7 @@
 .story-metadata-container {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
     flex: 1;
     min-width: 0;
 }

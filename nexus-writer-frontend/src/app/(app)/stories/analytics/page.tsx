@@ -54,11 +54,13 @@ import AverageWordsPerMinuteCard from "@/components/ui/AverageWordsPerMinuteCard
 import TotalDurationCard from "@/components/ui/TotalDurationCard/TotalDurationCard";
 import BarChart from "@/components/ui/BarChart/BarChart";
 import TargetForm from "@/components/ui/TargetForm/TargetForm";
+import styles from './page.module.css'
 
 type FormVisibilityState = {
     visible: boolean,
     mode: 'creating' | 'editing' | 'deleting',
-    selectedTarget?: TargetResponse
+    selectedTarget?: TargetResponse,
+    storyId?: string
 }
 
 export default function Page() {
@@ -77,9 +79,9 @@ export default function Page() {
     } = useStoryAnalytics()
 
     const [filters, setFilters] = useState<DashboardFilter>({
-        frequency: 'daily' as Frequency,
-        fromDate: undefined,
-        toDate: undefined
+        frequency: 'Daily' as Frequency,
+        fromDate: new Date(new Date().setDate(new Date().getDate() - 30)),
+        toDate: new Date()
     })
 
     const [formVisibilityState, setFormVisibilityState] = useState<FormVisibilityState>({
@@ -97,28 +99,32 @@ export default function Page() {
 
     const handleOnShowTargetForm = (
         mode: 'creating' | 'editing' | 'deleting',
-        selectedTarget?: TargetResponse
+        selectedTarget?: TargetResponse,
+        storyId?: string
     ) => {
         switch (mode) {
             case 'creating':
                 setFormVisibilityState({
                     visible: true,
                     mode: 'creating',
-                    selectedTarget: selectedTarget
+                    selectedTarget: selectedTarget,
+                    storyId
                 })
                 break
             case 'editing':
                 setFormVisibilityState({
                     visible: true,
                     mode: 'editing',
-                    selectedTarget: selectedTarget
+                    selectedTarget: selectedTarget,
+                    storyId
                 })
                 break
             case 'deleting':
                 setFormVisibilityState({
                     visible: true,
                     mode: 'deleting',
-                    selectedTarget: selectedTarget
+                    selectedTarget: selectedTarget,
+                    storyId
                 })
                 break
             default:
@@ -185,14 +191,14 @@ export default function Page() {
     }
 
     return (
-        <div>
+        <div className={styles['story-analytics-page']}>
             {/* Sidebar with story list items */}
             <StoryList
                 storiesLoading={isLoading}
                 stories={getStoryListItemProps(stories, filters)}
             />
             {/* container for dashboard */}
-            <div>
+            <div className={styles['dashboard-container']}>
                 {/* Dashboard filter bar */}
                 <DashboardFilterBar
                     filter={filters}
@@ -203,7 +209,7 @@ export default function Page() {
                 {analyticsDataIsAvailable && (
                     <>
                         {/* KPI cards */}
-                        <div>
+                        <div className={styles['kpi-cards']}>
                             <TotalWordsCard
                                 totalWords={selectedStoryAnalytics.kpis.totalWords}
                                 quota={selectedStoryAnalytics.target.quota}
@@ -226,14 +232,16 @@ export default function Page() {
                 )}
             </div>
             {/* Modal for target form */}
-            <TargetForm
-                storyId={selectedStoryAnalytics.target.storyId}
-                isOpen={formVisibilityState.visible}
-                mode={formVisibilityState.mode}
-                onClose={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined})}
-                onSave={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined})}
-                onCancel={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined})}
-            />
+            {formVisibilityState.visible && (
+                <TargetForm
+                    storyId={formVisibilityState.storyId || selectedStoryAnalytics?.target?.storyId || ''}
+                    isOpen={formVisibilityState.visible}
+                    mode={formVisibilityState.mode}
+                    onClose={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined, storyId: undefined})}
+                    onSave={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined, storyId: undefined})}
+                    onCancel={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined, storyId: undefined})}
+                />
+            )}
         </div>
     )
 }
