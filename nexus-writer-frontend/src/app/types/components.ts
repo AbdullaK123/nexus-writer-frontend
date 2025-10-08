@@ -55,7 +55,7 @@ export interface StoryListItemProps {
   wordCount: number;
   handleOnClick: () => void;
   handleClearSelection: () => void;
-  handleOnShowTargetForm: (mode: 'creating' | 'editing' | 'deleting', target?: TargetResponse, storyId?: string) => void;
+  handleOnShowTargetForm?: (mode: 'creating' | 'editing' | 'deleting', target?: TargetResponse, storyId?: string) => void;
 }
 
 export interface ChapterPreviewProps {

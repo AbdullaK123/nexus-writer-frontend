@@ -13,8 +13,23 @@ export const getTarget = async (storyId: string, frequency: Frequency) : Promise
 
 // get all targets for a story
 export const getAllTargets = async (storyId: string): Promise<TargetResponse[]> => {
-    const targets = await fetchApi(`/stories/${storyId}/targets`);
-    return targets ? targets.map(transformTarget) : []
+    try {
+        const targets = await fetchApi(`/stories/${storyId}/targets`);
+        
+        // Handle different response types
+        if (!targets) return [];
+        if (Array.isArray(targets)) {
+            return targets.map(transformTarget);
+        }
+        // If single target returned, wrap in array
+        if (targets && typeof targets === 'object') {
+            return [transformTarget(targets)];
+        }
+        return [];
+    } catch (error) {
+        console.error('Failed to fetch targets:', error);
+        return [];
+    }
 }
 
 // update a target
