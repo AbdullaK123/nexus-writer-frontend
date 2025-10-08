@@ -12,12 +12,21 @@ export function useStoryListItemActions(
 
     const {
         menu,
-        openMenu,
+        openMenu: baseOpenMenu,
         closeMenu
     } = useContextMenu()
 
     const handleOnShowTargetFormRef = useRef(handleOnShowTargetForm);
     handleOnShowTargetFormRef.current = handleOnShowTargetForm;
+    
+    const handleOnClickRef = useRef(handleOnClick);
+    handleOnClickRef.current = handleOnClick;
+
+    // When opening the context menu, also select the story
+    const openMenu = (e: React.MouseEvent) => {
+        handleOnClickRef.current(); // Select this story first
+        baseOpenMenu(e); // Then open the menu
+    }
 
     const handleOnAction = (
         action: 'Create a Target' | 'Update a Target' | 'Delete a Target',
@@ -28,10 +37,10 @@ export function useStoryListItemActions(
             handleOnShowTargetFormRef.current('creating', undefined, storyId)
         } else if (action === 'Update a Target') {
             // logic for showing modal form for updating target
-            handleOnShowTargetFormRef.current('editing', target!, storyId)
+            handleOnShowTargetFormRef.current('editing', target, storyId)
         } else {
             // logic for showing target delete form
-            handleOnShowTargetFormRef.current('deleting', target!, storyId)
+            handleOnShowTargetFormRef.current('deleting', target, storyId)
         }
         closeMenu();
     }

@@ -7,7 +7,7 @@ export default function StoryList({
     stories
 }: StoryListProps) {
     return (
-        <aside className={`${styles['side-bar-section']} ${styles['story-items-container']}`}>
+        <aside className={`${styles['sidebar-section']} ${styles['story-items-container']}`}>
             { storiesLoading && <div>Loading...</div>}
             {(stories && stories.length > 0) ? (
                 stories.map((story) => (

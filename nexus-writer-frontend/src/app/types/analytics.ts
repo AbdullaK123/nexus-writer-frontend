@@ -1,5 +1,3 @@
-import {ApiTargetResponse} from "@/app/types/api";
-
 export type AnalyticsEvent = {
     sessionId: string;
     storyId: string;
@@ -21,15 +19,15 @@ export type TypingDetectorPluginProps = {
 export type CreateTargetRequest = {
     quota: number;
     frequency: "Daily" | "Weekly" | "Monthly";
-    fromDate: string;
-    toDate: string;
+    from_date: string;
+    to_date: string;
 }
 
 export type UpdateTargetRequest = {
     quota?: number;
     frequency?: "Daily" | "Weekly" | "Monthly";
-    fromDate?: string;
-    toDate?: string;
+    from_date?: string;
+    to_date?: string;
 }
 
 export type Frequency = "Daily" | "Weekly" | "Monthly";

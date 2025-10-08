@@ -1,59 +1,21 @@
-/* 
-This is where the analytics page for each story will go. 
-
-What we need:
-
-    1. A sidebar where users can select a story and see its dashboard
-    2. The context menu from the dashboard should take them here
-    3. We assemble the dashboard from kpi cards and a line chart
-    4. The navbar should also take the user here
-
-The Components we need:
-
-    1. StoryListItem -> accepts the setter for selected story state. Like the ChapterListItem Component, make sure we use a ref to the latest setter to avoid infinite loops.
-    2. StoryList -> Render a list of StoryListItem Components.
-    3. AnalyticsDashboard -> Renders the dashboard. It consists of a filter bar, three kpi cards, and a bar chart. 
-       If the story fetched from the storyId prop doesn't have a target it renders a modal form instead prompting the user
-       for a target and its frequency
-    4. TotalWordsCard -> KPI card for total words (should show if the user is above or below the target)
-    5. TotalDurationCard -> KPI card for total time spent writing (maybe we can add new types of targets for time?)
-    6. AverageWordsPerMinuteCard -> KPI Card for displaying average words per minute to measure consistency (maybe its helpful metric to see how focused a writer is)
-    7. BarChart -> Displays writing output over time. Reacts to changes in the FilterBar component (well all dashboard components do). The target line should be visible and indicate
-       how often and when the user is going above or below the target
-    8. FilterBar -> Dynamic filter for dashboard. User can filter select different frequencies (daily, weekly, monthly), along with date ranges.
-    9. TargetForm -> Form where user can create, edit, or delete targets for a story. It is wrapped in a modal, and it gets triggered whenever a user clicks on a StoryListItem corresponding to a
-       story with no target set. We need extensive error handling to stay in line with the backend. We need think about how we handle the create, edit, and delete states. Maybe a seperate form for each?
-    10. AnalyticsContextMenu.tsx -> A context menu that appears when we right click a StoryListItem Component. It provides access to the Target Form Component and the options should be
-        Create Target, Update Target, Delete Target. Each option takes us to the appropriate modal form.
-
-The hooks we will need:
-
-    1. useStoryAnalytics -> uses react query to fetch analytics data from /stories/analytics/ in the backend. It should have everything we need for all dashboard components
-    2. useSelectedStory -> very similar to useSelectedChapter. It will power selection for different story analytics dashboards.
-    3. useTargets -> Will be essential for the TargetForm Component
-    4. useContextMenu -> This hook already exists but we will need to reuse it.
-    5. useModal -> To manage the modal wrapper around TargetForm
-    6. useStories -> To fetch a user's stories and their titles.
-*/
 'use client'
-import {useStories} from "@/app/hooks/useStories";
-import {useStoryAnalytics} from "@/app/hooks/useStoryAnalytics";
-import {
-    BarChartConfig,
-    DashboardFilter,
-    DataPoint, Frequency,
-    StoryCardProps,
-    TargetResponse,
-    WordsWrittenRecord
-} from "@/app/types";
-import {useEffect, useState} from "react";
+import { useStories } from "@/app/hooks/useStories";
+import { useAnalyticsPage } from "@/app/hooks/useAnalyticsPage";
+import { useAllTargets } from "@/app/hooks/useAllTargets";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { BarChartConfig, DataPoint, StoryCardProps, TargetResponse, WordsWrittenRecord } from "@/app/types";
 import StoryList from "@/components/ui/StoryList/StoryList";
+import { TargetsList } from "@/components/ui/TargetsList";
 import DashboardFilterBar from "@/components/ui/DashboardFilterBar/DashboardFilterBar";
 import TotalWordsCard from "@/components/ui/TotalWordsCard/TotalWordsCard";
 import AverageWordsPerMinuteCard from "@/components/ui/AverageWordsPerMinuteCard/AverageWordsPerMinuteCard";
 import TotalDurationCard from "@/components/ui/TotalDurationCard/TotalDurationCard";
 import BarChart from "@/components/ui/BarChart/BarChart";
 import TargetForm from "@/components/ui/TargetForm/TargetForm";
+import AnalyticsPageHeader from "./components/AnalyticsPageHeader/AnalyticsPageHeader";
+import LoadingSkeleton from "./components/LoadingSkeleton/LoadingSkeleton";
+import EmptyAnalyticsState from "./components/EmptyAnalyticsState/EmptyAnalyticsState";
 import styles from './page.module.css'
 
 type FormVisibilityState = {
@@ -63,117 +25,59 @@ type FormVisibilityState = {
     storyId?: string
 }
 
-export default function Page() {
-
+export default function AnalyticsPage() {
+    const router = useRouter()
+    const { stories, isLoading: isLoadingStories, isError: storiesError } = useStories()
+    
     const {
-        stories,
-        isLoading,
-        isError
-    } = useStories()
-
-    const {
+        filters,
         selectedStoryAnalytics,
+        selectedStoryId,
         isLoadingStoryAnalytics,
-        selectStory,
+        error: analyticsError,
+        handleStorySelect,
+        handleFilterChange,
+        handleTargetUpdate,
         clearSelection
-    } = useStoryAnalytics()
+    } = useAnalyticsPage()
 
-    const [filters, setFilters] = useState<DashboardFilter>({
-        frequency: 'Daily' as Frequency,
-        fromDate: new Date(new Date().setDate(new Date().getDate() - 30)),
-        toDate: new Date()
-    })
+    const { targets, isLoading: isLoadingTargets, invalidateTargets } = useAllTargets(selectedStoryId)
 
     const [formVisibilityState, setFormVisibilityState] = useState<FormVisibilityState>({
         visible: false,
         mode: 'creating',
-        selectedTarget: undefined
+        selectedTarget: undefined,
+        storyId: undefined
     })
 
-    useEffect(() => {
-        if (isError) {
-            console.error('Error fetching analytics data:', isError);
-            alert('Error fetching analytics data. Please try again later.');
-        }
-    }, [isError])
+    // Get current story details
+    const currentStory = stories?.find(s => s.id === selectedStoryId)
 
-    const handleOnShowTargetForm = (
-        mode: 'creating' | 'editing' | 'deleting',
-        selectedTarget?: TargetResponse,
-        storyId?: string
-    ) => {
-        switch (mode) {
-            case 'creating':
-                setFormVisibilityState({
-                    visible: true,
-                    mode: 'creating',
-                    selectedTarget: selectedTarget,
-                    storyId
-                })
-                break
-            case 'editing':
-                setFormVisibilityState({
-                    visible: true,
-                    mode: 'editing',
-                    selectedTarget: selectedTarget,
-                    storyId
-                })
-                break
-            case 'deleting':
-                setFormVisibilityState({
-                    visible: true,
-                    mode: 'deleting',
-                    selectedTarget: selectedTarget,
-                    storyId
-                })
-                break
-            default:
-                break
-        }
-    }
-
-    const getStoryListItemProps = (stories: StoryCardProps[], filters: DashboardFilter) => {
-        if (!stories) return []
-        return stories.map((story: StoryCardProps) => {
-                return {
-                    storyId: story.id,
-                    title: story.title,
-                    status: story.status,
-                    wordCount: story.wordCount || 0,
-                    handleOnClick: () => selectStory(story.id, filters),
-                    handleClearSelection: clearSelection,
-                    handleOnShowTargetForm: handleOnShowTargetForm
-                };
-            }
-        )
-    }
-
+    // Transform time series data for chart
     const getTransformedTimeSeries = (data: WordsWrittenRecord[]): DataPoint[] => {
-        return data.map((record) => {
-            return {
-                name: record.date.toISOString().split('T')[0],
-                wordsWritten: record.totalWords
-            }
-        })
+        return data.map((record) => ({
+            name: record.date.toISOString().split('T')[0],
+            wordsWritten: record.totalWords
+        }))
     }
 
-    const analyticsDataIsAvailable = (
-        selectedStoryAnalytics
-            && selectedStoryAnalytics.kpis
-            && selectedStoryAnalytics.target
-            && typeof selectedStoryAnalytics.kpis.totalDuration === 'number'
-            && typeof selectedStoryAnalytics.kpis.totalWords === 'number'
-            && typeof selectedStoryAnalytics.target.quota === 'number'
-            && typeof selectedStoryAnalytics.kpis.avgWordsPerMinute === 'number'
-            && selectedStoryAnalytics.wordsOverTime.length >= 0
+    // Check if we have complete analytics data
+    const hasCompleteAnalytics = !!(
+        selectedStoryAnalytics?.kpis &&
+        selectedStoryAnalytics?.target &&
+        typeof selectedStoryAnalytics.kpis.totalWords === 'number' &&
+        typeof selectedStoryAnalytics.kpis.totalDuration === 'number' &&
+        typeof selectedStoryAnalytics.kpis.avgWordsPerMinute === 'number'
     )
-        
+
+    const hasTarget = !!selectedStoryAnalytics?.target
+
+    // Bar chart configuration
     const BARCHART_CONFIG: BarChartConfig = {
         width: 800,
         height: 400,
         dataKey: 'wordsWritten',
-        barFill: '#8884d8',
-        // You can change this to match your app's color scheme
+        barFill: 'url(#barGradient)',
         referenceLineConfig: {
             value: selectedStoryAnalytics?.target?.quota || 0,
             stroke: '#ff7300',
@@ -191,63 +95,214 @@ export default function Page() {
         }
     }
 
+    // Story list item props
+    const getStoryListItemProps = () => {
+        if (!stories) return []
+        return stories.map((story: StoryCardProps) => ({
+            storyId: story.id,
+            title: story.title,
+            status: story.status,
+            wordCount: story.wordCount || 0,
+            handleOnClick: () => handleStorySelect(story.id),
+            handleClearSelection: clearSelection,
+            handleOnShowTargetForm: (
+                mode: 'creating' | 'editing' | 'deleting',
+                selectedTarget?: TargetResponse,
+                storyId?: string
+            ) => {
+                // For delete/edit, use the current story's target from analytics if available
+                const targetToUse = (mode === 'deleting' || mode === 'editing') && story.id === selectedStoryId
+                    ? selectedStoryAnalytics?.target
+                    : selectedTarget;
+                
+                setFormVisibilityState({
+                    visible: true,
+                    mode,
+                    selectedTarget: targetToUse,
+                    storyId: storyId || story.id
+                })
+            }
+        }))
+    }
+
+    // Handle target form actions
+    const handleSetTarget = () => {
+        setFormVisibilityState({
+            visible: true,
+            mode: 'creating',
+            storyId: selectedStoryId
+        })
+    }
+
+    const handleViewStory = () => {
+        if (selectedStoryId) {
+            router.push(`/stories/${selectedStoryId}`)
+        }
+    }
+
+    const handleFormClose = () => {
+        setFormVisibilityState({
+            visible: false,
+            mode: 'creating',
+            selectedTarget: undefined,
+            storyId: undefined
+        })
+        // Refresh analytics and targets after changes
+        handleTargetUpdate()
+        invalidateTargets()
+    }
+
+    const handleTargetEdit = (target: TargetResponse) => {
+        setFormVisibilityState({
+            visible: true,
+            mode: 'editing',
+            selectedTarget: target,
+            storyId: target.storyId
+        })
+    }
+
+    const handleTargetDelete = (target: TargetResponse) => {
+        setFormVisibilityState({
+            visible: true,
+            mode: 'deleting',
+            selectedTarget: target,
+            storyId: target.storyId
+        })
+    }
+
     return (
-        <div className={styles['story-analytics-page']}>
-            {/* Sidebar with story list items */}
-            <StoryList
-                storiesLoading={isLoading}
-                stories={getStoryListItemProps(stories, filters)}
-            />
-            {/* container for dashboard */}
-            <div className={styles['dashboard-container']}>
-                {/* Dashboard filter bar */}
-                <DashboardFilterBar
-                    filter={filters}
-                    onFilterChange={(newFilters) => setFilters(newFilters)}
-                />
+        <div className={styles['page-wrapper']}>
+            <div className={styles['story-analytics-page']}>
+                {/* Sidebar with story list and targets */}
+                <aside className={styles['sidebar']}>
+                    {isLoadingStories ? (
+                        <LoadingSkeleton type="list" />
+                    ) : (
+                        <>
+                            <StoryList
+                                storiesLoading={isLoadingStories}
+                                stories={getStoryListItemProps()}
+                            />
+                            
+                            {/* Show targets list when a story is selected */}
+                            {selectedStoryId && !isLoadingTargets && targets.length > 0 && (
+                                <TargetsList
+                                    targets={targets}
+                                    onEdit={handleTargetEdit}
+                                    onDelete={handleTargetDelete}
+                                />
+                            )}
+                        </>
+                    )}
+                </aside>
 
-                {!selectedStoryAnalytics && !isLoadingStoryAnalytics && (
-                    <div className={styles['empty-state']}>
-                        <h2>Select a story to view analytics</h2>
-                        <p>Choose a story from the sidebar to see detailed analytics and insights.</p>
-                    </div>
-                )}
+                {/* Main dashboard content */}
+                <main className={styles['dashboard-container']}>
+                    {/* Header */}
+                    <AnalyticsPageHeader
+                        story={currentStory}
+                        onSetTarget={handleSetTarget}
+                        onViewStory={handleViewStory}
+                        hasTarget={hasTarget}
+                        targetCount={targets.length}
+                    />
 
-                {isLoadingStoryAnalytics && (<div className={styles['loading-state']}>Loading analytics...</div>)}
-                {analyticsDataIsAvailable && (
-                    <>
-                        {/* KPI cards */}
-                        <div className={styles['kpi-cards']}>
-                            <TotalWordsCard
-                                totalWords={selectedStoryAnalytics.kpis.totalWords}
-                                quota={selectedStoryAnalytics.target.quota}
-                            />
-                            <AverageWordsPerMinuteCard
-                                averageWordsPerMinute={selectedStoryAnalytics.kpis.avgWordsPerMinute}
-                            />
-                            <TotalDurationCard
-                                totalDuration={selectedStoryAnalytics.kpis.totalDuration}
-                            />
+                    {/* Filter Bar */}
+                    {selectedStoryId && (
+                        <DashboardFilterBar
+                            filter={filters}
+                            onFilterChange={handleFilterChange}
+                        />
+                    )}
+
+                    {/* Loading State */}
+                    {isLoadingStoryAnalytics && (
+                        <div className={styles['content-area']}>
+                            <div className={styles['kpi-cards']}>
+                                <LoadingSkeleton type="kpi" />
+                                <LoadingSkeleton type="kpi" />
+                                <LoadingSkeleton type="kpi" />
+                            </div>
+                            <LoadingSkeleton type="chart" />
                         </div>
-                        {/* Bar chart */}
-                        <div>
-                            <BarChart
-                                data={getTransformedTimeSeries(selectedStoryAnalytics.wordsOverTime)}
-                                config={BARCHART_CONFIG}
-                            />
+                    )}
+
+                    {/* Empty States */}
+                    {!selectedStoryId && !isLoadingStoryAnalytics && (
+                        <EmptyAnalyticsState type="no-selection" />
+                    )}
+
+                    {selectedStoryId && !isLoadingStoryAnalytics && !hasTarget && !analyticsError && (
+                        <EmptyAnalyticsState
+                            type="no-target"
+                            onAction={handleSetTarget}
+                            actionLabel="➕ Set Target"
+                        />
+                    )}
+
+                    {selectedStoryId && !isLoadingStoryAnalytics && hasTarget && !hasCompleteAnalytics && !analyticsError && (
+                        <EmptyAnalyticsState
+                            type="no-data"
+                            message="No writing activity recorded yet. Start writing to see your analytics!"
+                        />
+                    )}
+
+                    {selectedStoryId && !isLoadingStoryAnalytics && analyticsError && (
+                        <EmptyAnalyticsState
+                            type="error"
+                            message={analyticsError}
+                            onAction={() => handleStorySelect(selectedStoryId)}
+                            actionLabel="🔄 Retry"
+                        />
+                    )}
+
+                    {/* Analytics Dashboard */}
+                    {hasCompleteAnalytics && !isLoadingStoryAnalytics && (
+                        <div className={styles['content-area']}>
+                            {/* KPI Cards */}
+                            <div className={styles['kpi-cards']}>
+                                <TotalWordsCard
+                                    totalWords={selectedStoryAnalytics.kpis.totalWords}
+                                    quota={selectedStoryAnalytics.target.quota}
+                                />
+                                <AverageWordsPerMinuteCard
+                                    averageWordsPerMinute={selectedStoryAnalytics.kpis.avgWordsPerMinute}
+                                />
+                                <TotalDurationCard
+                                    totalDuration={selectedStoryAnalytics.kpis.totalDuration}
+                                />
+                            </div>
+
+                            {/* Chart */}
+                            <div className={styles['chart-section']}>
+                                <h2 className={styles['section-title']}>📈 Writing Progress Over Time</h2>
+                                <BarChart
+                                    data={getTransformedTimeSeries(selectedStoryAnalytics.wordsOverTime)}
+                                    config={BARCHART_CONFIG}
+                                />
+                            </div>
                         </div>
-                    </>
-                )}
+                    )}
+
+                    {/* Errors */}
+                    {storiesError && (
+                        <div className={styles['error-message']}>
+                            Failed to load stories. Please refresh the page.
+                        </div>
+                    )}
+                </main>
             </div>
-            {/* Modal for target form */}
-            {formVisibilityState.visible && (
+
+            {/* Target Form Modal */}
+            {formVisibilityState.visible && formVisibilityState.storyId && (
                 <TargetForm
-                    storyId={formVisibilityState.storyId || selectedStoryAnalytics?.target?.storyId || ''}
+                    storyId={formVisibilityState.storyId}
                     isOpen={formVisibilityState.visible}
                     mode={formVisibilityState.mode}
-                    onClose={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined, storyId: undefined})}
-                    onSave={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined, storyId: undefined})}
-                    onCancel={() => setFormVisibilityState({visible: false, mode: 'creating', selectedTarget: undefined, storyId: undefined})}
+                    target={formVisibilityState.selectedTarget}
+                    onClose={handleFormClose}
+                    onSave={handleFormClose}
+                    onCancel={handleFormClose}
                 />
             )}
         </div>

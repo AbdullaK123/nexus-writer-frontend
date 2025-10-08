@@ -5,10 +5,16 @@ import {transformTarget} from "@/app/lib/utils";
 // transformation helper
 
 
-// get a target for a story
+// get a target for a story by frequency
 export const getTarget = async (storyId: string, frequency: Frequency) : Promise<TargetResponse | null> => {
     const target = await fetchApi(`/stories/${storyId}/targets?frequency=${frequency}`);
     return target ? transformTarget(target) : null
+}
+
+// get all targets for a story
+export const getAllTargets = async (storyId: string): Promise<TargetResponse[]> => {
+    const targets = await fetchApi(`/stories/${storyId}/targets`);
+    return targets ? targets.map(transformTarget) : []
 }
 
 // update a target

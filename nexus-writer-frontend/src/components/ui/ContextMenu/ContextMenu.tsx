@@ -18,14 +18,11 @@ export default function ChapterContextMenu( {
                 }}  
             >
                 <Button
-                    className='btn-secondary'
+                    variant="secondary"
                     onClick={() => onAction('delete')}
                 >
                     Delete
                 </Button>
-                 <Button>
-                     Test
-                 </Button>
             </div>
         </div>
     )

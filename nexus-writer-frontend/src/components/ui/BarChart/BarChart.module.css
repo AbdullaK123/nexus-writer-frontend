@@ -1,0 +1,80 @@
+.chart-container {
+    width: 100%;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--accent-primary);
+    background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
+    box-shadow:
+        0 0 5px var(--accent-primary),
+        0 0 10px var(--accent-secondary),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent,
+        var(--accent-primary), 
+        var(--accent-secondary),
+        transparent
+    );
+    animation: data-flow 3s ease-in-out infinite;
+}
+
+.chart-container:hover {
+    box-shadow:
+        0 0 8px var(--accent-primary),
+        0 0 15px var(--accent-secondary),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.custom-tooltip {
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid var(--accent-primary);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    box-shadow: 
+        0 0 10px var(--accent-primary),
+        0 0 20px rgba(0, 212, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.tooltip-label {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.25rem 0;
+    font-weight: 500;
+}
+
+.tooltip-value {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--accent-primary);
+    margin: 0;
+    font-weight: 700;
+    text-shadow: 0 0 5px var(--accent-primary);
+}
+
+@keyframes data-flow {
+    0%, 100% { 
+        background-position: -200% 0;
+    }
+    50% { 
+        background-position: 200% 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        padding: 1rem;
+    }
+}

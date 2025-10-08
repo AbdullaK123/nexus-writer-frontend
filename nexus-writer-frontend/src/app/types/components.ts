@@ -1,7 +1,6 @@
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
-import {Frequency, TargetResponse, WordsWrittenRecord} from "@/app/types/analytics";
-import {number, string} from "zod";
+import {Frequency, TargetResponse} from "@/app/types/analytics";
 
 export interface StoryDetailHeaderProps {
   title: string;

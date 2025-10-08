@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/Button";
 import {Input} from "@/components/ui/Input";
 import {z} from "zod";
 import {useTarget} from "@/app/hooks/useTarget";
+import {useToast} from "@/app/hooks/useToast";
 import styles from './TargetForm.module.css';
 
 type FormState = {
@@ -61,8 +62,8 @@ const validateForm = (formState: FormState, setErrors: (errors: Record<string, s
     return {
         quota: parsedFormState.data.quota,
         frequency: parsedFormState.data.frequency,
-        fromDate: parsedFormState.data.from,
-        toDate: parsedFormState.data.to
+        from_date: parsedFormState.data.from, // Send as YYYY-MM-DD string only
+        to_date: parsedFormState.data.to       // Send as YYYY-MM-DD string only
     };
 };
 
@@ -92,38 +93,17 @@ const renderFormField = (
     </div>
 );
 
-const renderStatusMessages = (
-    isCreating: boolean,
-    isUpdating: boolean,
-    isError: boolean,
-    isSuccess: boolean,
-    updateError: Error | undefined,
-    updateSuccess: boolean
-) => (
-    <>
-        {isCreating && <span className={styles['info-badge']}>Creating target...</span>}
-        {isUpdating && <span className={styles['info-badge']}>Updating target...</span>}
-        {isError && <span className={styles['error-badge']}>Failed to create target. The server might be experiencing issues.</span>}
-        {isSuccess && <span className={styles['success-badge']}>Successfully created target.</span>}
-        {updateError && <span className={styles['error-badge']}>Failed to update target. The server might be experiencing issues.</span>}
-        {updateSuccess && <span className={styles['success-badge']}>Successfully updated target.</span>}
-    </>
-);
-
 export default function TargetForm({storyId, isOpen, onClose, onCancel, onSave, mode = 'creating', target}: TargetFormProps) {
 
     const [formState, setFormState] = useState<FormState>(() => getInitialFormState(target));
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const { showToast } = useToast();
 
     const {
         createTarget,
         isCreating,
-        isSuccess,
-        isError,
         updateTarget,
         isUpdating,
-        updateSuccess,
-        updateError,
         deleteTarget,
         isDeleting: isDeletingTarget,
     } = useTarget(storyId, formState.frequency as Frequency);
@@ -148,9 +128,18 @@ export default function TargetForm({storyId, isOpen, onClose, onCancel, onSave, 
 
         if (isDeletingMode) {
             if (target?.targetId) {
-                deleteTarget({targetId: target.targetId});
-                onSave();
-                onClose();
+                deleteTarget({targetId: target.targetId}, {
+                    onSuccess: () => {
+                        showToast('Target deleted successfully!', 'success');
+                        onSave();
+                        setTimeout(() => {
+                            onClose();
+                        }, 1500); // Give time for toast to show
+                    },
+                    onError: () => {
+                        showToast('Failed to delete target. Please try again.', 'error');
+                    }
+                });
             }
             return;
         }
@@ -158,16 +147,32 @@ export default function TargetForm({storyId, isOpen, onClose, onCancel, onSave, 
         const payload = validateForm(formState, setErrors);
         if (!payload) return;
 
-        try {
-            if (mode === 'creating') {
-                createTarget({payload});
-            } else if (target?.targetId) {
-                updateTarget({targetId: target.targetId, payload});
-            }
-            onSave();
-            onClose();
-        } catch (error) {
-            console.error(error);
+        if (mode === 'creating') {
+            createTarget({payload}, {
+                onSuccess: () => {
+                    showToast('Target created successfully!', 'success');
+                    onSave();
+                    setTimeout(() => {
+                        onClose();
+                    }, 1500); // Give time for toast to show
+                },
+                onError: () => {
+                    showToast('Failed to create target. Please try again.', 'error');
+                }
+            });
+        } else if (target?.targetId) {
+            updateTarget({targetId: target.targetId, payload}, {
+                onSuccess: () => {
+                    showToast('Target updated successfully!', 'success');
+                    onSave();
+                    setTimeout(() => {
+                        onClose();
+                    }, 1500); // Give time for toast to show
+                },
+                onError: () => {
+                    showToast('Failed to update target. Please try again.', 'error');
+                }
+            });
         }
     };
 
@@ -254,8 +259,6 @@ export default function TargetForm({storyId, isOpen, onClose, onCancel, onSave, 
                         {mode === 'creating' ? 'Create' : mode === 'editing' ? 'Update' : 'Yes'}
                     </Button>
                 </div>
-
-                {renderStatusMessages(isCreating, isUpdating, isError, isSuccess, updateError, updateSuccess)}
             </form>
         </Modal>
     );

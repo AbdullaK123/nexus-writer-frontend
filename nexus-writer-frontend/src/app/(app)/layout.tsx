@@ -2,6 +2,7 @@
 import React from 'react';
 import styles from './AppLayout.module.css'
 import AuthWrapper from '@/components/features/AuthWrapper/AuthWrapper';
+import { ToastProvider } from '@/app/hooks/useToast';
 
 export default function AppLayout({
     children
@@ -10,11 +11,13 @@ export default function AppLayout({
 }) {
     return (
         <AuthWrapper>
-            <div className='app-layout'>
-                <main className={styles['app-body']}>
-                    {children}
-                </main>
-            </div>
+            <ToastProvider>
+                <div className='app-layout'>
+                    <main className={styles['app-body']}>
+                        {children}
+                    </main>
+                </div>
+            </ToastProvider>
         </AuthWrapper>
     )
 }
