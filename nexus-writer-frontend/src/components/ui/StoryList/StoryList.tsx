@@ -10,9 +10,9 @@ export default function StoryList({
         <aside className={`${styles['side-bar-section']} ${styles['story-items-container']}`}>
             { storiesLoading && <div>Loading...</div>}
             {(stories && stories.length > 0) ? (
-                stories.map((story, index) => (
+                stories.map((story) => (
                     <StoryListItem
-                        key={`story-${index}`}
+                        key={story.storyId}
                         {...story}
                     />
                 ))

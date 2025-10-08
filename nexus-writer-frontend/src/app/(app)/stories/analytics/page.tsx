@@ -137,10 +137,9 @@ export default function Page() {
         return stories.map((story: StoryCardProps) => {
                 return {
                     storyId: story.id,
-                    key: `${story.id}-${filters.frequency}-${filters.fromDate}-${filters.toDate}`,
                     title: story.title,
                     status: story.status,
-                    wordCount: story.wordCount,
+                    wordCount: story.wordCount || 0,
                     handleOnClick: () => selectStory(story.id, filters),
                     handleClearSelection: clearSelection,
                     handleOnShowTargetForm: handleOnShowTargetForm
@@ -160,11 +159,13 @@ export default function Page() {
 
     const analyticsDataIsAvailable = (
         selectedStoryAnalytics
-            && selectedStoryAnalytics.kpis.totalDuration
-            && selectedStoryAnalytics.kpis.totalWords
-            && selectedStoryAnalytics.target.quota
-            && selectedStoryAnalytics.kpis.avgWordsPerMinute
-            && selectedStoryAnalytics.wordsOverTime.length > 0
+            && selectedStoryAnalytics.kpis
+            && selectedStoryAnalytics.target
+            && typeof selectedStoryAnalytics.kpis.totalDuration === 'number'
+            && typeof selectedStoryAnalytics.kpis.totalWords === 'number'
+            && typeof selectedStoryAnalytics.target.quota === 'number'
+            && typeof selectedStoryAnalytics.kpis.avgWordsPerMinute === 'number'
+            && selectedStoryAnalytics.wordsOverTime.length >= 0
     )
         
     const BARCHART_CONFIG: BarChartConfig = {
@@ -205,7 +206,14 @@ export default function Page() {
                     onFilterChange={(newFilters) => setFilters(newFilters)}
                 />
 
-                {isLoadingStoryAnalytics && (<div>Loading...</div>)}
+                {!selectedStoryAnalytics && !isLoadingStoryAnalytics && (
+                    <div className={styles['empty-state']}>
+                        <h2>Select a story to view analytics</h2>
+                        <p>Choose a story from the sidebar to see detailed analytics and insights.</p>
+                    </div>
+                )}
+
+                {isLoadingStoryAnalytics && (<div className={styles['loading-state']}>Loading analytics...</div>)}
                 {analyticsDataIsAvailable && (
                     <>
                         {/* KPI cards */}

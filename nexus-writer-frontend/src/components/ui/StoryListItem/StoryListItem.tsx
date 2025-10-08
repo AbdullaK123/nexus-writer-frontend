@@ -32,12 +32,12 @@ export default function StoryListItem({
         <div ref={elementRef}>
             <div
                 onClick={handleOnClick}
-                className={styles['story-metadata-container']}
+                className={styles['story-list-item-container']}
                 onContextMenu={openMenu}
             >
                 <div className={styles['flex-col-container']}>
                     <h2>{title}</h2>
-                    <div>
+                    <div className={styles['story-metadata-container']}>
                         <span>{formatWordCount(wordCount)}</span>
                         <span>{status}</span>
                     </div>
