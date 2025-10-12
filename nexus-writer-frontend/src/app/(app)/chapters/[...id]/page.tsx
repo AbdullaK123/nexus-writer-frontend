@@ -1,10 +1,13 @@
 'use client'
-import LexicalEditor from '@/components/features/LexicalEditor/LexicalEditor'
 import styles from './page.module.css'
 import { useChapters } from '@/app/hooks/useChapters'
 import { useParams } from 'next/navigation'
 import ChapterNavHeader from '@/components/ui/ChapterNavHeader/ChapterNavHeader'
 import { useRouter } from 'next/navigation'
+import TipTapEditor from '@/components/features/TipTapEditor/TipTapEditor'
+import { debounce } from 'lodash'
+import { useMemo } from 'react'
+import { useAuth } from '@/app/hooks/useAuth'
 
 export default function Page() {
 
@@ -12,6 +15,7 @@ export default function Page() {
     const [storyId, chapterId] = params.id as string[]
     const { useChapter } = useChapters(storyId)
     const router = useRouter()
+    const { user } = useAuth()
 
     const {
         data: chapter,
@@ -19,6 +23,20 @@ export default function Page() {
         isError,
         isLoading
     } = useChapter(chapterId, true)
+
+    const { update } = useChapters(storyId)
+
+    // Create debounced update function once, memoized by chapterId
+    const debouncedUpdate = useMemo(
+        () => debounce((newContent: string) => {
+            update({ chapterId: chapterId, requestBody: { content: newContent }})
+        }, 1000),
+        [chapterId, update]
+    )
+
+    const handleUpdate = (newContent: string) => {
+        debouncedUpdate(newContent)
+    }
 
     // Handle missing params
     if (!storyId || !chapterId) {
@@ -29,7 +47,7 @@ export default function Page() {
             </div>
         )
     }
-
+    
     return (
         <div className={styles['content-container']}>
             {isLoading && (
@@ -48,7 +66,7 @@ export default function Page() {
                     </button>
                 </div>
             )}
-            {isSuccess && chapter && (
+            {isSuccess && chapter && user && user.id && (
                 <>
                     <ChapterNavHeader 
                         storyId={storyId}
@@ -57,11 +75,18 @@ export default function Page() {
                         prevChapterId={chapter.previousChapterId}
                         nextChapterId={chapter.nextChapterId}
                     />
-                    <LexicalEditor 
+                    {/* <LexicalEditor 
                         key={chapter.id}
                         initialContent={chapter.content}
                         storyId={storyId}
                         chapterId={chapterId}
+                    /> */}
+                    <TipTapEditor
+                        storyId={storyId}
+                        chapterId={chapterId}
+                        userId={user.id}
+                        content={chapter.content}
+                        onUpdateAction={handleUpdate}
                     />
                 </>
             )}

@@ -8,7 +8,7 @@ const CACHE_KEYS = {
     stories: () => ['stories'],
     story: (id: string) => ['stories', id],
     chapterList: (storyId: string) => ['chapters', storyId],
-    chapter: (id: string, asLexicalJson: boolean) => ['chapters', id, asLexicalJson ? 'True' : 'False'],
+    chapter: (id: string, asHtml: boolean) => ['chapters', id, asHtml ? 'True' : 'False'],
 };
 
 export function useCacheInvalidation() {

@@ -18,7 +18,7 @@ export function useSelectedChapter(storyId: string) {
             // ✅ Fetch raw snake_case data from API
             const apiResponse = await queryClient.fetchQuery({
                 queryKey: ['chapters', chapterId, 'False'],
-                queryFn: () => fetch(`${API_URL}/chapters/${chapterId}/?as_lexical_json=False`, {
+                queryFn: () => fetch(`${API_URL}/chapters/${chapterId}/?as_html=False`, {
                     credentials: 'include' // Don't forget auth cookies!
                 }).then(res => {
                     if (!res.ok) throw new Error('Failed to fetch chapter')

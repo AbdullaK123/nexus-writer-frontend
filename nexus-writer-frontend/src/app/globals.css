@@ -9,6 +9,224 @@
   margin: 0 0;
 }
 
+/* TipTap/ProseMirror Editor Styles - Matching Lexical */
+.ProseMirror {
+  min-height: 500px;
+  padding: 3rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  background: transparent;
+  outline: none;
+  resize: none;
+  caret-color: var(--accent-primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  height: auto;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
+
+/* ProseMirror paragraphs */
+.ProseMirror p {
+  margin: 0 0 1.5rem 0;
+  line-height: 1.8;
+  color: var(--text-primary);
+  text-shadow: 0 0 3px rgba(255,255,255,0.1);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* ProseMirror headings with glowing effect */
+.ProseMirror h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 
+    0 0 5px var(--accent-primary),
+    0 0 10px var(--accent-primary),
+    0 0 15px var(--accent-primary);
+  margin: 2rem 0 1rem 0;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.ProseMirror h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 
+    0 0 3px var(--accent-primary),
+    0 0 6px var(--accent-primary),
+    0 0 12px var(--accent-primary);
+  margin: 1.75rem 0 0.75rem 0;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+}
+
+.ProseMirror h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  text-shadow: 
+    0 0 3px var(--accent-secondary),
+    0 0 8px var(--accent-secondary);
+  margin: 1.5rem 0 0.5rem 0;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.ProseMirror h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  text-shadow: 0 0 3px var(--accent-secondary);
+  margin: 1.25rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.ProseMirror h5 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  text-shadow: 0 0 2px var(--text-accent);
+  margin: 1rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.ProseMirror h6 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-accent);
+  text-shadow: 0 0 2px var(--text-accent);
+  margin: 1rem 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+/* Text formatting with glowing emphasis */
+.ProseMirror strong {
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-shadow: 0 0 3px var(--accent-primary);
+}
+
+.ProseMirror em {
+  font-style: italic;
+  color: var(--accent-secondary);
+  text-shadow: 0 0 2px var(--accent-secondary);
+}
+
+.ProseMirror code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  font-size: 0.9em;
+  color: var(--accent-primary);
+}
+
+/* Lists */
+.ProseMirror ul,
+.ProseMirror ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.ProseMirror li {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+/* Blockquotes */
+.ProseMirror blockquote {
+  border-left: 3px solid var(--accent-primary);
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Code blocks */
+.ProseMirror pre {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--accent-primary);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.ProseMirror pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Selection styling */
+.ProseMirror ::selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.ProseMirror ::-moz-selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.ProseMirror > p:not(:first-child) {
+  text-indent: 2em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .ProseMirror {
+    padding: 1.5rem;
+    font-size: 1rem;
+    min-height: 400px;
+  }
+  
+  .ProseMirror p {
+    font-size: 1rem;
+  }
+  
+  .ProseMirror h1 {
+    font-size: 2rem;
+  }
+  
+  .ProseMirror h2 {
+    font-size: 1.75rem;
+  }
+  
+  .ProseMirror h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ProseMirror {
+    padding: 1rem;
+    min-height: 350px;
+  }
+}
+
 :root {
   --background-primary: #0a0a0a;
   --background-secondary: #1a1a1a;

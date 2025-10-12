@@ -1,6 +1,7 @@
 import { ChapterListItemProps } from "./components";
 
 export type ChapterStatus = "published" | "draft" | "outline";
+export type ContentType = "html" | "lexical_json";
 
 export interface ChapterContentResponse {
   id: string;

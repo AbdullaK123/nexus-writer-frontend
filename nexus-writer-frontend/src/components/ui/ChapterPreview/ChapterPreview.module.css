@@ -82,16 +82,6 @@
     position: relative;
     padding: 2.5rem;
     border-radius: 16px;
-    border: 1px solid var(--accent-primary);
-    background: linear-gradient(135deg, 
-        rgba(26, 26, 26, 0.95), 
-        rgba(16, 16, 16, 0.98)
-    );
-    box-shadow: 
-        0 0 5px var(--accent-primary),     
-        0 0 15px var(--accent-secondary),   
-        inset 0 1px 0 rgba(255,255,255,0.1),
-        inset 0 0 20px rgba(0, 212, 255, 0.05);
     overflow: hidden;
 }
 
@@ -111,11 +101,13 @@
 }
 
 .chapter-content {
-    font-family: var(--font-body);
-    line-height: 1.8;
-    font-size: 1.1rem;
     color: var(--text-primary);
     text-shadow: 0 0 3px rgba(255,255,255,0.1);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    line-height: 1.8;
+    font-weight: 400;
+    letter-spacing: 0.02em;
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;

@@ -1,41 +1,66 @@
 import { useWebsocket } from "./useWebsocket";
 import { AnalyticsEvent } from "../types";
 import { v4 } from 'uuid'
-import { $getRoot } from "lexical";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { Editor } from "@tiptap/react";
 
 const getWordCount = (text: string) => {
   return text.trim() === '' ? 0 : text.trim().split(/\s+/).length
 }
 
-export function useWritingSessionTracking(storyId: string, chapterId: string, userId: string) {
+export function useWritingSessionTracking(
+  editor: Editor | null, 
+  storyId: string, 
+  chapterId: string, 
+  userId: string
+) {
     const socket = useWebsocket()
-    const [editor] = useLexicalComposerContext()
-
     const sessionIdRef = useRef(v4())
-    const sessionId = sessionIdRef.current
+    
+    const typingTimerRef = useRef<NodeJS.Timeout | null>(null)
+    const isTypingRef = useRef(false)
 
-    const handleWebSocketEvent = (event: string) => {
-
-        const wordCount = editor.read(() => {
-            return getWordCount($getRoot().getTextContent())
-        })
-
-        const data: AnalyticsEvent = {
-            sessionId: sessionId,
-            storyId: storyId,
-            chapterId: chapterId,
-            userId: userId,
+    useEffect(() => {
+      if (!editor) return
+      
+      const handleUpdate = () => {
+        // Started typing
+        if (!isTypingRef.current) {
+          isTypingRef.current = true
+          
+          socket.emit('session_start', {
+            sessionId: sessionIdRef.current,
+            storyId,
+            chapterId,
+            userId,
             timestamp: new Date().toISOString(),
-            wordCount: wordCount
+            wordCount: getWordCount(editor.getText())
+          } as AnalyticsEvent)
         }
-
-        socket.emit(event, data)
-    }
-
-    return {
-        sessionId,
-        handleWebSocketEvent
-    }
-}   
+        
+        // Reset timer
+        clearTimeout(typingTimerRef.current)
+        
+        // Set stop timer
+        typingTimerRef.current = setTimeout(() => {
+          isTypingRef.current = false
+          
+          socket.emit('session_end', {
+            sessionId: sessionIdRef.current,
+            storyId,
+            chapterId,
+            userId,
+            timestamp: new Date().toISOString(),
+            wordCount: getWordCount(editor.getText())
+          } as AnalyticsEvent)
+        }, 2000)
+      }
+      
+      editor.on('update', handleUpdate)
+      
+      return () => {
+        editor.off('update', handleUpdate)
+        clearTimeout(typingTimerRef.current)
+      }
+    }, [editor, socket, storyId, chapterId, userId])
+}

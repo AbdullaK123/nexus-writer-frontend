@@ -1,0 +1,69 @@
+/* TipTap Editor Styles - Matching Lexical Editor */
+
+.tiptap-editor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-end-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  justify-content: end;
+  width: 100%;
+}
+
+.editor-shell {
+  width: 80vw;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Main editor content area */
+.editor-content {
+  min-height: 500px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  background: transparent;
+  outline: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  height: auto;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* Selection styling */
+.editor-content ::selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
+}
+
+.editor-content ::-moz-selection {
+  background: rgba(0, 212, 255, 0.3);
+  color: var(--text-primary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .editor-content {
+    font-size: 1rem;
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-shell {
+    border-radius: 12px;
+  }
+  
+  .editor-content {
+    min-height: 350px;
+  }
+}

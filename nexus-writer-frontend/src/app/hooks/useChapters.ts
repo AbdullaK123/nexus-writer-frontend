@@ -13,9 +13,9 @@ export function useChapters(storyId: string) {
         enabled: !!storyId,
     });
 
-    const useChapter = (chapterId: string, asLexicalJson: boolean) => useQuery({
-        queryKey: ['chapters', chapterId, asLexicalJson ? 'True' : 'False'],
-        queryFn: () => chapterService.getChapter(chapterId, asLexicalJson),
+    const useChapter = (chapterId: string, asHtml: boolean) => useQuery({
+        queryKey: ['chapters', chapterId, asHtml ? 'True' : 'False'],
+        queryFn: () => chapterService.getChapter(chapterId, asHtml),
     });
 
     const createMutation = useMutation({

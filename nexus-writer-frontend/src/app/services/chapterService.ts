@@ -45,8 +45,8 @@ export const getChaptersForStory = async (storyId: string) => {
     return transformChapterList(data);
 };
 
-export const getChapter = async (chapterId: string, asLexicalJson: boolean) => {
-    const data = await fetchApi(`/chapters/${chapterId}/?as_lexical_json=${asLexicalJson ? 'True' : 'False'}`);
+export const getChapter = async (chapterId: string, asHtml: boolean) => {
+    const data = await fetchApi(`/chapters/${chapterId}/?as_html=${asHtml ? 'True' : 'False'}`);
     return transformChapterContent(data);
 };
 
