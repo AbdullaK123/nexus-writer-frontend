@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { AuthWrapperProps } from "@/app/types"
 import { useEffect } from "react"
 import styles from './AuthWrapper.module.css'
+import { ClipLoader } from 'react-spinners'
 
 
 export default function AuthWrapper({
@@ -31,6 +32,7 @@ export default function AuthWrapper({
     if (isLoading) {
         return (
             <div className={styles['flex-col-container']}>
+                <ClipLoader size={50} color="#666" />
                 <h1>Connecting to the nexus...</h1>
             </div>
         )
@@ -40,6 +42,7 @@ export default function AuthWrapper({
     if (requireAuth && (isError || !user)) {
         return (
             <div className={styles['flex-col-container']}>
+                <ClipLoader size={50} color="#666" />
                 <h1>Authentication Required. Redirecting to login...</h1>
             </div>
         )

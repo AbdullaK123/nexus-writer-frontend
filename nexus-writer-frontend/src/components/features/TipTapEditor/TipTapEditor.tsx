@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import styles from './TipTapEditor.module.css'
 import { WordCounter } from './extensions/WordCounter';
 import { useWritingSessionTracking } from '@/app/hooks/useWritingSessionTracking';
+import { ClipLoader } from "react-spinners"
 
 type TipTapEditorProps = {
     storyId: string;
     chapterId: string;
     userId: string;
+    isSaving: boolean;
     content: string;
     onUpdateAction: (newContent: string) => void
 }
@@ -19,6 +21,7 @@ export default function TipTapEditor({
     storyId,
     chapterId,
     userId,
+    isSaving,
     content,
     onUpdateAction
 }: TipTapEditorProps) {
@@ -65,6 +68,9 @@ export default function TipTapEditor({
     return (
         <div className={styles['tiptap-editor-container']}>
             <div className={styles['flex-end-container']}>
+                <h3>
+                    {isSaving && <ClipLoader size={16} color={"#00d4ff"} /> }
+                </h3>
                 <h3>
                     {`${wordCount} words`}
                 </h3>

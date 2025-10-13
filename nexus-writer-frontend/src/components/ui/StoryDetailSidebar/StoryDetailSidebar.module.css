@@ -134,3 +134,18 @@
 .chapters-sidebar-header {
     text-align: center;
 }
+
+.chapters-header-with-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.chapters-header-with-filter .chapters-sidebar-header {
+    flex: 1;
+    text-align: left;
+    margin: 0;
+}

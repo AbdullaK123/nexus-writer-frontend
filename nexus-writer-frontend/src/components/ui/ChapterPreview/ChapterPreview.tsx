@@ -15,7 +15,9 @@ export default function ChapterPreview({
     updatedAt,
     previewContent,
     storyId,
-    onStatusUpdate
+    onStatusUpdate,
+    onShowErrorToast,
+    onShowSuccessToast
 }: ChapterPreviewProps) {
 
     const router = useRouter()
@@ -28,17 +30,17 @@ export default function ChapterPreview({
 
     useEffect(() => {
         if (updateError) {
-            alert('Failed to publish / unpublish chapter. Check server logs')
+            onShowErrorToast('Failed to publish / unpublish chapter. Check server logs')
             return
         }
-    }, [updateError])
+    }, [updateError, onShowErrorToast])
 
     useEffect(() => {
         if (updateSuccess) {
-            alert('Successfully published / unpublished chapter.')
+            onShowSuccessToast('Successfully published / unpublished chapter.')
             onStatusUpdate()
         }
-    }, [updateSuccess])
+    }, [updateSuccess, onShowSuccessToast, onStatusUpdate])
 
     const getReadingTime = (wordCount : number) => {
         const minutes = Math.round(wordCount / 200); // 200 WPM average

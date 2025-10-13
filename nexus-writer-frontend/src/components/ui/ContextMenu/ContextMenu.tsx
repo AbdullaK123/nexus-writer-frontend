@@ -1,29 +1,33 @@
+'use client'
 import { ContextMenuProps } from "@/app/types";
-import {Button} from "@/components/ui/Button";
+import { useShortcut } from "@/app/hooks/useShortcut";
+import { useClickOutside } from "@/app/hooks/useClickOutside";
+
 
 export default function ChapterContextMenu( {
     x,
     y,
-    onAction,
-    onClose
+    onClose,
+    children
 }: ContextMenuProps ) {
+
+    const elementRef = useClickOutside(onClose)
+
+    useShortcut([
+        {key: "Escape", ctrlKey: false, callback: onClose}
+    ])
+
     return (
-        <div onClick={() => onClose()}>
-             <div
-                style={{
-                    position: 'fixed',
-                    left: x,
-                    top: y,
-                    zIndex: 1000 
-                }}  
-            >
-                <Button
-                    variant="secondary"
-                    onClick={() => onAction('delete')}
-                >
-                    Delete
-                </Button>
-            </div>
+        <div 
+            ref={elementRef}
+            style={{
+                position: 'fixed',
+                left: x,
+                top: y,
+                zIndex: 1000 
+            }}  
+        >
+            {children}
         </div>
     )
 }

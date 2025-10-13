@@ -1,11 +1,20 @@
 import StoryInfoCard from "../StoryInfoCard/StoryInfoCard";
 import ChapterListItem from "../ChapterListItem/ChapterListItem";
+import FilterDropdown from "../FilterDropdown/FilterDropdown";
 import { StoryDetailSideBarProps } from "@/app/types";
 import styles from './StoryDetailSidebar.module.css'
+
+const filterOptions = [
+    {label: 'All Chapters', value: ''},
+    {label: 'Draft', value: 'draft'},
+    {label: 'Outline', value: 'outline'},
+    {label: 'Published', value: 'published'}
+]
 
 export default function StoryDetailSidebar({ 
     storyInfo,
     chapters,
+    onFilterChange
  }: StoryDetailSideBarProps) {
     return (
         <aside className={styles['story-sidebar-container']}> 
@@ -13,7 +22,13 @@ export default function StoryDetailSidebar({
             <div className={styles['sidebar-section']}>
                 <StoryInfoCard {...storyInfo}/>
             </div>
-            <h2 className={styles['chapters-sidebar-header']}>Chapters</h2>
+            <div className={styles['chapters-header-with-filter']}>
+                <h2 className={styles['chapters-sidebar-header']}>Chapters</h2>
+                <FilterDropdown 
+                    onFilterChange={onFilterChange}
+                    filterOptions={filterOptions}
+                />
+            </div>
             <div className={`${styles['sidebar-section']} ${styles['chapter-items-container']}`}>
                 {chapters && chapters.length > 0 ? (
                     chapters.map((chapter, index) => (

@@ -1,3 +1,4 @@
+import React from "react";
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
 import {Frequency, TargetResponse} from "@/app/types/analytics";
@@ -6,9 +7,9 @@ export interface StoryDetailHeaderProps {
   title: string;
   storyId: string; 
   onCreateChapter: (chapterInfo: CreateChapterRequest) => void;
-  onFilterChange: (filter: string) => void;
   isCreating: boolean,
-  creationSuccess: boolean
+  creationSuccess: boolean,
+  onShowSuccessToast: (msg: string) => void;
 }
 
 export interface StoryInfoCardProps {
@@ -21,6 +22,7 @@ export interface StoryInfoCardProps {
 export interface StoryDetailSideBarProps {
   storyInfo: StoryInfoCardProps;
   chapters: ChapterListItemProps[];
+  onFilterChange: (filter: string) => void;
 }
 
 export interface StoryCardProps {
@@ -70,6 +72,8 @@ export interface ChapterPreviewProps {
   previousChapterId?: string; // Navigation
   nextChapterId?: string; // Navigation
   onStatusUpdate: () => void;
+  onShowErrorToast: (msg: string) => void;
+  onShowSuccessToast: (msg: string) => void;
 }
 
 export interface ChapterNavHeaderProps {
@@ -78,6 +82,7 @@ export interface ChapterNavHeaderProps {
   chapterId: string;
   prevChapterId?: string;
   nextChapterId?: string;
+  onShowErrorToast: (msg: string) => void;
 }
 
 
@@ -102,8 +107,8 @@ export interface AuthWrapperProps {
 export interface ContextMenuProps {
   x: number;
   y: number;
-  onAction: (action: string) => void;
   onClose: () => void;
+  children: React.ReactNode
 }
 
 export interface ManualSavePluginProps {

@@ -4,11 +4,13 @@ import { useChapters } from './useChapters';
 import { useSelectedChapter } from './useSelectedChapter';
 import { CreateChapterRequest } from '../types';
 import { getChapterStatus } from '../lib/utils';
+import { useToast } from './useToast';
 
 export function useStoryDetail() {
     const router = useRouter();
     const params = useParams();
     const storyId = params?.id as string;
+    const { showToast } = useToast();
 
     const [filter, setFilter] = useState('');
 
@@ -34,16 +36,16 @@ export function useStoryDetail() {
 
     useEffect(() => {
         if (isError) {
-            alert(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`);
+            showToast(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`, 'error');
             router.push('/dashboard');
         }
-    }, [isError, router, storyId]);
+    }, [isError, router, storyId, showToast]);
 
     useEffect(() => {
           if (creationError) {
-              alert('Failed to create chapter. Please check the server logs');
+              showToast('Failed to create chapter. Please check the server logs', 'error');
           }
-    }, [creationError]);
+    }, [creationError, showToast]);
 
     const handleChapterStatusUpdate = useCallback(() => {
         if (selectedChapter?.id) {
@@ -79,7 +81,7 @@ export function useStoryDetail() {
 
     const onCreateChapter = (chapterInfo: CreateChapterRequest) => {
         if(!chapterInfo.title.trim()) {
-            alert('Chapter title can not be empty!')
+            showToast('Chapter title can not be empty!', 'warning')
             return
         }
         create(chapterInfo)

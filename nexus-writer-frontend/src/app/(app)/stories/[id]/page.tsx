@@ -4,6 +4,9 @@ import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHead
 import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
 import styles from './page.module.css';
 import { useStoryDetail } from '@/app/hooks/useStoryDetail';
+import { ClipLoader } from 'react-spinners';
+import { useToast } from "@/app/hooks/useToast";
+import { useCallback } from "react";
 
 export default function Page() {
     const {
@@ -21,9 +24,15 @@ export default function Page() {
         handleChapterStatusUpdate,
     } = useStoryDetail();
 
+    const { showToast } = useToast()
+
+    const onShowErrorToast = useCallback((msg: string) => showToast(msg, "error"), [showToast])
+    const onShowSuccessToast = useCallback((msg: string) => showToast(msg, "success"), [showToast])
+
     if (isLoading) {
         return (
             <div className={styles['centered']}>
+                <ClipLoader size={50} color="#666" />
                 <h1>Loading...</h1>
             </div>
         );
@@ -35,23 +44,27 @@ export default function Page() {
                 storyId={storyId} 
                 title={title} 
                 onCreateChapter={onCreateChapter}
-                onFilterChange={onFilterChange}
                 isCreating={isCreating}
                 creationSuccess={creationSuccess}
+                onShowSuccessToast={onShowSuccessToast}
             />
             <div className={styles['story-content-layout']}>
                 <StoryDetailSidebar
                     storyInfo={storyInfo}
                     chapters={chaptersToShow}
+                    onFilterChange={onFilterChange}
                 />
                 {isLoadingChapter ? (
                     <div className={styles['centered']}>
+                        <ClipLoader size={50} color="#666" />
                         <h1>Loading chapter...</h1>
                     </div>
                 ) : selectedChapter ? (
                     <ChapterPreview 
                         {...selectedChapter} 
                         onStatusUpdate={handleChapterStatusUpdate}
+                        onShowErrorToast={onShowErrorToast}
+                        onShowSuccessToast={onShowSuccessToast}
                     />
                 ) : (
                     <div className={styles['centered']}>

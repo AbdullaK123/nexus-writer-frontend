@@ -5,7 +5,9 @@ import { useAuth } from '@/app/hooks/useAuth';
 import { useStories } from "@/app/hooks/useStories"
 import StoryCard from "@/components/ui/StoryCard/StoryCard"
 import { StoryCardProps } from "@/app/types/components"
-import { useState } from "react";
+import { useEffect, useState } from "react"
+import { ClipLoader } from "react-spinners";
+import { useToast } from "@/app/hooks/useToast";
 
 export default function Dashboard() {
     const { user } = useAuth()
@@ -16,8 +18,12 @@ export default function Dashboard() {
          isError, 
          isSuccess, 
          create,
-         isCreating
+         isCreating,
+         creationError,
+         isCreated
     } = useStories()
+
+    const { showToast } = useToast()
 
     const [filter, setFilter] = useState('')
 
@@ -29,6 +35,24 @@ export default function Dashboard() {
 
     const storiesToShow = getStoriesToShow()
 
+    useEffect(() => {
+        if (isError) {
+            showToast("Failed to fetch stories. There might be an issue with the server", "error")
+        }
+    }, [isError, showToast])
+
+    useEffect(() => {
+        if (creationError) {
+            showToast("Failed to create story. The server might be experiencing issues", "error")
+        }
+    }, [creationError, showToast])
+
+    useEffect(() => {
+        if (isCreated) {
+            showToast("Successfully created story! Happy writing!", "success")
+        }
+    }, [isCreated, showToast])
+
 
     return (
         <>
@@ -37,10 +61,19 @@ export default function Dashboard() {
                 onCreateStory={create}
                 onFilterChange={setFilter}
             />
-            {isCreating && (<h2>Creating new story...</h2>)}
+            {isCreating && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px' }}>
+                    <ClipLoader size={20} color="#666" />
+                    <h2>Creating new story...</h2>
+                </div>
+            )}
             <div className={styles['flex-wrap-container']}>
-                {isError && (<h1>Failed to fetch stories. There might be an issue with the server.</h1>) }
-                {isLoading && (<h1>Loading your stories...</h1>)}
+                {isLoading && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', padding: '40px' }}>
+                        <ClipLoader size={50} color="#666" />
+                        <h1>Loading your stories...</h1>
+                    </div>
+                )}
                 {isSuccess && storiesToShow && storiesToShow.map((story: StoryCardProps) => {
                         return (
                             <StoryCard 

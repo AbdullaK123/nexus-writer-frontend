@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useStories } from "@/app/hooks/useStories";
 import styles from './EditableStatus.module.css'
+import { useToast } from "@/app/hooks/useToast";
 
 
 type EditableStoryStatusProps = {
@@ -18,6 +19,7 @@ export default function EditableStatus({
     storyId,
     status
 }: EditableStoryStatusProps) {
+    const { showToast } = useToast();
     const [isEdititing, setIsEditing] = useState(false)
     const [storyStatus, setStoryStatus] = useState(status)
     const componentRef = useRef(null)
@@ -31,18 +33,18 @@ export default function EditableStatus({
 
     useEffect(() => {
         if (isUpdated && updatedStory?.status) {
-            alert('Successfully updated status!')
+            showToast('Successfully updated status!', 'success')
             setIsEditing(false)
             setStoryStatus(updatedStory?.status)
         }
-    }, [isUpdated, updatedStory])
+    }, [isUpdated, updatedStory, showToast])
 
     useEffect(() => {
         if (updateError) {
-            alert('Failed to update story status. Check server logs')
+            showToast('Failed to update story status. Check server logs', 'error')
             return
         }
-    }, [updateError])
+    }, [updateError, showToast])
 
     useEffect(() => {
         const handleClickOutside  = (e) => {

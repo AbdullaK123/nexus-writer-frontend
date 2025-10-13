@@ -2,6 +2,7 @@ import { useChapters } from "./useChapters";
 import { useContextMenu } from "./useContextMenu";
 import { useEditable } from "./useEditable"; // Import the new hook
 import { useEffect, useRef } from "react";
+import { useToast } from "./useToast";
 
 export function useChapterTitleActions(
     storyId: string, 
@@ -10,6 +11,7 @@ export function useChapterTitleActions(
     handleOnClick: () => void, 
     handleClearSelection: () => void
 ) {
+    const { showToast } = useToast();
     const handleOnClickRef = useRef(handleOnClick);
     const handleClearSelectionRef = useRef(handleClearSelection);
     
@@ -57,12 +59,12 @@ export function useChapterTitleActions(
     }, [deleteSuccess]);
 
     useEffect(() => {
-        if (updateError) alert(`Failed to update chapter. Check server logs.`);
-    }, [updateError]);
+        if (updateError) showToast('Failed to update chapter. Check server logs.', 'error');
+    }, [updateError, showToast]);
 
     useEffect(() => {
-        if (deleteError) alert('Failed to delete chapter. Check server logs.');
-    }, [deleteError]);
+        if (deleteError) showToast('Failed to delete chapter. Check server logs.', 'error');
+    }, [deleteError, showToast]);
 
     const handleOnAction = (action: string) => {
         if (action === 'delete') {

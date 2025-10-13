@@ -8,6 +8,7 @@ import { formatWordCountStory, getDuration } from "@/app/lib/utils";
 import { useStoryNavigation } from "@/app/hooks/useStoryNavigation";
 import { useStoryContextMenuActions } from "@/app/hooks/useStoryContextMenuActions";
 import { Button } from "@/components/ui/Button";
+import { Trash2 } from "lucide-react";
 
 
 export default function StoryCard({ 
@@ -30,14 +31,13 @@ export default function StoryCard({
         menu,
         openMenu,
         closeMenu,
-        containerRef,
         isDeleting,
         handleOnAction,
         elementRef
     } = useStoryContextMenuActions(id)
 
     return (
-        <div ref={containerRef}>
+        <>
              <div 
                 ref={elementRef}
                 onContextMenu={(e: React.MouseEvent) => openMenu(e)}
@@ -88,9 +88,16 @@ export default function StoryCard({
                     x={menu.x}
                     y={menu.y}
                     onClose={closeMenu}
-                    onAction={handleOnAction}
-                />
+                >
+                    <Button
+                        variant="secondary"
+                        onClick={() => handleOnAction('delete')}
+                    >
+                        <Trash2 size={20} color={"#ff0000"}  />
+                        Delete
+                    </Button>
+                </ContextMenu>
             )}
-        </div>
+        </>
     )
 }

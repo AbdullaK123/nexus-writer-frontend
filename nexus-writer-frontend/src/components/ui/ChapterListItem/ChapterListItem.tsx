@@ -6,6 +6,8 @@ import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib
 import { useChapterTitleActions } from "@/app/hooks/useChapterTitleActions";
 import React, { useCallback, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/Input";
+import { Trash2 } from "lucide-react"
+import { Button } from "../Button";
 
 export default function ChapterListItem({
     storyId,
@@ -101,8 +103,15 @@ export default function ChapterListItem({
                     x={menu.x}
                     y={menu.y}
                     onClose={closeMenu}
-                    onAction={handleOnAction}
-                />
+                >
+                    <Button
+                        variant="secondary"
+                        onClick={() => handleOnAction('delete')}
+                    >
+                        <Trash2 size={20} color={"#ff0000"}  />
+                        Delete
+                    </Button>
+                </ContextMenu>
             )}
         </div>
     );

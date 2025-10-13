@@ -3,26 +3,18 @@ import styles from './StoryDetailHeader.module.css'
 import { StoryDetailHeaderProps } from '@/app/types'
 import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
-import FilterDropdown from '../FilterDropdown/FilterDropdown'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
-
-
-const filterOptions = [
-    {label: 'All Chapters', value: ''},
-    {label: 'Draft', value: 'draft'},
-    {label: 'Outline', value: 'outline'},
-    {label: 'Published', value: 'published'}
-]
+import { ClipLoader } from 'react-spinners'
 
 
 export default function StoryDetailHeader({
     //  storyId, 
      title, 
      onCreateChapter, 
-     onFilterChange,
      isCreating, 
-     creationSuccess
+     creationSuccess,
+     onShowSuccessToast
  } : StoryDetailHeaderProps) {
 
     const [chapterTitle, setChapterTitle] = useState<string>("");
@@ -31,10 +23,10 @@ export default function StoryDetailHeader({
 
     useEffect(() => {
         if (creationSuccess) {
-            alert('Successfully created chapter! Happy writing!')
+            onShowSuccessToast('Successfully created chapter! Happy writing!')
             setChapterTitle("")
         }
-    }, [creationSuccess])
+    }, [creationSuccess, onShowSuccessToast])
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setChapterTitle(e.target.value)
@@ -57,10 +49,6 @@ export default function StoryDetailHeader({
                 </Button>
                 <h2>{title}</h2>
             </div>
-            <FilterDropdown 
-                onFilterChange={onFilterChange}
-                filterOptions={filterOptions}
-            />
             <div className={styles['chapter-create-container']}>
                 <Input 
                      name="title"
@@ -82,7 +70,12 @@ export default function StoryDetailHeader({
                      variant="primary"
                      className={styles['create-chapter-button']}
                  >
-                     {isCreating ? 'Creating Chapter...': '+ Create Chapter'}
+                     {isCreating ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <ClipLoader size={16} color="#fff" />
+                            <span>Creating Chapter...</span>
+                        </div>
+                     ) : '+ Create Chapter'}
                  </Button>
             </div>
         </div>

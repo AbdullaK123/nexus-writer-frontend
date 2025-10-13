@@ -6,6 +6,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useShortcut } from "@/app/hooks/useShortcut"; // Import the new hook
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { ClipLoader } from "react-spinners";
 
 export default function ChapterNavHeader({
     storyId,
@@ -13,6 +14,7 @@ export default function ChapterNavHeader({
     chapterId,
     prevChapterId,
     nextChapterId,
+    onShowErrorToast
 }: ChapterNavHeaderProps) {
     const [updatingTitle, setUpdatingTitle] = useState(false);
     const [currentTitle, setCurrentTitle] = useState(chapterTitle);
@@ -85,12 +87,12 @@ export default function ChapterNavHeader({
     }, [updateSuccess]);
 
     useEffect(() => {
-        if (creationError) alert('Failed to create chapter. Check server logs');
-    }, [creationError]);
+        if (creationError) onShowErrorToast('Failed to create chapter. Check server logs');
+    }, [creationError, onShowErrorToast]);
 
     useEffect(() => {
-        if (updateError) alert('Failed to update chapter. Check server logs');
-    }, [updateError]);
+        if (updateError) onShowErrorToast('Failed to update chapter. Check server logs');
+    }, [updateError, onShowErrorToast]);
 
     // The old useEffect for shortcuts has been removed.
 
@@ -120,8 +122,18 @@ export default function ChapterNavHeader({
                 />
             ) : (
                 <>
-                    {isCreating && (<h2>Creating new chapter...</h2>)}
-                    {isUpdating && (<h2>Updating title...</h2>)}
+                    {isCreating && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <ClipLoader size={20} color="#666" />
+                            <h2>Creating new chapter...</h2>
+                        </div>
+                    )}
+                    {isUpdating && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <ClipLoader size={20} color="#666" />
+                            <h2>Updating title...</h2>
+                        </div>
+                    )}
                     {!isCreating && !isUpdating && <h2>{chapterTitle}</h2>}
                 </>
             )}

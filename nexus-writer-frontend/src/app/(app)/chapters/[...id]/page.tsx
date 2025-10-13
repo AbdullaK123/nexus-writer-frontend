@@ -8,6 +8,8 @@ import TipTapEditor from '@/components/features/TipTapEditor/TipTapEditor'
 import { debounce } from 'lodash'
 import { useMemo } from 'react'
 import { useAuth } from '@/app/hooks/useAuth'
+import { ClipLoader } from 'react-spinners'
+import { useToast } from '@/app/hooks/useToast'
 
 export default function Page() {
 
@@ -16,6 +18,7 @@ export default function Page() {
     const { useChapter } = useChapters(storyId)
     const router = useRouter()
     const { user } = useAuth()
+    const { showToast } = useToast()
 
     const {
         data: chapter,
@@ -24,7 +27,7 @@ export default function Page() {
         isLoading
     } = useChapter(chapterId, true)
 
-    const { update } = useChapters(storyId)
+    const { update, isUpdating } = useChapters(storyId)
 
     // Create debounced update function once, memoized by chapterId
     const debouncedUpdate = useMemo(
@@ -37,6 +40,8 @@ export default function Page() {
     const handleUpdate = (newContent: string) => {
         debouncedUpdate(newContent)
     }
+
+    const onShowErrorToast = (msg: string) => showToast(msg, "error");
 
     // Handle missing params
     if (!storyId || !chapterId) {
@@ -51,7 +56,10 @@ export default function Page() {
     return (
         <div className={styles['content-container']}>
             {isLoading && (
-                <h1>Loading Chapter...</h1>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', padding: '40px' }}>
+                    <ClipLoader size={50} color="#666" />
+                    <h1>Loading Chapter...</h1>
+                </div>
             )}
             {isError && (
                 <h1>Error loading chapter. Please try again.</h1>
@@ -74,6 +82,7 @@ export default function Page() {
                         chapterId={chapterId}
                         prevChapterId={chapter.previousChapterId}
                         nextChapterId={chapter.nextChapterId}
+                        onShowErrorToast={onShowErrorToast}
                     />
                     {/* <LexicalEditor 
                         key={chapter.id}
@@ -84,6 +93,7 @@ export default function Page() {
                     <TipTapEditor
                         storyId={storyId}
                         chapterId={chapterId}
+                        isSaving={isUpdating}
                         userId={user.id}
                         content={chapter.content}
                         onUpdateAction={handleUpdate}
