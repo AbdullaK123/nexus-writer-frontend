@@ -1,14 +1,15 @@
 'use client'
 import styles from '@/app/(auth)/AuthLayout.module.css'
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/app/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { z } from 'zod';
 import Link from 'next/link';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const registrationFormSchema = z.object({
     username: z.string()
@@ -31,27 +32,30 @@ const registrationFormSchema = z.object({
     path: ["confirmPassword"] 
 });
 
+type RegistrationFormData = z.infer<typeof registrationFormSchema>;
+
 export default function RegisterPage() {
 
-    const [userInfo, setUserInfo] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-    });
     const {
         user, 
-        register, 
+        register: registerUser, 
         isRegistering, 
         registerError,
         registerSuccess,
-        login,
         isLoggingIn,
         loginSuccess,
         loginError
     } = useAuth()
-    const [errors, setErrors] = useState<Record<string, string>>({})
     const router = useRouter()
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm<RegistrationFormData>({
+        resolver: zodResolver(registrationFormSchema)
+    });
 
     // if we're logged in go to the dashboard
     useEffect(() => {
@@ -68,64 +72,20 @@ export default function RegisterPage() {
 
     useEffect(() => {
         if (registerSuccess) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const {confirmPassword, username, ...credentials} = userInfo
-            login(credentials)
-            setUserInfo({
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: ""
-            })
+            reset()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [login, registerSuccess])
-    
-    const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    }, [registerSuccess, reset])
 
-        const {name, value} = e.target
-
-        setUserInfo((prev) => {
-           return {
-                ...prev,
-                [name]: value
-           }
-        })
-
-        if (errors[name]) {
-             setErrors((prev) => {
-                return {
-                    ...prev,
-                    [name]: ""
-                }
-            })
-        }
-
-    }
-
-    const handleSubmit = (e : React.FormEvent) => {
-        e.preventDefault();
-    
-        const result = registrationFormSchema.safeParse(userInfo)
-        if (!result.success) {
-            const validationErrors : Record<string, string> = {} 
-            result.error.errors.forEach((error) => {
-                const field = error.path[0] as string
-                validationErrors[field] = error.message
-            })
-            setErrors(validationErrors)
-            return 
-        }
-        
+    const onSubmit = (data: RegistrationFormData) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {confirmPassword, ...registrationData} = userInfo
-        register(registrationData)
+        const { confirmPassword, ...registrationData } = data
+        registerUser(registrationData as { username: string; email: string; password: string })
     }
 
     const isProcessing = isRegistering || isLoggingIn
 
     return (
-        <form className={styles.card} onSubmit={handleSubmit}>
+        <form className={styles.card} onSubmit={handleSubmit(onSubmit)}>
             <Image
                 src='./logo.svg'
                 alt='Nexus Writer Logo'
@@ -142,13 +102,11 @@ export default function RegisterPage() {
                 </label>
                 <Input
                     type='text'
-                    name='username'
                     id='username'
-                    value={userInfo.username}
-                    onChange={handleOnChange}
                     disabled={isProcessing}
+                    {...register('username')}
                 />
-                {errors.username && (<span className={styles['error-badge']}>{errors.username}</span>)}
+                {errors.username && (<span className={styles['error-badge']}>{errors.username.message}</span>)}
             </div>
             <div>
                  <label
@@ -158,13 +116,11 @@ export default function RegisterPage() {
                 </label>
                 <Input
                     type='email'
-                    name='email'
                     id='email'
-                    value={userInfo.email}
-                    onChange={handleOnChange}
                     disabled={isProcessing}
+                    {...register('email')}
                 />
-                {errors.email && (<span className={styles['error-badge']}>{errors.email}</span>)}
+                {errors.email && (<span className={styles['error-badge']}>{errors.email.message}</span>)}
             </div>
             <div>
                  <label
@@ -174,13 +130,11 @@ export default function RegisterPage() {
                 </label>
                 <Input
                     type='password'
-                    name='password'
                     id='password'
-                    value={userInfo.password}
-                    onChange={handleOnChange}
                     disabled={isProcessing}
+                    {...register('password')}
                 />
-                {errors.password && (<span className={styles['error-badge']}>{errors.password}</span>)}
+                {errors.password && (<span className={styles['error-badge']}>{errors.password.message}</span>)}
             </div>
             <div>
                  <label
@@ -190,13 +144,11 @@ export default function RegisterPage() {
                 </label>
                 <Input
                     type='password'
-                    name='confirmPassword'
                     id='confirm-password'
-                    value={userInfo.confirmPassword}
-                    onChange={handleOnChange}
                     disabled={isProcessing}
+                    {...register('confirmPassword')}
                 />
-                {errors.confirmPassword && (<span className={styles['error-badge']}>{errors.confirmPassword}</span>)}
+                {errors.confirmPassword && (<span className={styles['error-badge']}>{errors.confirmPassword.message}</span>)}
             </div>
             <Button 
                 variant="primary"

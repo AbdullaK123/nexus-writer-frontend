@@ -33,7 +33,7 @@ export const transformTarget = (target: ApiTargetResponse): TargetResponse => ({
     targetId: target.target_id
 })
 
-export function transformChapterResponse(apiResponse: ApiChapterContentResponse): Omit<ChapterPreviewProps, 'onStatusUpdate'> {
+export function transformChapterResponse(apiResponse: ApiChapterContentResponse): Omit<ChapterPreviewProps, 'onStatusUpdate' | 'onShowErrorToast' | 'onShowSuccessToast'> {
     const wordCount = apiResponse.content ? apiResponse.content.split(' ').length : 0
     
     return {

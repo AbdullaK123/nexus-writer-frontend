@@ -133,14 +133,29 @@ export type EditableStoryTitleProps = {
     title: string;
 };
 
-export type TargetFormProps = {
+export type CreateTargetFormProps = {
   storyId: string
+  isOpen: boolean
+  frequency: Frequency
+  onClose: () => void
+  onSave: () => void
+  onCancel: () => void
+}
+
+export type EditTargetFormProps = {
+  target: TargetResponse
   isOpen: boolean
   onClose: () => void
   onSave: () => void
   onCancel: () => void
-  mode: 'creating' | 'editing' | 'deleting'
-  target?: TargetResponse
+}
+
+export type DeleteTargetFormProps = {
+  target: TargetResponse
+  isOpen: boolean
+  onClose: () => void
+  onSave: () => void
+  onCancel: () => void
 }
 
 export type StoryListProps = {

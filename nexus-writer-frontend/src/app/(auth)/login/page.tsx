@@ -1,45 +1,52 @@
 'use client'
 import styles from '@/app/(auth)/AuthLayout.module.css'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useAuth } from '@/app/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const loginSchema = z.object({
+    email: z.string()
+        .min(1, "Email is required")
+        .email("Please enter a valid email address"),
+    password: z.string()
+        .min(1, "Password is required")
+}).strict();
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
 
-    const [credentials, setCredentials] = useState({email: "", password: ""});
     const {login, isLoggingIn, loginError, loginSuccess} = useAuth()
     const router = useRouter()
 
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema)
+    });
+
     useEffect(() => {
         if (loginSuccess) {
-            setCredentials({email: "", password: ""})
+            reset()
             router.push('/dashboard')
         }
-    }, [loginSuccess, router])
+    }, [loginSuccess, router, reset])
 
-    const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-
-        const {name, value} = e.target
-
-        setCredentials((prev) => {
-           return {
-                ...prev,
-                [name]: value
-           }
-        })
+    const onSubmit = (data: LoginFormData) => {
+        login(data as { email: string; password: string })
     }
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        login(credentials)
-    }
-
 
     return (
-        <form className={styles.card} onSubmit={handleSubmit}>
+        <form className={styles.card} onSubmit={handleSubmit(onSubmit)}>
              <Image
                 src='./logo.svg'
                 alt='Nexus Writer Logo'
@@ -56,12 +63,11 @@ export default function LoginPage() {
                 </label>
                 <Input
                     type='email'
-                    name='email'
                     id='email'
-                    value={credentials.email}
-                    onChange={handleOnChange}
                     disabled={isLoggingIn}
+                    {...register('email')}
                 />
+                {errors.email && (<span className={styles['error-badge']}>{errors.email.message}</span>)}
             </div>
             <div>
                  <label
@@ -71,15 +77,14 @@ export default function LoginPage() {
                 </label>
                 <Input
                     type='password'
-                    name='password'
                     id='password'
-                    value={credentials.password}
-                    onChange={handleOnChange}
                     disabled={isLoggingIn}
+                    {...register('password')}
                 />
+                {errors.password && (<span className={styles['error-badge']}>{errors.password.message}</span>)}
             </div>
-            <Button variant="primary">
-                Submit
+            <Button variant="primary" type="submit" disabled={isLoggingIn}>
+                {isLoggingIn ? 'Logging in...' : 'Submit'}
             </Button>
             {loginError && (<span className={styles['error-badge']}>{loginError.message}</span>)}
             {isLoggingIn && (<span className={styles['info-badge']}>Logging you in...</span>)}
