@@ -1,24 +1,28 @@
 'use client'
-import { StoryListItemProps } from "@/app/types";
+import { StoryListItemProps, TargetResponse } from "@/app/types";
 import styles from "./StoryListItem.module.css";
 import { formatWordCount } from "@/app/lib/utils";
 
 export default function StoryListItem({
     title,
-    status,
     wordCount,
-    handleOnClick,
+    targets
 }: StoryListItemProps) {
     return (
         <div
-            onClick={handleOnClick}
             className={styles['story-list-item-container']}
         >
             <div className={styles['flex-col-container']}>
                 <div className={styles['story-title']}>{title}</div>
                 <div className={styles['story-metadata-container']}>
                     <span>{formatWordCount(wordCount)}</span>
-                    <span>{status}</span>
+                </div>
+                <div className={styles['story-target-badges-container']}>
+                    {targets && targets.length > 0 && targets.map((target: TargetResponse) => (
+                        <span key={target.targetId} className={styles['target-badge']}>
+                            {`${target.frequency}: ${target.quota}`}
+                        </span>
+                    ))}
                 </div>
             </div>
             <div className={styles['arrow-icon']}>

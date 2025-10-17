@@ -1,6 +1,6 @@
 'use client'
 import { Modal } from "../Modal";
-import { CreateTargetFormProps } from "@/app/types";
+import { CreateTargetFormProps, Frequency } from "@/app/types";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -38,7 +38,7 @@ const formatDateForInput = (date: Date): string => {
 };
 
 // Calculate smart defaults based on frequency
-const getSmartDefaults = (frequency: string) => {
+const getSmartDefaults = (frequency: Frequency) => {
     const today = new Date();
     const fromDate = formatDateForInput(today);
     
@@ -46,12 +46,12 @@ const getSmartDefaults = (frequency: string) => {
     let toDate: string;
     
     switch (frequency) {
-        case 'DAILY':
+        case 'Daily':
             quota = 500;
             toDate = fromDate; // Same day
             break;
             
-        case 'WEEKLY':
+        case 'Weekly':
             quota = 3500;
             // End of week (Sunday)
             const endOfWeek = new Date(today);
@@ -60,7 +60,7 @@ const getSmartDefaults = (frequency: string) => {
             toDate = formatDateForInput(endOfWeek);
             break;
             
-        case 'MONTHLY':
+        case 'Monthly':
             quota = 15000;
             // End of month
             const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);

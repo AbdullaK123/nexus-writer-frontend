@@ -1,5 +1,6 @@
+import { transformTarget } from '../lib/utils';
 import fetchApi from './api';
-import { ApiStory, StoryCreateRequest, StoryUpdateRequest } from '@/app/types';
+import { ApiStory, ApiStoryListItemResponse, ApiTargetResponse, StoryCreateRequest, StoryListItemResponse, StoryUpdateRequest } from '@/app/types';
 
 // This function will handle the transformation
 const transformStory = (story: ApiStory) => ({
@@ -11,11 +12,23 @@ const transformStory = (story: ApiStory) => ({
     wordCount: story.word_count,
 });
 
+const transformStoryListItemResponse = (storyListItem: ApiStoryListItemResponse): StoryListItemResponse => ({
+    storyId: storyListItem.id,
+    title: storyListItem.title,
+    wordCount: storyListItem.word_count,
+    targets: storyListItem.targets.map((targetResponse: ApiTargetResponse) => transformTarget(targetResponse))
+})
+
 export const getStories = async () => {
     const data = await fetchApi('/stories');
     // Transform the data before returning it
     return data.stories ? data.stories.map(transformStory) : [];
 };
+
+export const getStoriesWithTargets = async () => {
+    const data = await fetchApi('/stories/targets');
+    return data ? data.map(transformStoryListItemResponse) : [];
+}
 
 export const getStory = async (storyId: string) => {
     const data = await fetchApi(`/stories/${storyId}`);

@@ -127,11 +127,14 @@
     gap: 1rem;
     padding: 2rem;
     border-radius: 16px;
-    border: 1px solid var(--accent-primary);
-    background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-shadow: 
-        0 0 5px var(--accent-primary),     
-        0 0 10px var(--accent-secondary),   
+        0 4px 16px rgba(0, 0, 0, 0.4),
+        0 0 10px rgba(0, 212, 255, 0.2),
+        0 0 20px rgba(0, 212, 255, 0.1),
         inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
@@ -262,4 +265,31 @@
     display: block;
     font-size: 3rem;
     margin-bottom: 1rem;
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .chapter-content-container::before {
+        animation: none;
+    }
+    
+    .chapter-actions button {
+        transition: none;
+    }
+}
+
+/* Accessibility: High contrast */
+@media (prefers-contrast: high) {
+    .chapter-actions {
+        border-width: 2px;
+    }
+    
+    .metadata-item {
+        border-width: 2px;
+        font-weight: 700;
+    }
+    
+    .chapter-title {
+        font-weight: 900;
+    }
 }

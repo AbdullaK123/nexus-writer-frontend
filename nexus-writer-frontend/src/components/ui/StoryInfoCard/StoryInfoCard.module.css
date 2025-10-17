@@ -207,3 +207,30 @@
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
 }
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .status-badge,
+    .stat-item {
+        transition: none;
+        animation: none;
+    }
+    
+    .status-badge:hover,
+    .stat-item:hover {
+        transform: none;
+    }
+    
+    .story-info-container.loading::after {
+        animation: none;
+    }
+}
+
+/* Accessibility: High contrast */
+@media (prefers-contrast: high) {
+    .status-badge,
+    .stat-item {
+        border-width: 2px;
+        font-weight: 700;
+    }
+}

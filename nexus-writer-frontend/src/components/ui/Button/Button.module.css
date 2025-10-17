@@ -19,55 +19,84 @@
 
 .primary {
   padding: 0.75rem 1.5rem;
-  background: var(--interactive);
-  border: 1px solid var(--accent-primary);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.1));
+  border: 1px solid rgba(0, 212, 255, 0.4);
   color: var(--text-primary);
-  box-shadow: rgba(0, 128, 255, 0.4);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--accent-primary);
+  background: linear-gradient(135deg, var(--accent-primary), rgba(0, 212, 255, 0.8));
+  border-color: var(--accent-secondary);
   box-shadow:
+     0 4px 12px rgba(0, 212, 255, 0.4),
      0 0 15px var(--accent-primary),
-     0 0 25px rgba(0, 212, 255, 0.6);
+     0 0 25px rgba(0, 212, 255, 0.3),
+     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
+}
+
+.primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 6px rgba(0, 212, 255, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .secondary {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(var(--background-primary), var(--background-secondary));
-  border: 1px solid var(--accent-primary);
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(16, 16, 16, 0.9));
+  border: 1px solid rgba(0, 212, 255, 0.3);
   color: var(--text-primary);
-  box-shadow: rgba(0, 128, 255, 0.4);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .secondary:hover:not(:disabled) {
-  text-shadow: 1px 1px white;
-  background: var(--background-secondary);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+  border-color: var(--accent-primary);
+  box-shadow: 
+    0 4px 12px rgba(0, 212, 255, 0.2),
+    0 0 10px rgba(0, 212, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
+}
+
+.secondary:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .danger {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, var(--error), #cc0033);
-  border: 1px solid var(--error);
+  background: linear-gradient(135deg, rgba(255, 0, 64, 0.3), rgba(204, 0, 51, 0.2));
+  border: 1px solid rgba(255, 0, 64, 0.4);
   color: var(--text-primary);
   box-shadow: 
-    0 0 10px rgba(255, 0, 64, 0.4),
-    inset 0 0 10px rgba(255, 0, 64, 0.1);
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(255, 0, 64, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .danger:hover:not(:disabled) {
-  background: linear-gradient(135deg, #ff1a5c, var(--error));
+  background: linear-gradient(135deg, var(--error), #cc0033);
+  border-color: var(--error);
   box-shadow: 
-    0 0 15px rgba(255, 0, 64, 0.6),
-    0 0 25px rgba(255, 0, 64, 0.3),
-    inset 0 0 15px rgba(255, 0, 64, 0.15);
+    0 4px 12px rgba(255, 0, 64, 0.4),
+    0 0 15px rgba(255, 0, 64, 0.4),
+    0 0 25px rgba(255, 0, 64, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
 }
 
 .danger:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: 
+    0 2px 6px rgba(255, 0, 64, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .sm {
@@ -83,4 +112,33 @@
 .lg {
   padding: 1rem 2rem;
   font-size: 1.125rem;
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+  
+  .primary:hover:not(:disabled),
+  .secondary:hover:not(:disabled),
+  .danger:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .primary:active:not(:disabled),
+  .secondary:active:not(:disabled),
+  .danger:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Accessibility: High contrast */
+@media (prefers-contrast: high) {
+  .primary,
+  .secondary,
+  .danger {
+    border-width: 2px;
+    font-weight: 700;
+  }
 }

@@ -46,7 +46,7 @@
   top: 2rem;
   left: 1rem;
   color: var(--text-muted);
-  border: 1px solid var(--accent-primary);
+  border: 1px solid rgba(0, 212, 255, 0.3);
   font-style: italic;
   pointer-events: none;
   font-size: 1.1rem;

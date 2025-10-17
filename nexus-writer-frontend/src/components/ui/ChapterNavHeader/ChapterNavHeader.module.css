@@ -1,3 +1,4 @@
+/* ChapterNavHeader.module.css */
 
 .chapter-nav-container {
     display: flex;
@@ -15,20 +16,40 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--background-secondary);
-    border: 1px solid var(--accent-primary);
+    background: linear-gradient(
+        135deg,
+        rgba(26, 26, 26, 0.8),
+        rgba(16, 16, 16, 0.9)
+    );
+    border: 1px solid rgba(0, 212, 255, 0.3);
     color: var(--accent-primary);
     cursor: pointer;
     transition: all 0.3s ease;
     flex-shrink: 0;
     font-size: 1.5rem;
     padding: 0;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .nav-button:hover {
-    background: var(--accent-primary);
-    color: var(--background-primary);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 212, 255, 0.2),
+        rgba(0, 212, 255, 0.05)
+    );
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
     transform: translateX(-2px);
+    box-shadow: 
+        0 4px 12px rgba(0, 212, 255, 0.3),
+        0 0 15px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.nav-button:active {
+    transform: translateX(0) scale(0.95);
 }
 
 .create-button {
@@ -38,16 +59,58 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--success);
-    color: white;
+    background: linear-gradient(135deg, var(--success), #00ff88);
+    border: 1px solid rgba(0, 255, 65, 0.5);
+    color: var(--background-primary);
     cursor: pointer;
     transition: all 0.3s ease;
     flex-shrink: 0;
     font-size: 1.5rem;
-    padding: 0;
     font-weight: bold;
+    padding: 0;
+    box-shadow: 
+        0 2px 8px rgba(0, 255, 65, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .create-button:hover {
+    background: linear-gradient(135deg, #00ff88, var(--success));
     transform: translateY(-4px);
+    box-shadow: 
+        0 6px 16px rgba(0, 255, 65, 0.4),
+        0 0 20px rgba(0, 255, 65, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.create-button:active {
+    transform: translateY(-2px) scale(0.95);
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .nav-button,
+    .create-button {
+        transition: none;
+    }
+    
+    .nav-button:hover {
+        transform: none;
+    }
+    
+    .create-button:hover {
+        transform: none;
+    }
+    
+    .nav-button:active,
+    .create-button:active {
+        transform: none;
+    }
+}
+
+/* Accessibility: High contrast */
+@media (prefers-contrast: high) {
+    .nav-button,
+    .create-button {
+        border-width: 2px;
+    }
 }

@@ -1,16 +1,15 @@
-/* src/components/ui/ChapterListItem/ChapterListItem.module.css */
+/* StoryListItem.module.css */
 
 .story-list-item-container {
     display: flex;
     align-items: center;
     padding: 1rem 1.25rem;
     border-radius: 12px;
-    border: 1px solid var(--accent-primary);
-    background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
-    box-shadow:
-            0 0 5px var(--accent-primary),
-            0 0 10px var(--accent-secondary),
-            inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    background: linear-gradient(135deg, 
+        rgba(26, 26, 26, 0.8), 
+        rgba(16, 16, 16, 0.9)
+    );
     cursor: pointer;
     transition: all 0.3s ease;
     gap: 1rem;
@@ -23,20 +22,22 @@
 }
 
 .story-list-item-container:hover {
-    border-color: var(--accent-secondary);
+    border-color: var(--accent-primary);
     background: linear-gradient(135deg, 
-        rgba(0, 212, 255, 0.05), 
-        rgba(0, 255, 255, 0.02)
+        rgba(0, 212, 255, 0.1), 
+        rgba(26, 26, 26, 0.9)
     );
     transform: translateY(-2px);
-    box-shadow:
-        0 0 8px var(--accent-primary),
-        0 0 15px var(--accent-secondary),
-        inset 0 1px 0 rgba(255,255,255,0.15);
+    box-shadow: 
+        0 2px 8px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 .story-list-item-container:active {
     transform: translateY(-1px) scale(0.99);
+    box-shadow: 
+        0 1px 4px rgba(0, 212, 255, 0.4),
+        inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .flex-col-container {
@@ -57,7 +58,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: var(--font-body);
+    font-family: var(--font-heading);
+    text-shadow: 0 0 3px rgba(0, 212, 255, 0.2);
 }
 
 .arrow-icon {
@@ -87,6 +89,40 @@
     font-family: var(--font-body);
     font-weight: 400;
     text-shadow: none;
+}
+
+.story-target-badges-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.target-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, 
+        rgba(0, 212, 255, 0.15), 
+        rgba(0, 212, 255, 0.05)
+    );
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: var(--accent-primary);
+    text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.target-badge:hover {
+    background: linear-gradient(135deg, 
+        rgba(0, 212, 255, 0.25), 
+        rgba(0, 212, 255, 0.1)
+    );
+    border-color: var(--accent-primary);
+    transform: scale(1.05);
 }
 
 .flex-row-container {
@@ -124,5 +160,48 @@
 @media (prefers-contrast: high) {
     .story-list-item-container {
         border-width: 2px;
+    }
+}
+/* Additional mobile styles */
+@media (max-width: 600px) {
+    .target-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+}
+
+/* Additional high contrast styles */
+@media (prefers-contrast: high) {
+    .target-badge {
+        border-width: 2px;
+    }
+    
+    .story-title {
+        font-weight: 700;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .story-list-item-container,
+    .arrow-icon,
+    .target-badge {
+        transition: none;
+    }
+    
+    .story-list-item-container:hover {
+        transform: none;
+    }
+    
+    .story-list-item-container:active {
+        transform: none;
+    }
+    
+    .story-list-item-container:hover .arrow-icon {
+        transform: none;
+    }
+    
+    .target-badge:hover {
+        transform: none;
     }
 }

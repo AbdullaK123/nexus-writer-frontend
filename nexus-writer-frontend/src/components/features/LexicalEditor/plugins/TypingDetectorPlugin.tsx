@@ -3,19 +3,15 @@ import { useTypingState } from '@/app/hooks/useTypingState';
 import { useEditorListener } from '@/app/hooks/useEditorListener';
 import { TypingDetectorPluginProps } from '@/app/types';
 import { useCallback } from 'react';
-import { useWritingSessionTracking } from '@/app/hooks/useWritingSessionTracking';
 
 
 export default function TypingDetectorPlugin({ 
-    storyId,
-    chapterId,
-    userId,
     delay
  }: TypingDetectorPluginProps) {
     const [editor] = useLexicalComposerContext()
-    const { handleWebSocketEvent } = useWritingSessionTracking(storyId, chapterId, userId)
-    const onSessionStart = () => handleWebSocketEvent('session_start')
-    const onSessionEnd = () => handleWebSocketEvent('session_end')
+    // Legacy: useWritingSessionTracking doesn't work with Lexical, so we provide dummy handlers
+    const onSessionStart = () => {}
+    const onSessionEnd = () => {}
     const { handleOnTyping, scheduleStop } = useTypingState(onSessionStart, onSessionEnd)
 
     const handleTypingEvents = useCallback(() => {

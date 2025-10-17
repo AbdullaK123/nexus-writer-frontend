@@ -1,3 +1,4 @@
+import { TargetResponse } from "./analytics";
 import { ChapterListItemProps, StoryCardProps } from "./components";
 
 export type StoryStatus = "Complete" | "On Hiatus" | "Ongoing";
@@ -46,4 +47,11 @@ export interface CreateStoryRequest {
 export interface UpdateStoryRequest {
   title?: string;
   status?: "Complete" | "On Hiatus" | "Ongoing";
+}
+
+export interface StoryListItemResponse {
+  storyId: string
+  title: string
+  wordCount: number
+  targets: TargetResponse[]
 }

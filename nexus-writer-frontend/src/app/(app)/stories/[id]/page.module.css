@@ -27,6 +27,7 @@
 .centered {
     display: flex;
     align-items: center;
+    gap: 1rem;
     justify-content: center;
     height: calc(100vh - 200px);
     width: 100%;

@@ -47,6 +47,13 @@ export interface ApiTargetResponse {
     target_id: string;
 }
 
+export interface ApiStoryListItemResponse {
+    id: string
+    title: string
+    word_count: number
+    targets: ApiTargetResponse[]
+}
+
 export interface ApiKpisResponse {
     total_words: number;
     total_duration: number;

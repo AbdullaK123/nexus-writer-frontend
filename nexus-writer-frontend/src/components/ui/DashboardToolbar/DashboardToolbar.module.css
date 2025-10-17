@@ -174,3 +174,17 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .story-create-bar-container button:hover {
+        transform: none;
+    }
+}
+
+/* Accessibility: High contrast */
+@media (prefers-contrast: high) {
+    .welcome-message {
+        font-weight: 700;
+    }
+}

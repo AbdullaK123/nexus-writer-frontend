@@ -56,7 +56,7 @@ export default function Page() {
     return (
         <div className={styles['content-container']}>
             {isLoading && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', padding: '40px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', padding: '40px' }}>
                     <ClipLoader size={50} color="#666" />
                     <h1>Loading Chapter...</h1>
                 </div>

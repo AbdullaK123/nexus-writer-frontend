@@ -1,19 +1,24 @@
 .sidebar-section {
     padding: 1.5rem;
-    border: 1px solid var(--accent-primary);
+    border: 1px solid rgba(0, 212, 255, 0.3);
     border-radius: 16px;
-    background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-shadow:
-            0 0 5px var(--accent-primary),
-            0 0 10px var(--accent-secondary),
+            0 4px 16px rgba(0, 0, 0, 0.4),
+            0 0 10px rgba(0, 212, 255, 0.2),
+            0 0 20px rgba(0, 212, 255, 0.1),
             inset 0 1px 0 rgba(255,255,255,0.1);
     transition: all 0.3s ease;
 }
 
 .sidebar-section:hover {
+    border-color: rgba(0, 212, 255, 0.5);
     box-shadow:
-            0 0 8px var(--accent-primary),
-            0 0 15px var(--accent-secondary),
+            0 6px 20px rgba(0, 0, 0, 0.5),
+            0 0 15px rgba(0, 212, 255, 0.3),
+            0 0 30px rgba(0, 212, 255, 0.15),
             inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
@@ -28,12 +33,34 @@
 
 .story-items-container h2 {
     font-size: 1.5rem;
+    font-family: var(--font-heading);
     text-align: center;
     position: sticky;
     top: 0;
-    background: linear-gradient(135deg, var(--background-primary), var(--background-secondary));
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
+    backdrop-filter: blur(8px);
     padding: 0.5rem 0;
-    border-bottom: 1px solid var(--accent-primary);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
     margin: 0 0 1rem;
     z-index: 1;
+    color: var(--accent-primary);
+}
+
+/* Accessibility: Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar-section {
+        transition: none;
+    }
+}
+
+/* Accessibility: High contrast */
+@media (prefers-contrast: high) {
+    .sidebar-section {
+        border-width: 2px;
+    }
+    
+    .story-items-container h2 {
+        font-weight: 700;
+        border-bottom-width: 2px;
+    }
 }

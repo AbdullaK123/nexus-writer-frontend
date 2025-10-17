@@ -30,7 +30,9 @@ export function useSelectedChapter(storyId: string) {
             if (apiResponse) {
                 setSelectedChapter({
                     ...transformChapterResponse(apiResponse),
-                    onStatusUpdate: () => {} 
+                    onStatusUpdate: () => {},
+                    onShowErrorToast: () => {},
+                    onShowSuccessToast: () => {}
                 })
             }
         } catch (error) {

@@ -62,14 +62,14 @@ export default function Dashboard() {
                 onFilterChange={setFilter}
             />
             {isCreating && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '20px' }}>
                     <ClipLoader size={20} color="#666" />
                     <h2>Creating new story...</h2>
                 </div>
             )}
             <div className={styles['flex-wrap-container']}>
                 {isLoading && (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', padding: '40px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', padding: '40px' }}>
                         <ClipLoader size={50} color="#666" />
                         <h1>Loading your stories...</h1>
                     </div>

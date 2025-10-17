@@ -53,11 +53,8 @@ export interface ChapterListItemProps {
 export interface StoryListItemProps {
   storyId: string;
   title: string;
-  status: "Complete" | "On Hiatus" | "Ongoing";
   wordCount: number;
-  handleOnClick: () => void;
-  handleClearSelection: () => void;
-  handleOnShowTargetForm?: (mode: 'creating' | 'editing' | 'deleting', target?: TargetResponse, storyId?: string) => void;
+  targets: TargetResponse[];
 }
 
 export interface ChapterPreviewProps {
@@ -105,6 +102,7 @@ export interface AuthWrapperProps {
 }
 
 export interface ContextMenuProps {
+  isOpen: boolean;
   x: number;
   y: number;
   onClose: () => void;

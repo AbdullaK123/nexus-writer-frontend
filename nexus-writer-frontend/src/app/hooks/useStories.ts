@@ -5,7 +5,6 @@ import * as storyService from '../services/storyService';
 export function useStories() {
     const queryClient = useQueryClient();
 
-    // This query is now much simpler!
     const { 
         data: stories, 
         isLoading, 
@@ -15,6 +14,16 @@ export function useStories() {
         queryKey: ['stories'],
         queryFn: storyService.getStories
     });
+
+    const {
+        data: storyListItems,
+        isLoading: isLoadingListItems,
+        isError: listItemsError,
+        isSuccess: listItemsSuccess
+    } = useQuery({
+        queryKey: ['stories', 'targets'],
+        queryFn: storyService.getStoriesWithTargets
+    })
 
     const useStory = (storyId: string) => useQuery({
         queryKey: ['stories', storyId],
@@ -55,6 +64,10 @@ export function useStories() {
         isSuccess,
         isCreated: createStoryMutation.isSuccess,
         isUpdated: updateStoryMutation.isSuccess,
-        isDeleted: deleteStoryMutation.isSuccess
+        isDeleted: deleteStoryMutation.isSuccess,
+        storyListItems,
+        isLoadingListItems,
+        listItemsError,
+        listItemsSuccess
     };
 }

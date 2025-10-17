@@ -3,12 +3,11 @@ import { StoryCardProps } from "@/app/types";
 import styles from './StoryCard.module.css'
 import EditableStoryTitle from "../EditableTitle/EditableTitle";
 import EditableStatus from "../EditableStatus/EditableStatus";
-import ContextMenu from '../ContextMenu/ContextMenu'
+import { StoryCardContextMenu } from '../StoryCardContextMenu'
 import { formatWordCountStory, getDuration } from "@/app/lib/utils";
 import { useStoryNavigation } from "@/app/hooks/useStoryNavigation";
 import { useStoryContextMenuActions } from "@/app/hooks/useStoryContextMenuActions";
 import { Button } from "@/components/ui/Button";
-import { Trash2 } from "lucide-react";
 
 
 export default function StoryCard({ 
@@ -84,19 +83,13 @@ export default function StoryCard({
                 </div>
             </div>
             {menu.visible && (
-                <ContextMenu 
+                <StoryCardContextMenu 
+                    isOpen={menu.visible}
                     x={menu.x}
                     y={menu.y}
                     onClose={closeMenu}
-                >
-                    <Button
-                        variant="secondary"
-                        onClick={() => handleOnAction('delete')}
-                    >
-                        <Trash2 size={20} color={"#ff0000"}  />
-                        Delete
-                    </Button>
-                </ContextMenu>
+                    onDelete={() => handleOnAction('delete')}
+                />
             )}
         </>
     )
