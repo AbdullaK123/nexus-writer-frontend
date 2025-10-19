@@ -84,12 +84,6 @@ export default function Page() {
                         nextChapterId={chapter.nextChapterId}
                         onShowErrorToast={onShowErrorToast}
                     />
-                    {/* <LexicalEditor 
-                        key={chapter.id}
-                        initialContent={chapter.content}
-                        storyId={storyId}
-                        chapterId={chapterId}
-                    /> */}
                     <TipTapEditor
                         storyId={storyId}
                         chapterId={chapterId}

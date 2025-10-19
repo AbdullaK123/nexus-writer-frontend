@@ -1,5 +1,6 @@
 'use client'
 import { useSubmenu } from '@/app/hooks/useSubmenu'
+import { createPortal } from 'react-dom'
 import styles from './ContextMenu.module.css'
 
 interface MenuItemProps {
@@ -73,7 +74,7 @@ export default function MenuItem({
         {hasSubmenu && <span className={styles.arrow}>▶</span>}
       </button>
 
-      {hasSubmenu && submenuOpen && (
+      {hasSubmenu && submenuOpen && createPortal(
         <div
           className={styles.submenu}
           style={{
@@ -86,7 +87,8 @@ export default function MenuItem({
           role="menu"
         >
           {children}
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

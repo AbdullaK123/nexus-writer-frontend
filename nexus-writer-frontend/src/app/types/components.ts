@@ -55,6 +55,8 @@ export interface StoryListItemProps {
   title: string;
   wordCount: number;
   targets: TargetResponse[];
+  handleOnContextMenu: () => void;
+  props?: React.HTMLProps<HTMLDivElement>
 }
 
 export interface ChapterPreviewProps {

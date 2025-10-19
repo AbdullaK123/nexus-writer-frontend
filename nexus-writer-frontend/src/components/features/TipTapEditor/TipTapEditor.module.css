@@ -19,9 +19,9 @@
 .editor-shell {
   width: 80vw;
   position: relative;
-  border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s ease;
+  overflow-y: auto;
 }
 
 /* Main editor content area */

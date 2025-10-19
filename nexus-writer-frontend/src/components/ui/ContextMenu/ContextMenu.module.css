@@ -35,7 +35,7 @@
 }
 
 .submenu {
-  position: absolute; /* Submenu is relative to menu item */
+  position: fixed; /* Match parent menu - uses portal at body level */
   min-width: 240px;
   background: linear-gradient(
     135deg,
@@ -52,7 +52,7 @@
   padding: 0.5rem;
   font-size: 0.875rem;
   font-family: var(--font-body);
-  z-index: 1001; /* Higher than parent menu */
+  z-index: 10000; /* Higher than parent menu (9999) */
   user-select: none;
   animation: submenuSlideIn 0.15s ease-out;
 }
