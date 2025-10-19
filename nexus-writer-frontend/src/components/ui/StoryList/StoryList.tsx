@@ -19,6 +19,7 @@ export default function StoryList({
                 stories.map((story) => (
                     <StoryListItem
                         key={story.storyId}
+                        storyId={story.storyId}
                         {...story}
                     />
                 ))

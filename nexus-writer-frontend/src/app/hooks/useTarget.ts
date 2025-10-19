@@ -25,7 +25,12 @@ export function useTarget(storyId: string, frequency: Frequency) {
         isSuccess: updateSuccess
     } = useMutation({
         mutationFn: (variables: { targetId: string, payload: UpdateTargetRequest }) => targetService.updateTarget(storyId, variables.targetId, variables.payload),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets', frequency]})
+        onSuccess: () => {
+            // Invalidate all target queries for this story
+            queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
+            // Invalidate the stories list with targets
+            queryClient.invalidateQueries({ queryKey: ['stories', 'targets']})
+        }
     })
 
     const {
@@ -35,7 +40,12 @@ export function useTarget(storyId: string, frequency: Frequency) {
         isSuccess: deleteSuccess
     } = useMutation({
         mutationFn: (variables: {targetId: string}) => targetService.deleteTarget(storyId, variables.targetId),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets', frequency]})
+        onSuccess: () => {
+            // Invalidate all target queries for this story
+            queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
+            // Invalidate the stories list with targets
+            queryClient.invalidateQueries({ queryKey: ['stories', 'targets']})
+        }
     })
 
     const {
@@ -46,7 +56,12 @@ export function useTarget(storyId: string, frequency: Frequency) {
         isSuccess: createSuccess
     } = useMutation({
         mutationFn: (variables: {payload: CreateTargetRequest}) => targetService.createTarget(storyId, variables.payload),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets', frequency]})
+        onSuccess: () => {
+            // Invalidate all target queries for this story
+            queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
+            // Invalidate the stories list with targets
+            queryClient.invalidateQueries({ queryKey: ['stories', 'targets']})
+        }
     })
 
     return {

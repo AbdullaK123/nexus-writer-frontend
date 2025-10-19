@@ -1,0 +1,18 @@
+.analytics-page-content {
+    width: 100vw;
+    height: 100vh;
+    gap: 2rem;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.story-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.story-sidebar h2 {
+    text-align: center;
+}

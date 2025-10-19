@@ -11,7 +11,6 @@ interface StoryListItemContextMenuProps {
   onCreateTarget: (frequency: Frequency) => void
   onEditTarget: (frequency: Frequency) => void
   onDeleteTarget: (frequency: Frequency) => void
-  onViewTarget: (targetId: string) => void
 }
 
 export function StoryListItemContextMenu({
