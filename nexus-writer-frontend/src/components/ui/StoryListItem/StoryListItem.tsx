@@ -21,7 +21,7 @@ export default function StoryListItem({
     title,
     wordCount,
     targets,
-    props
+    ...divProps
 }: StoryListItemProps) {
 
     const {menu, openMenu, closeMenu} = useContextMenu()
@@ -57,7 +57,7 @@ export default function StoryListItem({
                     e.preventDefault()
                     openMenu(e)
                 }}
-                {...props}
+                {...divProps}
             >
                 <div className={styles['flex-col-container']}>
                     <div className={styles['story-title']}>{title}</div>

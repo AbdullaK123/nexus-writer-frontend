@@ -1,6 +1,6 @@
-import { transformTarget } from '../lib/utils';
+import { transformStoryAnalyticResponse, transformTarget } from '../lib/utils';
 import fetchApi from './api';
-import { ApiStory, ApiStoryListItemResponse, ApiTargetResponse, StoryCreateRequest, StoryListItemResponse, StoryUpdateRequest } from '@/app/types';
+import { ApiStory, ApiStoryListItemResponse, ApiTargetResponse, Frequency, StoryAnalytics, StoryCreateRequest, StoryListItemProps, StoryListItemResponse, StoryUpdateRequest } from '@/app/types';
 
 // This function will handle the transformation
 const transformStory = (story: ApiStory) => ({
@@ -19,13 +19,25 @@ const transformStoryListItemResponse = (storyListItem: ApiStoryListItemResponse)
     targets: storyListItem.targets.map((targetResponse: ApiTargetResponse) => transformTarget(targetResponse))
 })
 
+export const getStoryAnalytics = async (storyId: string, frequency: Frequency, fromDate?: string, toDate?: string): Promise<StoryAnalytics> => {
+    let baseUrl = `/stories/${storyId}/analytics?frequency=${frequency}`
+    if (fromDate) {
+        baseUrl += `&from_date=${fromDate}`
+    }
+    if (toDate) {
+        baseUrl += `&to_date=${toDate}`
+    }
+    const data = await fetchApi(baseUrl)
+    return transformStoryAnalyticResponse(data)
+}
+
 export const getStories = async () => {
     const data = await fetchApi('/stories');
     // Transform the data before returning it
     return data.stories ? data.stories.map(transformStory) : [];
 };
 
-export const getStoriesWithTargets = async () => {
+export const getStoriesWithTargets = async (): Promise<StoryListItemProps[]> => {
     const data = await fetchApi('/stories/targets');
     return data ? data.map(transformStoryListItemResponse) : [];
 }

@@ -14,7 +14,6 @@
     transition: all 0.3s ease;
     gap: 1rem;
     position: relative;
-    overflow: hidden;
 }
 
 .no-hover {

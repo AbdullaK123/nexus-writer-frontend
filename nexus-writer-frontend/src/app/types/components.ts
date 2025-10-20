@@ -50,14 +50,13 @@ export interface ChapterListItemProps {
   handleClearSelection: () => void;
 }
 
-export interface StoryListItemProps {
+export type StoryListItemProps = {
   storyId: string;
   title: string;
   wordCount: number;
   targets: TargetResponse[];
   handleOnContextMenu: () => void;
-  props?: React.HTMLProps<HTMLDivElement>
-}
+} & React.HTMLProps<HTMLDivElement>;
 
 export interface ChapterPreviewProps {
   id?: string; // Chapter ID
@@ -161,6 +160,7 @@ export type DeleteTargetFormProps = {
 export type StoryListProps = {
     storiesLoading: boolean;
     stories: StoryListItemProps[];
+    onSelectStory: (storyId: string) => void;
 }
 
 export type TotalWordsCardProps = {
