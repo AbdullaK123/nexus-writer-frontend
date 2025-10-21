@@ -2,8 +2,9 @@
 import { useStories } from "@/app/hooks/useStories";
 import styles from './page.module.css'
 import StoryList from "@/components/ui/StoryList/StoryList";
+import AnalyticsFilter from "@/components/ui/AnalyticsFilter";
 import { useToast } from "@/app/hooks/useToast";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Frequency } from "@/app/types";
 
 type Filter = {
@@ -42,11 +43,14 @@ export default function AnalyticsPage() {
     useEffect(() => {
         if (storyListItems && storyListItems.length > 0 && listItemsSuccess) {
             const firstStoryId = storyListItems[0].storyId
-            console.log('🔍 All story IDs:', storyListItems.map(s => s.storyId))
-            console.log('🎯 Selected story ID:', firstStoryId)
+            console.log('Setting selectedStoryId to:', firstStoryId);
             setSelectedStoryId(firstStoryId)
         }
     }, [storyListItems, listItemsSuccess])
+
+    useEffect(() => {
+        console.log('selectedStoryId changed to:', selectedStoryId);
+    }, [selectedStoryId]);
 
     
     const {
@@ -61,6 +65,19 @@ export default function AnalyticsPage() {
         selectedFilter.toDate
     )
 
+    useEffect(() => {
+        if (storyAnalyticsSuccess) {
+            console.log("Data retrieved!")
+            console.log(JSON.stringify(storyAnalytics, null, 2))
+        }
+    }, [storyAnalyticsSuccess, storyAnalytics])
+
+    useEffect(() => {
+        if (storyAnalyticsError) {
+            showToast("Failed to fetch story analytics. The server might be experiencing issues.", "error")
+        }
+    }, [showToast, storyAnalyticsError])
+
 
     return (
         <div className={styles['analytics-page-content']}>
@@ -69,23 +86,21 @@ export default function AnalyticsPage() {
                 <StoryList 
                     storiesLoading={isLoadingListItems}
                     stories={storyListItems}
+                    selectedStoryId={selectedStoryId}
                     onSelectStory={(storyId: string) => setSelectedStoryId(storyId)}
                 />
             </div>
-            <div>
-                {selectedStoryId && (
-                    <p>{`I am selecting story: ${selectedStoryId}`}</p>
-                )}
-                <select
-                    value={selectedFilter.frequency}
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) => setSelectedFilter(prev => ({ ...prev, frequency: e.target.value as Frequency}))}
-                >
-                    <option label="daily" value={"Daily"}>Daily</option>
-                    <option label="weekly" value={"Weekly"}>Weekly</option>
-                    <option label="monthly" value={"Monthly"}>Monthly</option>
-                </select>
+            <div className={styles['dashboard-container']}>
+                <AnalyticsFilter
+                    frequency={selectedFilter.frequency}
+                    fromDate={selectedFilter.fromDate}
+                    toDate={selectedFilter.toDate}
+                    onFrequencyChange={(frequency) => setSelectedFilter(prev => ({ ...prev, frequency }))}
+                    onFromDateChange={(fromDate) => setSelectedFilter(prev => ({ ...prev, fromDate }))}
+                    onToDateChange={(toDate) => setSelectedFilter(prev => ({ ...prev, toDate }))}
+                />
                 <pre>
-                    {JSON.stringify(storyAnalytics, null, 2)}
+                    {storyAnalyticsLoading ? "fetching..." : JSON.stringify(storyAnalytics, null, 2)}
                 </pre>
             </div>
         </div>

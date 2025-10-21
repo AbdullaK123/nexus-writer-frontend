@@ -54,6 +54,7 @@ export type StoryListItemProps = {
   storyId: string;
   title: string;
   wordCount: number;
+  isSelected: boolean;
   targets: TargetResponse[];
   handleOnContextMenu: () => void;
 } & React.HTMLProps<HTMLDivElement>;
@@ -160,6 +161,7 @@ export type DeleteTargetFormProps = {
 export type StoryListProps = {
     storiesLoading: boolean;
     stories: StoryListItemProps[];
+    selectedStoryId: string;
     onSelectStory: (storyId: string) => void;
 }
 

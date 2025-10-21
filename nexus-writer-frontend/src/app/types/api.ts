@@ -60,11 +60,22 @@ export interface ApiKpisResponse {
     avg_words_per_minute: number;
 }
 
-export interface ApiWordsWrittenRecord {
+export type ApiDailyWordsWrittenRecord = {
     date: string;
     total_words: number;
 }
 
+export type ApiWeeklyWordsWrittenRecord = {
+    week_start: string;
+    week_num: number;
+    total_words: number;
+}
+
+export type ApiMonthlyWordsWrittenRecord = {
+    month_start: string;
+    month_name: string;
+    total_words: number;
+}
 export interface ApiStoryAnalyticsResponse {
     kpis: ApiKpisResponse;
     words_over_time: ApiWordsWrittenRecord[];

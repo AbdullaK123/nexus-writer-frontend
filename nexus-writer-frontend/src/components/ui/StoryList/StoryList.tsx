@@ -6,6 +6,7 @@ import { ClipLoader } from "react-spinners";
 export default function StoryList({
     storiesLoading,
     onSelectStory,
+    selectedStoryId,
     stories
 }: StoryListProps) {
     return (
@@ -20,9 +21,9 @@ export default function StoryList({
                 stories.map((story) => (
                     <StoryListItem
                         key={story.storyId}
-                        storyId={story.storyId}
-                        onClick={() => onSelectStory(story.storyId)}
                         {...story}
+                        isSelected={(story.storyId === selectedStoryId)}
+                        onClick={() => onSelectStory(story.storyId)}
                     />
                 ))
             ) : (
