@@ -64,8 +64,10 @@ export type MonthlyWordsWrittenRecord = {
     totalWords: number;
 }
 
+export type WordsWrittenTimeSeries = DailyWordsWrittenRecord[] | WeeklyWordsWrittenRecord[] | MonthlyWordsWrittenRecord[];
+
 export type StoryAnalytics = {
     kpis: KpisResponse;
-    wordsOverTime: DailyWordsWrittenRecord[] | WeeklyWordsWrittenRecord[] | MonthlyWordsWrittenRecord[];
+    wordsOverTime: WordsWrittenTimeSeries;
     target: TargetResponse;
 }

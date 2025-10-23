@@ -6,6 +6,10 @@ import AnalyticsFilter from "@/components/ui/AnalyticsFilter";
 import { useToast } from "@/app/hooks/useToast";
 import React, { useEffect, useState } from "react";
 import { Frequency } from "@/app/types";
+import TotalWordsKpiCard from "@/components/ui/TotalWordsKpiCard/TotalWordsKpiCard";
+import TotalDurationKpiCard from "@/components/ui/TotalDurationKpiCard/TotalDurationKpiCard";
+import AverageWordsPerMinuteCard from "@/components/ui/AverageWordsPerMinuteCard/AverageWordsPerMinuteKpiCard";
+import WordCountOverTimeChart from "@/components/ui/WordCountOverTimeChart/WordCountOverTimeChart";
 
 type Filter = {
     frequency: Frequency,
@@ -55,7 +59,6 @@ export default function AnalyticsPage() {
     
     const {
         data: storyAnalytics,
-        isLoading: storyAnalyticsLoading,
         isError: storyAnalyticsError,
         isSuccess: storyAnalyticsSuccess
     } = useStoryAnalytics(
@@ -99,9 +102,32 @@ export default function AnalyticsPage() {
                     onFromDateChange={(fromDate) => setSelectedFilter(prev => ({ ...prev, fromDate }))}
                     onToDateChange={(toDate) => setSelectedFilter(prev => ({ ...prev, toDate }))}
                 />
-                <pre>
-                    {storyAnalyticsLoading ? "fetching..." : JSON.stringify(storyAnalytics, null, 2)}
-                </pre>
+                <div className={styles['kpi-cards-container']}>
+                    {storyAnalytics && storyAnalytics.kpis && (
+                        <>
+                            <TotalWordsKpiCard
+                                totalWords={storyAnalytics.kpis.totalWords}
+                                target={storyAnalytics.target.quota}
+                                frequency={storyAnalytics.target.frequency}
+                            />
+                            <TotalDurationKpiCard 
+                                duration={storyAnalytics.kpis.totalDuration}
+                            />
+                            <AverageWordsPerMinuteCard 
+                                avgWordsPerMinute={storyAnalytics.kpis.avgWordsPerMinute}
+                            />
+                        </>
+                    )}
+                </div>
+                <div>
+                    {storyAnalytics && storyAnalytics.wordsOverTime && storyAnalytics.target && (
+                        <WordCountOverTimeChart
+                            data={storyAnalytics.wordsOverTime}
+                            target={storyAnalytics.target.quota}
+                            frequency={storyAnalytics.target.frequency}  
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );
