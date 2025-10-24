@@ -16,3 +16,28 @@
 .story-sidebar h2 {
     text-align: center;
 }
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.kpi-cards-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding: 2rem;
+    width: 95%;
+}
+
+.barchart-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding: 2rem;
+    width: 95%;
+}

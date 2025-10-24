@@ -1,8 +1,9 @@
+'use client'
 import StoryInfoCard from "../StoryInfoCard/StoryInfoCard";
 import ChapterListItem from "../ChapterListItem/ChapterListItem";
 import FilterDropdown from "../FilterDropdown/FilterDropdown";
 import { StoryDetailSideBarProps } from "@/app/types";
-import styles from './StoryDetailSidebar.module.css'
+import styles from './StoryDetailSidebar.module.css';
 
 const filterOptions = [
     {label: 'All Chapters', value: ''},
@@ -14,8 +15,10 @@ const filterOptions = [
 export default function StoryDetailSidebar({ 
     storyInfo,
     chapters,
-    onFilterChange
+    onFilterChange,
+    contextMenuRef
  }: StoryDetailSideBarProps) {
+
     return (
         <aside className={styles['story-sidebar-container']}> 
             <h2 className={styles['chapters-sidebar-header']}>Story Status</h2>
@@ -35,6 +38,7 @@ export default function StoryDetailSidebar({
                         <ChapterListItem 
                             key={`chapter-${chapter.chapterNumber}-${index}`} 
                             {...chapter} 
+                            contextMenuRef={contextMenuRef}
                         />
                     ))
                 ) : (

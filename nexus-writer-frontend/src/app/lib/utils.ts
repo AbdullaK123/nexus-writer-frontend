@@ -1,15 +1,20 @@
 import { formatDistanceToNow } from "date-fns";
 import {
     ApiChapterContentResponse,
+    ApiDailyWordsWrittenRecord,
+    ApiMonthlyWordsWrittenRecord,
     ApiStoryAnalyticsResponse,
     ApiTargetResponse,
+    ApiWeeklyWordsWrittenRecord,
+    DailyWordsWrittenRecord,
     KpisResponse,
-    TargetResponse
+    MonthlyWordsWrittenRecord,
+    TargetResponse,
+    WeeklyWordsWrittenRecord
 } from "@/app/types";
 import { ChapterStatus } from "@/app/types";
 import { ChapterPreviewProps } from "@/app/types";
 import {StoryAnalytics} from "@/app/types";
-
 
 // Helper for converting backend published boolean to frontend status
 export function getChapterStatus(published: boolean, hasContent: boolean): ChapterStatus {
@@ -53,19 +58,41 @@ export function transformChapterResponse(apiResponse: ApiChapterContentResponse)
 export function transformStoryAnalyticResponse(apiResponse: ApiStoryAnalyticsResponse): StoryAnalytics {
     const kpisResponse: KpisResponse = {
         totalWords: apiResponse.kpis.total_words,
-        totalDuration: apiResponse.kpis.total_duration,
-        avgWordsPerMinute: apiResponse.kpis.avg_words_per_minute,
+        totalDuration: Math.round(100*apiResponse.kpis.total_duration) / 100,
+        avgWordsPerMinute: Math.round(100*apiResponse.kpis.avg_words_per_minute) / 100,
     }
+
+    let wordsOverTime = []
+
+    if (apiResponse.target && apiResponse.target.frequency === "Daily") {
+        wordsOverTime = (apiResponse.words_over_time as ApiDailyWordsWrittenRecord[]).map((record): DailyWordsWrittenRecord => ({
+            date: new Date(record.date + 'Z'),
+            totalWords: record.total_words
+        }))
+    }
+
+    if (apiResponse.target && apiResponse.target.frequency === "Weekly") {
+        wordsOverTime = (apiResponse.words_over_time as ApiWeeklyWordsWrittenRecord[]).map((record): WeeklyWordsWrittenRecord => ({
+            weekStart: new Date(record.week_start + 'Z'),
+            weekNum: record.week_num,
+            totalWords: record.total_words
+        }))
+    }
+
+     if (apiResponse.target && apiResponse.target.frequency === "Monthly") {
+        wordsOverTime = (apiResponse.words_over_time as ApiMonthlyWordsWrittenRecord[]).map((record): MonthlyWordsWrittenRecord => ({
+            monthStart: new Date(record.month_start + 'Z'),
+            monthName: record.month_name,
+            totalWords: record.total_words
+        }))
+    }
+
+    console.log("Raw api response was, ", JSON.stringify(apiResponse.words_over_time, null, 2))
+    console.log("Words over time is now, ", JSON.stringify(wordsOverTime, null, 2))
+
     return {
         kpis: kpisResponse,
-        wordsOverTime: apiResponse.words_over_time.map(
-            (record) => {
-                return {
-                    date: new Date(record.date + 'Z'),
-                    totalWords: record.total_words
-                }
-            }
-        ),
+        wordsOverTime: wordsOverTime,
         target: transformTarget(apiResponse.target)
     }
 

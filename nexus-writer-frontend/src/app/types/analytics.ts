@@ -47,13 +47,27 @@ export type KpisResponse = {
     avgWordsPerMinute: number;
 }
 
-export type WordsWrittenRecord = {
+export type DailyWordsWrittenRecord = {
     date: Date;
     totalWords: number;
 }
 
+export type WeeklyWordsWrittenRecord = {
+    weekStart: Date;
+    weekNum: number;
+    totalWords: number;
+}
+
+export type MonthlyWordsWrittenRecord = {
+    monthStart: Date;
+    monthName: string;
+    totalWords: number;
+}
+
+export type WordsWrittenTimeSeries = DailyWordsWrittenRecord[] | WeeklyWordsWrittenRecord[] | MonthlyWordsWrittenRecord[];
+
 export type StoryAnalytics = {
     kpis: KpisResponse;
-    wordsOverTime: WordsWrittenRecord[];
+    wordsOverTime: WordsWrittenTimeSeries;
     target: TargetResponse;
 }

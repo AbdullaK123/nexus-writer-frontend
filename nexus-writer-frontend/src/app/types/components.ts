@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
 import {Frequency, TargetResponse} from "@/app/types/analytics";
@@ -21,8 +21,9 @@ export interface StoryInfoCardProps {
 
 export interface StoryDetailSideBarProps {
   storyInfo: StoryInfoCardProps;
-  chapters: ChapterListItemProps[];
+  chapters: Omit<ChapterListItemProps, 'contextMenuRef'>[];
   onFilterChange: (filter: string) => void;
+  contextMenuRef: RefObject<{ menuIsOpen: boolean, storyId?: string }>
 }
 
 export interface StoryCardProps {
@@ -35,6 +36,7 @@ export interface StoryCardProps {
   totalChapters?: number;
   wordCount?: number;
   latestChapter?: string;
+  contextMenuRef: RefObject<{ menuIsOpen: boolean, storyId?: string }>
 }
 
 export interface ChapterListItemProps {
@@ -48,16 +50,17 @@ export interface ChapterListItemProps {
   updatedAt?: Date;
   handleOnClick: () => void;
   handleClearSelection: () => void;
+  contextMenuRef: RefObject<{ menuIsOpen: boolean, chapterId?: string }>
 }
 
-export interface StoryListItemProps {
+export type StoryListItemProps = {
   storyId: string;
   title: string;
   wordCount: number;
+  isSelected: boolean;
   targets: TargetResponse[];
   handleOnContextMenu: () => void;
-  props?: React.HTMLProps<HTMLDivElement>
-}
+} & React.HTMLProps<HTMLDivElement>;
 
 export interface ChapterPreviewProps {
   id?: string; // Chapter ID
@@ -161,6 +164,8 @@ export type DeleteTargetFormProps = {
 export type StoryListProps = {
     storiesLoading: boolean;
     stories: StoryListItemProps[];
+    selectedStoryId: string;
+    onSelectStory: (storyId: string) => void;
 }
 
 export type TotalWordsCardProps = {

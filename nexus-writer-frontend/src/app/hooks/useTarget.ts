@@ -30,6 +30,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
             queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
             // Invalidate the stories list with targets
             queryClient.invalidateQueries({ queryKey: ['stories', 'targets']})
+            queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'analytics']})
         }
     })
 
@@ -45,6 +46,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
             queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
             // Invalidate the stories list with targets
             queryClient.invalidateQueries({ queryKey: ['stories', 'targets']})
+            queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'analytics']})
         }
     })
 
@@ -61,6 +63,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
             queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
             // Invalidate the stories list with targets
             queryClient.invalidateQueries({ queryKey: ['stories', 'targets']})
+            queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'analytics']})
         }
     })
 

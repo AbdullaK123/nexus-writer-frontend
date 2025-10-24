@@ -21,8 +21,11 @@ export default function StoryListItem({
     title,
     wordCount,
     targets,
-    props
+    isSelected,
+    ...divProps
 }: StoryListItemProps) {
+
+    console.log(`StoryListItem ${storyId} - isSelected:`, isSelected, 'title:', title);
 
     const {menu, openMenu, closeMenu} = useContextMenu()
     const [modalState, setModalState] = useState<ModalState>({
@@ -52,12 +55,12 @@ export default function StoryListItem({
     return (
         <>
             <div
-                className={styles['story-list-item-container']}
+                className={`${styles['story-list-item-container']} ${isSelected ? styles['selected'] : ''}`}
                 onContextMenu={(e) => {
                     e.preventDefault()
                     openMenu(e)
                 }}
-                {...props}
+                {...divProps}
             >
                 <div className={styles['flex-col-container']}>
                     <div className={styles['story-title']}>{title}</div>

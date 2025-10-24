@@ -15,7 +15,8 @@ export default function ChapterListItem({
     wordCount,
     handleOnClick,
     handleClearSelection,
-    status
+    status,
+    contextMenuRef
 }: ChapterListItemProps) {
 
     const {
@@ -38,15 +39,7 @@ export default function ChapterListItem({
         handleOnClick, 
         handleClearSelection
     );
-
-    const { elementRef } = useInView(1, closeMenu);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    // This callback ref assigns the DOM node to both refs
-    const combinedRef = useCallback((node: HTMLDivElement) => {
-        elementRef.current = node;
-        (containerRef as React.RefObject<HTMLDivElement>).current = node;
-    }, [elementRef, containerRef]);
 
     // Focus the input when editing starts
     useEffect(() => {
@@ -56,13 +49,39 @@ export default function ChapterListItem({
         }
     }, [isEditingTitle]);
 
+    const handleOnOpenContextMenu = (e: React.MouseEvent) => {
+        if (contextMenuRef.current && contextMenuRef.current.menuIsOpen && contextMenuRef.current.chapterId !== id) {
+            return
+        }
+        contextMenuRef.current = {
+            menuIsOpen: true,
+            chapterId: id
+        }
+        openMenu(e)
+    }
+
+    const handleOnCloseContextMenu = () => {
+        closeMenu()
+        contextMenuRef.current = {
+            menuIsOpen: false,
+            chapterId: null
+        }
+    }
+
+    const { elementRef } = useInView(1, handleOnCloseContextMenu);
+
+    const combinedRef = useCallback((node: HTMLDivElement) => {
+        elementRef.current = node;
+        (containerRef as React.RefObject<HTMLDivElement>).current = node;
+    }, [elementRef, containerRef]);
+
     return (
         <>
             <div ref={combinedRef}>
                 <div 
                     onClick={handleOnClick} 
                     className={`${styles['chapter-list-item-container']} ${menu.visible && styles['no-hover']}`}
-                    onContextMenu={openMenu}
+                    onContextMenu={handleOnOpenContextMenu}
                     onDoubleClick={handleTitleDoubleClick} // Use the handler from the hook
                 > 
                     <div className={`${styles['status-indicator']} ${styles[getStatusIndicatorClass(status)]}`} />
@@ -104,7 +123,7 @@ export default function ChapterListItem({
                     x={menu.x}
                     y={menu.y}
                     status={status}
-                    onClose={closeMenu}
+                    onClose={handleOnCloseContextMenu}
                     onDelete={() => handleOnAction('delete')}
                 />
             )}
