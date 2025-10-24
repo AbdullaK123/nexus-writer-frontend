@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import { CreateChapterRequest } from "./chapter"
 import { StoryCreateRequest } from "./story";
 import {Frequency, TargetResponse} from "@/app/types/analytics";
@@ -21,8 +21,9 @@ export interface StoryInfoCardProps {
 
 export interface StoryDetailSideBarProps {
   storyInfo: StoryInfoCardProps;
-  chapters: ChapterListItemProps[];
+  chapters: Omit<ChapterListItemProps, 'contextMenuRef'>[];
   onFilterChange: (filter: string) => void;
+  contextMenuRef: RefObject<{ menuIsOpen: boolean, storyId?: string }>
 }
 
 export interface StoryCardProps {
@@ -35,6 +36,7 @@ export interface StoryCardProps {
   totalChapters?: number;
   wordCount?: number;
   latestChapter?: string;
+  contextMenuRef: RefObject<{ menuIsOpen: boolean, storyId?: string }>
 }
 
 export interface ChapterListItemProps {
@@ -48,6 +50,7 @@ export interface ChapterListItemProps {
   updatedAt?: Date;
   handleOnClick: () => void;
   handleClearSelection: () => void;
+  contextMenuRef: RefObject<{ menuIsOpen: boolean, chapterId?: string }>
 }
 
 export type StoryListItemProps = {

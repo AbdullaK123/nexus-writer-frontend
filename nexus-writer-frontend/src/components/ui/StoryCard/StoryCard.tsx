@@ -8,6 +8,7 @@ import { formatWordCountStory, getDuration } from "@/app/lib/utils";
 import { useStoryNavigation } from "@/app/hooks/useStoryNavigation";
 import { useStoryContextMenuActions } from "@/app/hooks/useStoryContextMenuActions";
 import { Button } from "@/components/ui/Button";
+import React from "react";
 
 
 export default function StoryCard({ 
@@ -19,7 +20,8 @@ export default function StoryCard({
     updatedAt,
     totalChapters,
     wordCount,
-    latestChapter
+    latestChapter,
+    contextMenuRef
  }: StoryCardProps) {
 
     const {
@@ -31,15 +33,33 @@ export default function StoryCard({
         openMenu,
         closeMenu,
         isDeleting,
-        handleOnAction,
-        elementRef
+        handleOnAction
     } = useStoryContextMenuActions(id)
+
+    const handleOnOpenContextMenu = (e: React.MouseEvent) => {
+        e.preventDefault()
+        if (contextMenuRef.current && contextMenuRef.current.menuIsOpen && contextMenuRef.current.storyId !== id) {
+            return
+        }
+        contextMenuRef.current = {
+            menuIsOpen: true,
+            storyId: id
+        }
+        openMenu(e)
+    }
+
+    const handleOnCloseContextMenu = () => {
+        closeMenu()
+        contextMenuRef.current = {
+            menuIsOpen: false,
+            storyId: null
+        }
+    }
 
     return (
         <>
              <div 
-                ref={elementRef}
-                onContextMenu={(e: React.MouseEvent) => openMenu(e)}
+                onContextMenu={handleOnOpenContextMenu}
                 className={`${styles['story-card-container']} ${menu.visible && styles['no-hover']}`}
             >
                 {isDeleting ? (
@@ -87,7 +107,7 @@ export default function StoryCard({
                     isOpen={menu.visible}
                     x={menu.x}
                     y={menu.y}
-                    onClose={closeMenu}
+                    onClose={handleOnCloseContextMenu}
                     onDelete={() => handleOnAction('delete')}
                 />
             )}

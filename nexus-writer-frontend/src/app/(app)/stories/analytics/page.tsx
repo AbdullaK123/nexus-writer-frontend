@@ -119,7 +119,7 @@ export default function AnalyticsPage() {
                         </>
                     )}
                 </div>
-                <div>
+                <div className={styles['barchart-container']}>
                     {storyAnalytics && storyAnalytics.wordsOverTime && storyAnalytics.target && (
                         <WordCountOverTimeChart
                             data={storyAnalytics.wordsOverTime}
