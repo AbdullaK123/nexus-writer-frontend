@@ -15,7 +15,7 @@ export default function TotalWordsKpiCard({
 }: TotalWordsKpiCardProps) {
 
     const isAboveTarget = totalWords > target
-    const percTarget = (target > 0) ? Math.round(100*totalWords / target)/100: undefined
+    const percTarget = (target > 0) ? Math.round(100*(totalWords / target))/100: undefined
     
     const getDisplayedFrequency = (frequency: Frequency) : string => {
         if (frequency === "Daily") return "today"
