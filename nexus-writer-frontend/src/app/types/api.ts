@@ -78,6 +78,6 @@ export type ApiMonthlyWordsWrittenRecord = {
 }
 export interface ApiStoryAnalyticsResponse {
     kpis: ApiKpisResponse;
-    words_over_time: ApiWordsWrittenRecord[];
+    words_over_time: ApiDailyWordsWrittenRecord[] | ApiWeeklyWordsWrittenRecord[] | ApiMonthlyWordsWrittenRecord[];
     target: ApiTargetResponse;
 }
