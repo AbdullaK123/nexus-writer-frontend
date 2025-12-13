@@ -82,14 +82,59 @@ export interface ApiStoryAnalyticsResponse {
     target: ApiTargetResponse;
 }
 
+export type ApiJobStatus = 
+    | "pending" 
+    | "queued" 
+    | "starting" 
+    | "progress" 
+    | "success" 
+    | "failure" 
+    | "retry";
+
+export type ApiExtractionProgress = {
+    current: number;
+    total: number;
+    chapter: number;
+    percent: number;
+}
+
 export type ApiJobStatusResponse = {
     job_id: string;
-    status: "pending" | "started" | "success" | "failure";
+    status: ApiJobStatus;
+    
+    // Timestamps
+    queued_at?: string;
+    started_at?: string;
+    completed_at?: string;
+    
+    // Progress tracking
+    progress?: ApiExtractionProgress;
+    
+    // Result data
+    result?: Record<string, any>;
+    
+    // Error info
+    error?: string;
+    error_type?: string;
+    
+    // Retry info
+    retry_count?: number;
+    max_retries?: number;
+    next_retry_at?: string;
+    
+    // Metadata
+    message?: string;
 }
 
 export type ApiJobQueuedResponse = {
     job_id: string;
     job_name: string;
     started_at: string;
-    status: "pending" | "started" | "success" | "failure";
+    status: ApiJobStatus;
+    
+    // Extraction-specific metadata
+    chapter_id?: string;
+    chapter_number?: number;
+    chapters_to_extract?: number;
+    estimated_duration_seconds?: number;
 }
