@@ -19,7 +19,12 @@ const transformStoryListItemResponse = (storyListItem: ApiStoryListItemResponse)
     targets: storyListItem.targets.map((targetResponse: ApiTargetResponse) => transformTarget(targetResponse))
 })
 
-export const getStoryAnalytics = async (storyId: string, frequency: Frequency, fromDate?: string, toDate?: string): Promise<StoryAnalytics> => {
+export const getStoryAnalytics = async (
+    storyId: string, 
+    frequency: Frequency, 
+    fromDate?: string, 
+    toDate?: string
+): Promise<StoryAnalytics> => {
     let baseUrl = `/stories/${storyId}/analytics?frequency=${frequency}`
     if (fromDate) {
         baseUrl += `&from_date=${fromDate}`

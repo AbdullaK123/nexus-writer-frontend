@@ -81,3 +81,15 @@ export interface ApiStoryAnalyticsResponse {
     words_over_time: ApiDailyWordsWrittenRecord[] | ApiWeeklyWordsWrittenRecord[] | ApiMonthlyWordsWrittenRecord[];
     target: ApiTargetResponse;
 }
+
+export type ApiJobStatusResponse = {
+    job_id: string;
+    status: "pending" | "started" | "success" | "failure";
+}
+
+export type ApiJobQueuedResponse = {
+    job_id: string;
+    job_name: string;
+    started_at: string;
+    status: "pending" | "started" | "success" | "failure";
+}
