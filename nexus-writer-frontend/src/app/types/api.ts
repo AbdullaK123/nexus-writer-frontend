@@ -138,3 +138,15 @@ export type ApiJobQueuedResponse = {
     chapters_to_extract?: number;
     estimated_duration_seconds?: number;
 }
+
+export type ApiLineEdit = {
+    paragraph_idx: number;
+    original_paragraph: string;
+    edited_paragraph: string;   
+    justification: string;
+}
+
+export type ApiChapterEdit = {
+    edits: ApiLineEdit[];
+    last_generated_at: string;
+}

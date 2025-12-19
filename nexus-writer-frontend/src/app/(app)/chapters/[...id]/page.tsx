@@ -10,6 +10,8 @@ import { useMemo } from 'react'
 import { useAuth } from '@/app/hooks/useAuth'
 import { ClipLoader } from 'react-spinners'
 import { useToast } from '@/app/hooks/useToast'
+import { useChapterEdits } from '@/app/hooks/useChapterEdits'
+import { useBackgroundJobs } from '@/app/hooks/useBackgroundJobs'
 
 export default function Page() {
 
@@ -28,6 +30,18 @@ export default function Page() {
     } = useChapter(chapterId, true)
 
     const { update, isUpdating } = useChapters(storyId)
+
+    const {
+        data: edits,
+        isError: editsError,
+        isLoading: editsLoading,
+        isSuccess: editsSuccess
+    } = useChapterEdits(chapterId)
+
+    const {
+        queueExtraction,
+        queueBackgroundEdits
+    } = useBackgroundJobs()
 
     // Create debounced update function once, memoized by chapterId
     const debouncedUpdate = useMemo(
@@ -67,7 +81,15 @@ export default function Page() {
             {isSuccess && chapter && (
                 <div className={styles['back-to-stories-container']}>
                     <button 
-                        onClick={() => router.push(`/stories/${storyId}`)}
+                        onClick={() => {
+                            queueBackgroundEdits.mutate({
+                                chapterId: chapterId
+                            })
+                            queueExtraction.mutate({
+                                chapterId: chapterId
+                            })
+                            router.push(`/stories/${storyId}`)
+                        }}
                         className={styles['back-to-story-button']}
                     >
                         ← Back to story page
@@ -90,6 +112,7 @@ export default function Page() {
                         isSaving={isUpdating}
                         userId={user.id}
                         content={chapter.content}
+                        edits={edits}
                         onUpdateAction={handleUpdate}
                     />
                 </>

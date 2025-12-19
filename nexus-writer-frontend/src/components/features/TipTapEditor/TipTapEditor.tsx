@@ -6,6 +6,8 @@ import styles from './TipTapEditor.module.css'
 import { WordCounter } from './extensions/WordCounter';
 import { useWritingSessionTracking } from '@/app/hooks/useWritingSessionTracking';
 import { ClipLoader } from "react-spinners"
+import { ChapterEdit } from '@/app/types';
+import { AiEdit } from './marks/AiEdit';
 
 type TipTapEditorProps = {
     storyId: string;
@@ -13,6 +15,7 @@ type TipTapEditorProps = {
     userId: string;
     isSaving: boolean;
     content: string;
+    edits: ChapterEdit;
     onUpdateAction: (newContent: string) => void
 }
 
@@ -23,6 +26,7 @@ export default function TipTapEditor({
     userId,
     isSaving,
     content,
+    edits,
     onUpdateAction
 }: TipTapEditorProps) {
 
@@ -31,7 +35,8 @@ export default function TipTapEditor({
     const editor = useEditor({
         extensions: [
             StarterKit,
-            WordCounter
+            WordCounter,
+            AiEdit
         ],
         content: content,
         immediatelyRender: false,
@@ -51,6 +56,29 @@ export default function TipTapEditor({
             },
         },
     })
+
+    useEffect(() => {
+        if (!editor || !edits?.edits?.length) return
+        
+        const { doc } = editor.state
+        let paragraphIndex = 0
+        const tr = editor.state.tr
+        
+        doc.descendants((node, pos) => {
+            if (node.type.name !== 'paragraph') return
+            const edit = edits.edits.find(e => e.paragraphIdx === paragraphIndex)
+            
+            if (edit) {
+                const from = pos + 1
+                const to = pos + node.nodeSize - 1
+                tr.addMark(from, to, editor.schema.marks.aiEdit.create(edit))
+            }
+            
+            paragraphIndex++
+        })
+        
+        editor.view.dispatch(tr)
+    }, [editor, edits])
 
     useEffect(() => {
         if (!editor) return

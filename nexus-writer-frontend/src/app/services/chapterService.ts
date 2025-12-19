@@ -5,7 +5,11 @@ import {
     CreateChapterRequest,
     ApiChapterListResponse,
     ApiChapterContentResponse,
-    UpdateMutationArgs
+    UpdateMutationArgs,
+    ApiLineEdit,
+    ApiChapterEdit,
+    LineEdit,
+    ChapterEdit
 } from '../types';
 
 // Transformation for a list of chapters
@@ -40,6 +44,17 @@ const transformChapterContent = (data: ApiChapterContentResponse) => ({
 });
 
 
+const transformChapterEdit = (data: ApiChapterEdit): ChapterEdit => ({
+    edits: data.edits.map((edit: ApiLineEdit): LineEdit => ({
+        paragraphIdx: edit.paragraph_idx,
+        originalParagraph: edit.original_paragraph,
+        editedParagraph: edit.edited_paragraph,
+        justification: edit.justification
+    })),
+    lastGeneratedAt: new Date(data.last_generated_at + 'Z')
+})
+
+
 export const getChaptersForStory = async (storyId: string) => {
     const data = await fetchApi(`/stories/${storyId}/chapters`);
     return transformChapterList(data);
@@ -49,6 +64,11 @@ export const getChapter = async (chapterId: string, asHtml: boolean) => {
     const data = await fetchApi(`/chapters/${chapterId}/?as_html=${asHtml ? 'True' : 'False'}`);
     return transformChapterContent(data);
 };
+
+export const getEdits = async (chapterId: string) => {
+    const data = await fetchApi(`/chapters/edits/${chapterId}`);
+    return transformChapterEdit(data)
+}
 
 export const createChapter = (storyId: string, chapterInfo: CreateChapterRequest) => {
     return fetchApi(`/stories/${storyId}/chapters`, {

@@ -31,3 +31,15 @@ export interface UpdateChapterRequest {
   content?: string;
   published?: boolean;
 }
+
+export type LineEdit = {
+  paragraphIdx: number;
+  originalParagraph: string;
+  editedParagraph: string;
+  justification: string;
+}
+
+export type ChapterEdit = {
+  edits: LineEdit[];
+  lastGeneratedAt: Date;
+}
