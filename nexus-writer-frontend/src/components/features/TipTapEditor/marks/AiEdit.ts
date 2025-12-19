@@ -48,7 +48,7 @@ export const AiEdit = Mark.create({
             'span',
             {
                 'data-ai-edit': 'true',
-                style: `background-color: ${HTMLAttributes.color}`,
+                style: `color: ${HTMLAttributes.color}`,
                 ...HTMLAttributes
             },
             0

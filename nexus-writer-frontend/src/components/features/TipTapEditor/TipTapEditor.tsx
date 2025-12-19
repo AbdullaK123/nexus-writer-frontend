@@ -8,6 +8,7 @@ import { useWritingSessionTracking } from '@/app/hooks/useWritingSessionTracking
 import { ClipLoader } from "react-spinners"
 import { ChapterEdit } from '@/app/types';
 import { AiEdit } from './marks/AiEdit';
+import { AiSuggestion } from './bubble-menus/AiSuggestion/AiSuggestion';
 
 type TipTapEditorProps = {
     storyId: string;
@@ -103,6 +104,7 @@ export default function TipTapEditor({
                     {`${wordCount} words`}
                 </h3>
             </div>
+            <AiSuggestion editor={editor} />
             <div className={styles['editor-shell']}>
                 <EditorContent editor={editor} />
             </div>

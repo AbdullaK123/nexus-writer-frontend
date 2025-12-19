@@ -1,0 +1,125 @@
+/* AiSuggestion.module.css */
+
+.suggestion-container {
+  background: linear-gradient(135deg, 
+    rgba(26, 26, 26, 0.98), 
+    rgba(16, 16, 16, 0.98)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  min-width: 400px;
+  max-width: 600px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(0, 212, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-field {
+  margin-bottom: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 212, 255, 0.05);
+  border-left: 3px solid var(--accent-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.suggestion-field:last-of-type {
+  margin-bottom: var(--space-md);
+}
+
+/* Field labels */
+.suggestion-field::first-line {
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-family: var(--font-accent);
+  text-shadow: 0 0 5px rgba(0, 212, 255, 0.4);
+}
+
+.suggestion-btns {
+  display: flex;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.suggestion-btns button {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border: 1px solid var(--accent-primary);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.suggestion-btns button:first-child {
+  background: linear-gradient(135deg, 
+    var(--background-primary), 
+    var(--background-secondary)
+  );
+  color: var(--text-primary);
+}
+
+.suggestion-btns button:first-child:hover {
+  background: var(--background-secondary);
+  box-shadow: 
+    0 0 10px rgba(255, 0, 64, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  border-color: var(--error);
+}
+
+.suggestion-btns button:last-child {
+  background: var(--interactive);
+  color: var(--text-primary);
+}
+
+.suggestion-btns button:last-child:hover {
+  background: var(--accent-primary);
+  box-shadow: 
+    0 0 15px var(--accent-primary),
+    0 0 25px rgba(0, 212, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .suggestion-container {
+    min-width: 300px;
+    max-width: 90vw;
+    padding: var(--space-sm);
+  }
+  
+  .suggestion-field {
+    font-size: var(--text-xs);
+    padding: calc(var(--space-sm) * 0.75);
+  }
+  
+  .suggestion-btns {
+    flex-direction: column;
+  }
+}
