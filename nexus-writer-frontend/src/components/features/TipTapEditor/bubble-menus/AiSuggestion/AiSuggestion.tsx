@@ -14,6 +14,7 @@ function rejectAiEdit(editor: Editor) {
 }
 
 function applyAiEdit(editor: Editor) {
+
     const attrs = editor.getAttributes('aiEdit')
     const { state } = editor
     const { selection } = state
@@ -35,6 +36,8 @@ function applyAiEdit(editor: Editor) {
 }
 
 export function AiSuggestion({ editor }: AiSuggestionProps) {
+
+    if (!editor) return null
 
     const attrs = editor.getAttributes('aiEdit')
 

@@ -85,9 +85,9 @@ export default function Page() {
                             queueBackgroundEdits.mutate({
                                 chapterId: chapterId
                             })
-                            queueExtraction.mutate({
+                            debounce(() => queueExtraction.mutate({
                                 chapterId: chapterId
-                            })
+                            }), 1000)()
                             router.push(`/stories/${storyId}`)
                         }}
                         className={styles['back-to-story-button']}

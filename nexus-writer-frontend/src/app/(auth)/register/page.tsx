@@ -65,16 +65,20 @@ export default function RegisterPage() {
     }, [user, router])
 
     useEffect(() => {
-        if (loginSuccess) {
-             router.push('/dashboard')
-        }
-    }, [router, loginSuccess])
-
-    useEffect(() => {
+        console.log('Register success changed:', registerSuccess)
         if (registerSuccess) {
+            console.log("Register success running!")
             reset()
         }
     }, [registerSuccess, reset])
+
+    useEffect(() => {
+        console.log('Login success changed:', loginSuccess)
+        if (loginSuccess) {
+            console.log("Login success! Rerouting to dashboard!")
+            router.push('/dashboard')
+        }
+    }, [router, loginSuccess])
 
     const onSubmit = (data: RegistrationFormData) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -85,7 +89,7 @@ export default function RegisterPage() {
     const isProcessing = isRegistering || isLoggingIn
 
     return (
-        <form className={styles.card} onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Image
                 src='./logo.svg'
                 alt='Nexus Writer Logo'

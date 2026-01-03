@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useJobStatus } from "./useBackgroundJobs";
+import { useJobStatus } from "./useJobStatus";
 
 export const useJobProgress = (jobId: string | null | undefined) => {
     const { data: jobStatus } = useJobStatus(jobId);

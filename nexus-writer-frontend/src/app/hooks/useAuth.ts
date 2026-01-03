@@ -14,7 +14,12 @@ export function useAuth() {
 
     const registerMutation = useMutation({
         mutationFn: authService.register,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
+        onSuccess: async (data, variables) => {
+            loginMutation.mutate({
+                email: variables.email,
+                password: variables.password
+            })
+        }
     });
 
     const loginMutation = useMutation({

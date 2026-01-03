@@ -46,7 +46,7 @@ export default function LoginPage() {
     }
 
     return (
-        <form className={styles.card} onSubmit={handleSubmit(onSubmit)}>
+       <form onSubmit={handleSubmit(onSubmit)}>
              <Image
                 src='./logo.svg'
                 alt='Nexus Writer Logo'
