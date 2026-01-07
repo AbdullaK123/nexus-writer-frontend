@@ -87,7 +87,7 @@ export default function Page() {
                             })
                             debounce(() => queueExtraction.mutate({
                                 chapterId: chapterId
-                            }), 1000)()
+                            }), 3000)()
                             router.push(`/stories/${storyId}`)
                         }}
                         className={styles['back-to-story-button']}

@@ -66,7 +66,7 @@ export const getChapter = async (chapterId: string, asHtml: boolean) => {
 };
 
 export const getEdits = async (chapterId: string) => {
-    const data = await fetchApi(`/chapters/edits/${chapterId}`);
+    const data = await fetchApi(`/chapters/edit/${chapterId}`);
     return transformChapterEdit(data)
 }
 

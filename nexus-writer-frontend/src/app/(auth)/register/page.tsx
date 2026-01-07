@@ -89,7 +89,7 @@ export default function RegisterPage() {
     const isProcessing = isRegistering || isLoggingIn
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles['card']} onSubmit={handleSubmit(onSubmit)}>
             <Image
                 src='./logo.svg'
                 alt='Nexus Writer Logo'
