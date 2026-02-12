@@ -1,49 +1,47 @@
-import { useEffect, useState } from "react";
-import { useJobStatus } from "./useJobStatus";
+import { useState, useEffect } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import * as jobService from "@/app/services/jobService"
+import { JobStatusResponse } from "../types/jobs"
+
 
 export const useJobProgress = (jobId: string | null | undefined) => {
-    const { data: jobStatus } = useJobStatus(jobId);
-    const [progressPercent, setProgressPercent] = useState(0);
-    const [statusMessage, setStatusMessage] = useState("");
+
+    const [progressPercent, setProgressPercent] = useState(0)
+    const [statusMessage, setStatusMessage] = useState("")
+
+    const { data: jobStatus } = useQuery<JobStatusResponse>({
+        queryKey: ['jobs', jobId],
+        enabled: false, 
+    })
 
     useEffect(() => {
-        if (!jobStatus) return;
+        if (!jobStatus) return
 
-        // Update progress
-        if (jobStatus.progress) {
-            setProgressPercent(jobStatus.progress.percent);
-        }
+        setProgressPercent(jobStatus.progress?.percent ?? 0)
 
-        // Update status message
+        // Update status message (simplified)
         if (jobStatus.message) {
-            setStatusMessage(jobStatus.message);
+            setStatusMessage(jobStatus.message)
         } else {
-            // Fallback messages
             switch (jobStatus.status) {
                 case "queued":
-                    setStatusMessage("Queued...");
-                    break;
-                case "starting":
-                    setStatusMessage("Initializing...");
-                    break;
+                    setStatusMessage("Queued...")
+                    break
                 case "progress":
-                    setStatusMessage("Processing...");
-                    break;
+                    setStatusMessage("Processing...")
+                    break
                 case "success":
-                    setStatusMessage("Complete!");
-                    setProgressPercent(100);
-                    break;
+                    setStatusMessage("Complete!")
+                    setProgressPercent(100)
+                    break
                 case "failure":
-                    setStatusMessage(`Failed: ${jobStatus.error || "Unknown error"}`);
-                    break;
-                case "retry":
-                    setStatusMessage(`Retrying (${jobStatus.retryCount}/${jobStatus.maxRetries})...`);
-                    break;
+                    setStatusMessage(`Failed: ${jobStatus.error || "Unknown error"}`)
+                    break
                 default:
-                    setStatusMessage("Pending...");
+                    setStatusMessage("Pending...")
             }
         }
-    }, [jobStatus]);
+    }, [jobStatus])
 
     return {
         jobStatus,
@@ -51,5 +49,5 @@ export const useJobProgress = (jobId: string | null | undefined) => {
         statusMessage,
         isComplete: jobStatus?.isTerminal ?? false,
         isRunning: jobStatus?.isRunning ?? false
-    };
-};
+    }
+}

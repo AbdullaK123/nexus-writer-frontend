@@ -42,4 +42,5 @@ export type LineEdit = {
 export type ChapterEdit = {
   edits: LineEdit[];
   lastGeneratedAt: Date;
+  isStale: boolean;
 }

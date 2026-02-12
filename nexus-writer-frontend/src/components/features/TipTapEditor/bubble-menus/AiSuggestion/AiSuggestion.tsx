@@ -58,8 +58,6 @@ function applyAiEdit(editor: Editor) {
 
 export function AiSuggestion({ editor }: AiSuggestionProps) {
 
-    if (!editor) return null
-
     const [attrs, setAttrs] = useState(() => editor.getAttributes('aiEdit'))
 
     useEffect(() => {

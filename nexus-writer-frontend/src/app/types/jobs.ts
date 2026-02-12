@@ -52,6 +52,7 @@ export type JobStatusResponse = {
 export type JobQueuedResponse = {
     jobId: string;
     jobName: string;
+    jobType: string;
     startedAt: Date;
     status: JobStatus;
     
@@ -60,4 +61,12 @@ export type JobQueuedResponse = {
     chapterNumber?: number;
     chaptersToExtract?: number;
     estimatedDurationSeconds?: number;
+}
+
+export type QueuedJob = {
+    jobId: string;
+    chapterId: string;
+    jobName: string;
+    jobType: string;
+    startedAt: Date;
 }

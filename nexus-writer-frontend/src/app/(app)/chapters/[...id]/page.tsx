@@ -12,6 +12,7 @@ import { ClipLoader } from 'react-spinners'
 import { useToast } from '@/app/hooks/useToast'
 import { useChapterEdits } from '@/app/hooks/useChapterEdits'
 import { useBackgroundJobs } from '@/app/hooks/useBackgroundJobs'
+import { useJobProgress } from '@/app/hooks/useJobProgress'
 
 export default function Page() {
 
@@ -37,11 +38,6 @@ export default function Page() {
         isLoading: editsLoading,
         isSuccess: editsSuccess
     } = useChapterEdits(chapterId)
-
-    const {
-        queueExtraction,
-        queueBackgroundEdits
-    } = useBackgroundJobs()
 
     // Create debounced update function once, memoized by chapterId
     const debouncedUpdate = useMemo(
@@ -81,15 +77,7 @@ export default function Page() {
             {isSuccess && chapter && (
                 <div className={styles['back-to-stories-container']}>
                     <button 
-                        onClick={() => {
-                            queueBackgroundEdits.mutate({
-                                chapterId: chapterId
-                            })
-                            debounce(() => queueExtraction.mutate({
-                                chapterId: chapterId
-                            }), 3000)()
-                            router.push(`/stories/${storyId}`)
-                        }}
+                        onClick={() => router.push(`/stories/${storyId}`)}
                         className={styles['back-to-story-button']}
                     >
                         ← Back to story page
@@ -112,7 +100,7 @@ export default function Page() {
                         isSaving={isUpdating}
                         userId={user.id}
                         content={chapter.content}
-                        edits={edits}
+                        edits={!edits?.isStale ? edits : null}
                         onUpdateAction={handleUpdate}
                     />
                 </>

@@ -129,6 +129,7 @@ export type ApiJobStatusResponse = {
 export type ApiJobQueuedResponse = {
     job_id: string;
     job_name: string;
+    job_type: string;
     started_at: string;
     status: ApiJobStatus;
     
@@ -149,4 +150,5 @@ export type ApiLineEdit = {
 export type ApiChapterEdit = {
     edits: ApiLineEdit[];
     last_generated_at: string;
+    is_stale: boolean
 }

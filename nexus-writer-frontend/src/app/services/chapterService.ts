@@ -51,7 +51,8 @@ const transformChapterEdit = (data: ApiChapterEdit): ChapterEdit => ({
         editedParagraph: edit.edited_paragraph,
         justification: edit.justification
     })),
-    lastGeneratedAt: new Date(data.last_generated_at + 'Z')
+    lastGeneratedAt: new Date(data.last_generated_at + 'Z'),
+    isStale: data.is_stale
 })
 
 

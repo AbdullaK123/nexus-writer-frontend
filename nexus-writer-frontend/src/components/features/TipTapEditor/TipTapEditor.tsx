@@ -1,7 +1,7 @@
 'use client'
-import {useEditor, EditorContent} from '@tiptap/react'
+import {useEditor, EditorContent, Editor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './TipTapEditor.module.css'
 import { WordCounter } from './extensions/WordCounter';
 import { useWritingSessionTracking } from '@/app/hooks/useWritingSessionTracking';
@@ -9,6 +9,12 @@ import { ClipLoader } from "react-spinners"
 import { ChapterEdit } from '@/app/types';
 import { AiEdit } from './marks/AiEdit';
 import { AiSuggestion } from './bubble-menus/AiSuggestion/AiSuggestion';
+import { useBackgroundJobs } from '@/app/hooks/useBackgroundJobs';
+import { useToast } from '@/app/hooks/useToast';
+import { Button } from '@/components/ui/Button';
+import { useJobCache } from '@/app/hooks/useJobCache';
+import { useJobProgress } from '@/app/hooks/useJobProgress';
+import { useChapterJobs } from '@/app/hooks/useChapterJobs';
 
 type TipTapEditorProps = {
     storyId: string;
@@ -58,6 +64,39 @@ export default function TipTapEditor({
         },
     })
 
+    const {
+        queueExtraction,
+        queueBackgroundEdits
+    } = useBackgroundJobs()
+
+    const queueBackgroundEditsJob = (editor: Editor, chapterId: string) => {
+        queueBackgroundEdits.mutate({ chapterId: chapterId, force: true})
+    }
+
+    const queueExtractionJob = (editor: Editor, chapterId: string) => {
+        queueExtraction.mutate({ chapterId: chapterId, force: true})
+    }
+
+    const {
+        chapterJobs,
+        isEditing,
+        isExtracting
+    } = useChapterJobs(chapterId)
+
+    const extractionJob = chapterJobs.find((job) => job.jobType === "extraction")
+    const lineEditJob = chapterJobs.find((job) => job.jobType === "line-edit")
+
+    const {
+        statusMessage: extractionStatusMessage,
+        progressPercent: extractionProgressPercent
+    } = useJobProgress(extractionJob ? extractionJob.jobId : null)
+
+    const {
+        statusMessage: lineEditStatusMessage,
+        progressPercent: lineEditProgressPercent
+    } = useJobProgress(lineEditJob ? lineEditJob.jobId : null)
+    
+
     useEffect(() => {
         if (!editor || !edits?.edits?.length) return
         
@@ -97,6 +136,20 @@ export default function TipTapEditor({
     return (
         <div className={styles['tiptap-editor-container']}>
             <div className={styles['flex-end-container']}>
+                <Button
+                    variant='secondary'
+                    onClick={() => queueBackgroundEditsJob(editor, chapterId)}
+                    disabled={queueBackgroundEdits.isPending || isEditing}
+                >
+                    {isEditing ? `Generating edits...${lineEditProgressPercent}% ( ${lineEditStatusMessage} )` : "Start background edits"}
+                </Button>
+                <Button
+                    variant='secondary'
+                    onClick={() => queueExtractionJob(editor, chapterId)}
+                    disabled={queueExtraction.isPending || isExtracting}
+                >
+                    {isExtracting ? `Extracting...${extractionProgressPercent}% ( ${extractionStatusMessage} )` : "Start entity extraction"}
+                </Button>
                 <h3>
                     {isSaving && <ClipLoader size={16} color={"#00d4ff"} /> }
                 </h3>
@@ -104,7 +157,7 @@ export default function TipTapEditor({
                     {`${wordCount} words`}
                 </h3>
             </div>
-            <AiSuggestion editor={editor} />
+            {editor && <AiSuggestion editor={editor} />}
             <div className={styles['editor-shell']}>
                 <EditorContent editor={editor} />
             </div>

@@ -4,6 +4,8 @@ import HolographicBackground from "@/components/ui/Background/HolographicBackgro
 import ClientProvider from "@/components/features/QueryClientProvider/QueryClientProvider";
 import "./globals.css";
 import { SocketProvider } from "./hooks/useWebsocket";
+import JobStatusWatcher from "@/components/features/JobStatusWatcher/JobStatusWatcher";
+import { ToastProvider } from "./hooks/useToast";
 
 export const metadata: Metadata = {
   title: "Nexus Writer",
@@ -20,10 +22,13 @@ export default function RootLayout({
       <body>
         <HolographicBackground/>
         <ClientProvider>
-          <SocketProvider>
-            <Navbar />
-            {children}
-          </SocketProvider>
+          <ToastProvider>
+            <JobStatusWatcher />
+              <SocketProvider>
+                <Navbar />
+                {children}
+              </SocketProvider>
+          </ToastProvider>
         </ClientProvider>
       </body>
     </html>

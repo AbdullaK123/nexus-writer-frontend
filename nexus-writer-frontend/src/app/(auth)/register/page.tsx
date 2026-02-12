@@ -156,6 +156,7 @@ export default function RegisterPage() {
             </div>
             <Button 
                 variant="primary"
+                type="submit"
                 disabled={isProcessing}
             >
                 {isProcessing ? 'Processing...' : 'Submit'}

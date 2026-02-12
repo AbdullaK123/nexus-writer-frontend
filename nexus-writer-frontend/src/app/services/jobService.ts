@@ -78,6 +78,7 @@ const transformJobQueuedResponse = (
     return {
         jobId: apiResponse.job_id,
         jobName: apiResponse.job_name,
+        jobType: apiResponse.job_type,
         startedAt: new Date(apiResponse.started_at),
         status: apiResponse.status,
         
