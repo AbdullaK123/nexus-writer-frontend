@@ -87,11 +87,11 @@ export default function ChapterNavHeader({
     }, [updateSuccess]);
 
     useEffect(() => {
-        if (creationError) onShowErrorToast('Failed to create chapter. Check server logs');
+        if (creationError) onShowErrorToast(`Failed to create chapter: ${creationError.message}`);
     }, [creationError, onShowErrorToast]);
 
     useEffect(() => {
-        if (updateError) onShowErrorToast('Failed to update chapter. Check server logs');
+        if (updateError) onShowErrorToast(`Failed to update chapter: ${updateError.message}`);
     }, [updateError, onShowErrorToast]);
 
     // The old useEffect for shortcuts has been removed.
@@ -124,13 +124,13 @@ export default function ChapterNavHeader({
                 <>
                     {isCreating && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <ClipLoader size={20} color="#666" />
+                            <ClipLoader size={20} color="#00d4ff" />
                             <h2>Creating new chapter...</h2>
                         </div>
                     )}
                     {isUpdating && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <ClipLoader size={20} color="#666" />
+                            <ClipLoader size={20} color="#00d4ff" />
                             <h2>Updating title...</h2>
                         </div>
                     )}

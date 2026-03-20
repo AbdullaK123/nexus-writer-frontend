@@ -2,27 +2,27 @@
     display: flex;
     flex-direction: column;
     width: clamp(320px, 30vw, 640px);
-    gap: 1.5rem;
-    padding: 1.5rem;
-    border-radius: 16px;
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
     backdrop-filter: blur(8px);
     box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.4),
-        0 0 10px rgba(0, 212, 255, 0.2),
-        0 0 20px rgba(0, 212, 255, 0.1),
+        0 4px 16px var(--color-shadow-depth),
+        0 0 10px var(--color-shadow-glow),
+        0 0 20px var(--color-shadow-glow-soft),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .story-card-container:hover {
     transform: translateY(-2px);
-    border-color: rgba(0, 212, 255, 0.5);
+    border-color: var(--color-border-hover);
     box-shadow: 
         0 6px 20px rgba(0, 0, 0, 0.5),
-        0 0 15px rgba(0, 212, 255, 0.3),
-        0 0 30px rgba(0, 212, 255, 0.15),
+        0 0 15px var(--color-shadow-glow),
+        0 0 30px var(--color-shadow-glow-soft),
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
@@ -110,11 +110,11 @@
 .story-stats-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-    border-radius: 12px;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
     background: rgba(26, 26, 26, 0.5);
-    border: 1px solid rgba(0, 212, 255, 0.3);
+    border: 1px solid var(--color-border);
     box-shadow: 
         inset 0 2px 8px rgba(0, 0, 0, 0.3),
         inset 0 0 10px rgba(0, 212, 255, 0.05);

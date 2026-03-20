@@ -65,17 +65,13 @@ export default function RegisterPage() {
     }, [user, router])
 
     useEffect(() => {
-        console.log('Register success changed:', registerSuccess)
         if (registerSuccess) {
-            console.log("Register success running!")
             reset()
         }
     }, [registerSuccess, reset])
 
     useEffect(() => {
-        console.log('Login success changed:', loginSuccess)
         if (loginSuccess) {
-            console.log("Login success! Rerouting to dashboard!")
             router.push('/dashboard')
         }
     }, [router, loginSuccess])
@@ -176,7 +172,7 @@ export default function RegisterPage() {
             )}
             {registerError && (
                 <span className={styles['error-badge']}>
-                    Registration failed. The server might be experiencing issues.
+                    Registration failed: {registerError.message}
                 </span>
             )}
         </form>

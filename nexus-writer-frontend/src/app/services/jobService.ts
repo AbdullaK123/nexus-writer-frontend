@@ -20,20 +20,6 @@ const transformJobStatusResponse = (
 ): JobStatusResponse => {
     const isTerminal = apiResponse.status === "success" || apiResponse.status === "failure";
     const isRunning = apiResponse.status === "starting" || apiResponse.status === "progress";
-    
-    // Calculate estimated time remaining
-    let estimatedTimeRemaining: number | undefined;
-    if (apiResponse.progress && apiResponse.started_at) {
-        const startedAt = new Date(apiResponse.started_at);
-        const elapsed = (Date.now() - startedAt.getTime()) / 1000; // seconds
-        
-        if (apiResponse.progress.current > 0) {
-            const avgPerChapter = elapsed / apiResponse.progress.current;
-            const remaining = apiResponse.progress.total - apiResponse.progress.current;
-            estimatedTimeRemaining = Math.floor(avgPerChapter * remaining);
-        }
-    }
-    
     return {
         jobId: apiResponse.job_id,
         status: apiResponse.status,
@@ -43,32 +29,18 @@ const transformJobStatusResponse = (
         startedAt: apiResponse.started_at ? new Date(apiResponse.started_at) : undefined,
         completedAt: apiResponse.completed_at ? new Date(apiResponse.completed_at) : undefined,
         
-        // Progress
-        progress: apiResponse.progress 
-            ? transformExtractionProgress(apiResponse.progress)
-            : undefined,
-        
         // Result
         result: apiResponse.result,
         
         // Error info
         error: apiResponse.error,
-        errorType: apiResponse.error_type,
-        
-        // Retry info
-        retryCount: apiResponse.retry_count,
-        maxRetries: apiResponse.max_retries,
-        nextRetryAt: apiResponse.next_retry_at 
-            ? new Date(apiResponse.next_retry_at) 
-            : undefined,
         
         // Metadata
         message: apiResponse.message,
         
         // Computed
         isTerminal,
-        isRunning,
-        estimatedTimeRemaining
+        isRunning
     };
 };
 
@@ -96,10 +68,9 @@ export const getJobStatus = async (jobId: string): Promise<JobStatusResponse> =>
 };
 
 export const queueLineEditJob = async (
-    chapterId: string, 
-    force: boolean = false
+    chapterId: string
 ): Promise<JobQueuedResponse> => {
-    const url = `/jobs/line-edits/${chapterId}${force ? '?force=true' : ''}`;
+    const url = `/jobs/line-edits/${chapterId}`;
     const data: ApiJobQueuedResponse = await fetchApi(url, {
         method: "POST"
     });
@@ -107,10 +78,9 @@ export const queueLineEditJob = async (
 };
 
 export const queueExtractionJob = async (
-    chapterId: string, 
-    force: boolean = false
+    chapterId: string
 ): Promise<JobQueuedResponse> => {
-    const url = `/jobs/extraction/${chapterId}${force ? '?force=true' : ''}`;
+    const url = `/jobs/extraction/${chapterId}`;
     const data: ApiJobQueuedResponse = await fetchApi(url, {
         method: "POST"
     });

@@ -5,8 +5,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 2rem;
-    gap: 2rem;
+    padding: var(--space-lg);
+    gap: var(--space-lg);
 }
 
 .nav-button {
@@ -21,10 +21,10 @@
         rgba(26, 26, 26, 0.8),
         rgba(16, 16, 16, 0.9)
     );
-    border: 1px solid rgba(0, 212, 255, 0.3);
+    border: 1px solid var(--color-border);
     color: var(--accent-primary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
     flex-shrink: 0;
     font-size: 1.5rem;
     padding: 0;
@@ -63,7 +63,7 @@
     border: 1px solid rgba(0, 255, 65, 0.5);
     color: var(--background-primary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
     flex-shrink: 0;
     font-size: 1.5rem;
     font-weight: bold;

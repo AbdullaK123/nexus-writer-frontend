@@ -47,14 +47,10 @@ export default function AnalyticsPage() {
     useEffect(() => {
         if (storyListItems && storyListItems.length > 0 && listItemsSuccess) {
             const firstStoryId = storyListItems[0].storyId
-            console.log('Setting selectedStoryId to:', firstStoryId);
             setSelectedStoryId(firstStoryId)
         }
     }, [storyListItems, listItemsSuccess])
 
-    useEffect(() => {
-        console.log('selectedStoryId changed to:', selectedStoryId);
-    }, [selectedStoryId]);
 
     
     const {
@@ -70,8 +66,7 @@ export default function AnalyticsPage() {
 
     useEffect(() => {
         if (storyAnalyticsSuccess) {
-            console.log("Data retrieved!")
-            console.log(JSON.stringify(storyAnalytics, null, 2))
+            // Analytics data loaded successfully
         }
     }, [storyAnalyticsSuccess, storyAnalytics])
 

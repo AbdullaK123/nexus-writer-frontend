@@ -34,12 +34,13 @@ export default function Navbar() {
                     <Link className={`${styles['navbar-link']} ${(path === '/stories/analytics') ? styles['active'] : undefined}`} href={'/stories/analytics'}>
                         Analytics
                     </Link>
-                    <a
+                    <button
                         onClick={() => logout()} 
                         className={styles['logout-btn']}
+                        type="button"
                     >
                         {isLoggingOut ? 'Logging out...' : 'Logout'}
-                    </a>
+                    </button>
                 </div>
             ) : (
                 <div className={styles['links-container']}>

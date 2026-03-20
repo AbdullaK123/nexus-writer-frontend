@@ -25,8 +25,6 @@ export default function StoryListItem({
     ...divProps
 }: StoryListItemProps) {
 
-    console.log(`StoryListItem ${storyId} - isSelected:`, isSelected, 'title:', title);
-
     const {menu, openMenu, closeMenu} = useContextMenu()
     const [modalState, setModalState] = useState<ModalState>({
         type: null,

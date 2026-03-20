@@ -13,7 +13,7 @@ export default function StoryList({
         <aside className={`${styles['sidebar-section']} ${styles['story-items-container']}`}>
             { storiesLoading && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '20px' }}>
-                    <ClipLoader size={20} color="#666" />
+                    <ClipLoader size={20} color="#00d4ff" />
                     <span>Loading...</span>
                 </div>
             )}

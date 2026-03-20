@@ -106,22 +106,12 @@ export type ApiJobStatusResponse = {
     queued_at?: string;
     started_at?: string;
     completed_at?: string;
-    
-    // Progress tracking
-    progress?: ApiExtractionProgress;
-    
+
     // Result data
     result?: Record<string, any>;
     
     // Error info
     error?: string;
-    error_type?: string;
-    
-    // Retry info
-    retry_count?: number;
-    max_retries?: number;
-    next_retry_at?: string;
-    
     // Metadata
     message?: string;
 }

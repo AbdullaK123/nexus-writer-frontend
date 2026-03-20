@@ -2,6 +2,7 @@ import { useStories } from "@/app/hooks/useStories"
 import { EditableStoryTitleProps } from "@/app/types";
 import { useEditable } from "@/app/hooks/useEditable";
 import { Input } from "@/components/ui/Input";
+import styles from './EditableTitle.module.css';
 
 export default function EditableStoryTitle({ storyId, title }: EditableStoryTitleProps) {
     const { update, isUpdating } = useStories();
@@ -16,7 +17,12 @@ export default function EditableStoryTitle({ storyId, title }: EditableStoryTitl
     });
 
     return (
-        <div onDoubleClick={handleDoubleClick} ref={ref}>
+        <div
+            onDoubleClick={handleDoubleClick}
+            ref={ref}
+            className={styles['editable-container']}
+            title="Double-click to edit"
+        >
             {isEditing ? (
                 <Input
                     type="text"
@@ -26,7 +32,10 @@ export default function EditableStoryTitle({ storyId, title }: EditableStoryTitl
                     autoFocus
                 />
             ) : (
-                <h2>{isUpdating ? 'Updating...' : title}</h2>
+                <>
+                    <h2>{isUpdating ? 'Updating...' : title}</h2>
+                    <span className={styles['edit-hint']} aria-hidden="true">✎</span>
+                </>
             )}
         </div>
     );

@@ -18,7 +18,8 @@ async function fetchApi(path: string, options: RequestInit = {}) {
     if (!response.ok) {
         // You can add more robust error handling here
         const errorBody = await response.text();
-        throw new Error(`API Error (${response.status}): ${errorBody}`);
+        const errorJson = JSON.parse(errorBody);
+        throw new Error(`${errorJson?.detail}`);
     }
 
     // Handle cases where there is no JSON body to parse

@@ -30,7 +30,7 @@ export const useBackgroundJobs = () => {
     const queryClient = useQueryClient()
 
     const queueLineEditJobMutation = useMutation({
-        mutationFn: ({ chapterId, force = false }: { chapterId: string, force?: boolean }) => jobService.queueLineEditJob(chapterId, force),
+        mutationFn: ({ chapterId }: { chapterId: string }) => jobService.queueLineEditJob(chapterId),
         onError: (error) => {
              showToast(`Failed to start line edit job job: ${error.message}`, "error")
         },
@@ -41,7 +41,7 @@ export const useBackgroundJobs = () => {
     })
 
     const queueExtractionJobMutation = useMutation({
-        mutationFn: ({ chapterId, force = false }: { chapterId: string, force?: boolean }) => jobService.queueExtractionJob(chapterId, force),
+        mutationFn: ({ chapterId }: { chapterId: string }) => jobService.queueExtractionJob(chapterId),
         onError: (error) => {
             showToast(`Failed to start extraction job: ${error.message}`, "error")
         },

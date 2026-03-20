@@ -1,12 +1,11 @@
 .app-body {
-   min-height: calc(100vh - 80px); /* Account for navbar */
+   min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Changed from center to flex-start */
-  gap: 2rem;
-  padding: 2rem;
-  /* Removed any height restrictions that might cause overflow issues */
+  justify-content: flex-start;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
 }
 
 .flex-col-container {
@@ -15,8 +14,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  padding: 2rem;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
 }
 
 .flex-wrap-container {
@@ -25,8 +24,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  padding: 2rem;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
 }
 
 .flex-wrap-container {

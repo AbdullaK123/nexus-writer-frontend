@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import * as jobService from "@/app/services/jobService"
 import { JobStatusResponse } from "../types/jobs"
 
 
 export const useJobProgress = (jobId: string | null | undefined) => {
 
+    const queryClient = useQueryClient()
     const [progressPercent, setProgressPercent] = useState(0)
     const [statusMessage, setStatusMessage] = useState("")
 
     const { data: jobStatus } = useQuery<JobStatusResponse>({
         queryKey: ['jobs', jobId],
-        enabled: false, 
+        queryFn: () => queryClient.getQueryData<JobStatusResponse>(['jobs', jobId]),
+        refetchInterval: 1000
     })
 
     useEffect(() => {

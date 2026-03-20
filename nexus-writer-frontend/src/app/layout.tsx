@@ -20,13 +20,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <a href="#main-content" className="skip-to-content">Skip to content</a>
         <HolographicBackground/>
         <ClientProvider>
           <ToastProvider>
             <JobStatusWatcher />
               <SocketProvider>
                 <Navbar />
-                {children}
+                <main id="main-content">
+                  {children}
+                </main>
               </SocketProvider>
           </ToastProvider>
         </ClientProvider>

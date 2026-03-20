@@ -11,19 +11,19 @@
 }
 
 .sidebar-section {
-    padding: 1.5rem;
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-card);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     box-shadow: 
-        0 4px 16px rgba(0, 0, 0, 0.4),
-        0 0 10px rgba(0, 212, 255, 0.2),
-        0 0 20px rgba(0, 212, 255, 0.1),
+        0 4px 16px var(--color-shadow-depth),
+        0 0 10px var(--color-shadow-glow),
+        0 0 20px var(--color-shadow-glow-soft),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    overflow: visible; /* Allow context menus to escape */
+    transition: all var(--transition-base);
+    overflow: visible;
 }
 
 .sidebar-section:hover {
@@ -38,10 +38,10 @@
 .chapter-items-container {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--space-sm);
     max-height: 60vh;
     overflow-y: auto;
-    padding-right: 1rem;
+    padding-right: var(--space-sm);
 }
 
 .chapter-items-container h2 {

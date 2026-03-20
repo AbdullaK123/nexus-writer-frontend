@@ -65,37 +65,19 @@ export default function TipTapEditor({
     })
 
     const {
-        queueExtraction,
         queueBackgroundEdits
     } = useBackgroundJobs()
 
     const queueBackgroundEditsJob = (editor: Editor, chapterId: string) => {
-        queueBackgroundEdits.mutate({ chapterId: chapterId, force: true})
-    }
-
-    const queueExtractionJob = (editor: Editor, chapterId: string) => {
-        queueExtraction.mutate({ chapterId: chapterId, force: true})
+        queueBackgroundEdits.mutate({ chapterId: chapterId})
     }
 
     const {
         chapterJobs,
-        isEditing,
-        isExtracting
+        isEditing
     } = useChapterJobs(chapterId)
 
-    const extractionJob = chapterJobs.find((job) => job.jobType === "extraction")
-    const lineEditJob = chapterJobs.find((job) => job.jobType === "line-edit")
-
-    const {
-        statusMessage: extractionStatusMessage,
-        progressPercent: extractionProgressPercent
-    } = useJobProgress(extractionJob ? extractionJob.jobId : null)
-
-    const {
-        statusMessage: lineEditStatusMessage,
-        progressPercent: lineEditProgressPercent
-    } = useJobProgress(lineEditJob ? lineEditJob.jobId : null)
-    
+    const lineEditJob = chapterJobs.find((job) => job.jobType === "line-edit")    
 
     useEffect(() => {
         if (!editor || !edits?.edits?.length) return
@@ -141,14 +123,7 @@ export default function TipTapEditor({
                     onClick={() => queueBackgroundEditsJob(editor, chapterId)}
                     disabled={queueBackgroundEdits.isPending || isEditing}
                 >
-                    {isEditing ? `Generating edits...${lineEditProgressPercent}% ( ${lineEditStatusMessage} )` : "Start background edits"}
-                </Button>
-                <Button
-                    variant='secondary'
-                    onClick={() => queueExtractionJob(editor, chapterId)}
-                    disabled={queueExtraction.isPending || isExtracting}
-                >
-                    {isExtracting ? `Extracting...${extractionProgressPercent}% ( ${extractionStatusMessage} )` : "Start entity extraction"}
+                    {isEditing ? `Generating edits...` : "Start background edits"}
                 </Button>
                 <h3>
                     {isSaving && <ClipLoader size={16} color={"#00d4ff"} /> }

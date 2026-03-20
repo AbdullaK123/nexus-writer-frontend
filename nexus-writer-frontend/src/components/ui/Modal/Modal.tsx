@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import styles from './Modal.module.css'
 
@@ -11,6 +11,8 @@ export interface ModalProps {
   showCloseButton?: boolean
 }
 
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 export function Modal({ 
   isOpen, 
   onClose, 
@@ -18,6 +20,9 @@ export function Modal({
   children,
   showCloseButton = true 
 }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null)
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null)
+
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -42,6 +47,55 @@ export function Modal({
     }
   }, [isOpen])
 
+  // Focus trap: save previous focus, focus modal on open, restore on close
+  useEffect(() => {
+    if (isOpen) {
+      previouslyFocusedRef.current = document.activeElement as HTMLElement
+      // Small delay so portal is mounted
+      requestAnimationFrame(() => {
+        if (modalRef.current) {
+          const firstFocusable = modalRef.current.querySelector<HTMLElement>(FOCUSABLE_SELECTOR)
+          if (firstFocusable) {
+            firstFocusable.focus()
+          } else {
+            modalRef.current.focus()
+          }
+        }
+      })
+    } else {
+      // Restore focus when modal closes
+      if (previouslyFocusedRef.current) {
+        previouslyFocusedRef.current.focus()
+        previouslyFocusedRef.current = null
+      }
+    }
+  }, [isOpen])
+
+  // Focus trap: cycle focus within modal
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key !== 'Tab' || !modalRef.current) return
+
+    const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+    if (focusableElements.length === 0) return
+
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements[focusableElements.length - 1]
+
+    if (e.shiftKey) {
+      // Shift+Tab: if on first element, wrap to last
+      if (document.activeElement === firstElement) {
+        e.preventDefault()
+        lastElement.focus()
+      }
+    } else {
+      // Tab: if on last element, wrap to first
+      if (document.activeElement === lastElement) {
+        e.preventDefault()
+        firstElement.focus()
+      }
+    }
+  }, [])
+
   if (!isOpen) return null
 
   // Render modal content
@@ -50,9 +104,12 @@ export function Modal({
       <div
         className={styles.modal}
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        onKeyDown={handleKeyDown}
+        ref={modalRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}
+        tabIndex={-1}
       >
         {title && (
           <div className={styles.header}>

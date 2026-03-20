@@ -15,18 +15,18 @@
 
 .modal {
   position: relative;
-  background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
+  background: var(--color-bg-card);
   border: 1px solid rgba(0, 212, 255, 0.4);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 0;
   max-width: 560px;
   width: min(92vw, 560px);
   max-height: 80vh;
   overflow: hidden;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(0, 212, 255, 0.3),
-    0 0 40px rgba(0, 212, 255, 0.15),
+    0 8px 32px var(--color-shadow-depth),
+    0 0 20px var(--color-shadow-glow),
+    0 0 40px var(--color-shadow-glow-soft),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   animation: slideUp 0.3s ease-out;
 }
@@ -35,8 +35,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  padding: var(--space-sm) 1.25rem;
+  border-bottom: 1px solid var(--color-border);
   background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), transparent);
 }
 
@@ -57,7 +57,7 @@
   cursor: pointer;
   padding: 0.25rem;
   border-radius: 4px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
 .closeButton:hover {

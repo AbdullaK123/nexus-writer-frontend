@@ -2,9 +2,9 @@
 
 .input {
   background: var(--background-secondary);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 8px;
-  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.875rem var(--space-sm);
   width: 100%;
   color: var(--text-primary);
   font-family: var(--font-body);
@@ -12,7 +12,7 @@
   box-shadow: 
     0 0 5px rgba(0, 212, 255, 0.3),
     inset 0 0 5px rgba(0, 212, 255, 0.1);
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
 .input:hover {
@@ -39,7 +39,7 @@
 }
 
 .input:disabled:hover {
-  border-color: rgba(0, 212, 255, 0.3);
+  border-color: var(--color-border);
   box-shadow: 
     0 0 5px rgba(0, 212, 255, 0.3),
     inset 0 0 5px rgba(0, 212, 255, 0.1);

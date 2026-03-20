@@ -23,7 +23,12 @@ export function Toast({ message, type, isOpen, onClose, duration = 3000 }: Toast
   if (!isOpen) return null;
 
   return (
-    <div className={`${styles.toast} ${styles[type]}`}>
+    <div 
+      className={`${styles.toast} ${styles[type]}`}
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       <div className={styles.icon}>
         {type === 'success' && '✓'}
         {type === 'error' && '✕'}

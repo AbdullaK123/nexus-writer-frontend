@@ -30,7 +30,7 @@ export default function ChapterPreview({
 
     useEffect(() => {
         if (updateError) {
-            onShowErrorToast('Failed to publish / unpublish chapter. Check server logs')
+            onShowErrorToast(`Failed to publish / unpublish chapter: ${updateError.message}`)
             return
         }
     }, [updateError, onShowErrorToast])

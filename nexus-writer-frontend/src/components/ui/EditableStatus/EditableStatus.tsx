@@ -82,7 +82,6 @@ export default function EditableStatus({
 
     const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newStatus = e.target.value as "Complete" | "Ongoing" | "On Hiatus"
-        console.log(newStatus)
         setStoryStatus(newStatus)
         setIsEditing(false)
 
@@ -99,6 +98,8 @@ export default function EditableStatus({
         <div
             ref={componentRef}
             onDoubleClick={() => setIsEditing(true)}
+            className={styles['editable-status-container']}
+            title="Double-click to change status"
         >
             {isEdititing ? (
                 <select
@@ -120,7 +121,10 @@ export default function EditableStatus({
                 isUpdating ? (
                     <span className={`${styles['status-badge']} ${styles['ongoing-span']}`}>Updating status...</span>
                 ) : (
-                    getStatusSpan(storyStatus)
+                    <>
+                        {getStatusSpan(storyStatus)}
+                        <span className={styles['edit-hint']} aria-hidden="true">✎</span>
+                    </>
                 )
             )}
         </div>

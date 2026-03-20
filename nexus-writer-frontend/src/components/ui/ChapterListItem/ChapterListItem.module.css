@@ -3,16 +3,16 @@
 .chapter-list-item-container {
     display: flex;
     align-items: center;
-    padding: 3rem;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 212, 255, 0.3);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
     background: linear-gradient(135deg, 
         rgba(26, 26, 26, 0.8), 
         rgba(16, 16, 16, 0.9)
     );
     cursor: pointer;
-    transition: all 0.3s ease;
-    gap: 1rem;
+    transition: all var(--transition-base);
+    gap: var(--space-sm);
     position: relative;
     overflow: hidden;
 }

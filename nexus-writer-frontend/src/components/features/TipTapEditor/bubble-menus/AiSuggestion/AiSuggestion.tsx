@@ -3,8 +3,7 @@ import { Editor } from "@tiptap/react"
 import styles from './AiSuggestion.module.css'
 import { BubbleMenu } from "@tiptap/react/menus"
 import { Button } from "@/components/ui/Button"
-import { useEffect, useState } from "react"
-import { Console } from "console"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 
 type AiSuggestionProps = {
@@ -59,15 +58,25 @@ function applyAiEdit(editor: Editor) {
 export function AiSuggestion({ editor }: AiSuggestionProps) {
 
     const [attrs, setAttrs] = useState(() => editor.getAttributes('aiEdit'))
+    const prevAttrsRef = useRef(attrs)
+
+    const updateAttrs = useCallback(() => {
+        if (!editor.isActive('aiEdit')) return
+        const next = editor.getAttributes('aiEdit')
+        const prev = prevAttrsRef.current
+        // Only update state when attributes actually changed
+        const changed =
+            next.originalParagraph !== prev.originalParagraph ||
+            next.editedParagraph !== prev.editedParagraph ||
+            next.justification !== prev.justification
+        if (changed) {
+            prevAttrsRef.current = next
+            setAttrs(next)
+        }
+    }, [editor])
 
     useEffect(() => {
         if (!editor) return
-
-        const updateAttrs = () => {
-            if (editor.isActive('aiEdit')) {
-                setAttrs(editor.getAttributes('aiEdit'))
-            }
-        }
 
         editor.on('selectionUpdate', updateAttrs)
         editor.on('transaction', updateAttrs)
@@ -77,7 +86,7 @@ export function AiSuggestion({ editor }: AiSuggestionProps) {
             editor.off('transaction', updateAttrs)
         }
 
-    }, [editor])
+    }, [editor, updateAttrs])
 
     return (
         <BubbleMenu

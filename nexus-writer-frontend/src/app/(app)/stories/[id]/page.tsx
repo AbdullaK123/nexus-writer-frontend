@@ -33,7 +33,7 @@ export default function Page() {
     if (isLoading) {
         return (
             <div className={styles['centered']}>
-                <ClipLoader size={50} color="#666" />
+                <ClipLoader size={50} color="#00d4ff" />
                 <h1>Loading...</h1>
             </div>
         );
@@ -58,7 +58,7 @@ export default function Page() {
                 />
                 {isLoadingChapter ? (
                     <div className={styles['centered']}>
-                        <ClipLoader size={50} color="#666" />
+                        <ClipLoader size={50} color="#00d4ff" />
                         <h1>Loading chapter...</h1>
                     </div>
                 ) : selectedChapter ? (

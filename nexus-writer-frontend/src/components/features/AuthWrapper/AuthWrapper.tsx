@@ -32,7 +32,7 @@ export default function AuthWrapper({
     if (isLoading) {
         return (
             <div className={styles['flex-col-container']}>
-                <ClipLoader size={50} color="#666" />
+                <ClipLoader size={50} color="#00d4ff" />
                 <h1>Connecting to the nexus...</h1>
             </div>
         )
@@ -42,7 +42,7 @@ export default function AuthWrapper({
     if (requireAuth && (isError || !user)) {
         return (
             <div className={styles['flex-col-container']}>
-                <ClipLoader size={50} color="#666" />
+                <ClipLoader size={50} color="#00d4ff" />
                 <h1>Authentication Required. Redirecting to login...</h1>
             </div>
         )
