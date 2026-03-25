@@ -1,4 +1,4 @@
-import {StoryListProps} from "@/app/types";
+import {StoryListProps} from "./types";
 import StoryListItem from "@/components/ui/StoryListItem/StoryListItem";
 import styles from "./StoryList.module.css"
 import { ClipLoader } from "react-spinners";

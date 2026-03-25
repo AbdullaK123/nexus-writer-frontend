@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useChapters } from "@/app/hooks/useChapters";
-import { AutoSavePluginProps } from "@/app/types";
+import { AutoSavePluginProps } from "../types";
 
 export default function AutoSavePlugin({ storyId, chapterId, intervalMs = 2000 }: AutoSavePluginProps) {
     const [editor] = useLexicalComposerContext();

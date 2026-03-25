@@ -1,6 +1,6 @@
 'use client'
 import styles from './StoryDetailHeader.module.css'
-import { StoryDetailHeaderProps } from '@/app/types'
+import { StoryDetailHeaderProps } from './types'
 import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/Input'

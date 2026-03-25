@@ -13,7 +13,7 @@ import MarkdownPastePlugin from './plugins/MarkdownPastePlugin'
 import { RemoveIndentPlugin } from './plugins/RemoveIndentPlugin'
 import { useAuth } from '@/app/hooks/useAuth'
 import ManualSavePlugin from './plugins/ManualSavePlugin'
-import { LexicalEditorProps } from '@/app/types'
+import { LexicalEditorProps } from './types'
 import { getInitialConfig, MY_TRANSFORMERS } from './config'
 
 

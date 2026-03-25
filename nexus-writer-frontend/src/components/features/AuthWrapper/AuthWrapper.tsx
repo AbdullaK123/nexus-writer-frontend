@@ -1,7 +1,7 @@
 'use client'
 import { useAuth } from "@/app/hooks/useAuth"
 import { useRouter } from "next/navigation"
-import { AuthWrapperProps } from "@/app/types"
+import { AuthWrapperProps } from "./types"
 import { useEffect } from "react"
 import styles from './AuthWrapper.module.css'
 import { ClipLoader } from 'react-spinners'

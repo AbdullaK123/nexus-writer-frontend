@@ -2,7 +2,7 @@
 import StoryInfoCard from "../StoryInfoCard/StoryInfoCard";
 import ChapterListItem from "../ChapterListItem/ChapterListItem";
 import FilterDropdown from "../FilterDropdown/FilterDropdown";
-import { StoryDetailSideBarProps } from "@/app/types";
+import { StoryDetailSideBarProps } from "./types";
 import styles from './StoryDetailSidebar.module.css';
 
 const filterOptions = [

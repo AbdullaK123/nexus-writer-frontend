@@ -1,5 +1,5 @@
 'use client'
-import { ContextMenuProps } from "@/app/types";
+import { ContextMenuProps } from "./types";
 import { useShortcut } from "@/app/hooks/useShortcut";
 import { useClickOutside } from "@/app/hooks/useClickOutside";
 import { createPortal } from 'react-dom';

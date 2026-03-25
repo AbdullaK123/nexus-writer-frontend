@@ -1,4 +1,4 @@
-import { ManualSavePluginProps } from "@/app/types";
+import { ManualSavePluginProps } from "../types";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useChapters } from "@/app/hooks/useChapters";
 import { useShortcut } from "@/app/hooks/useShortcut";

@@ -1,6 +1,6 @@
 'use client'
 import { Modal } from "../Modal";
-import { DeleteTargetFormProps } from "@/app/types";
+import { DeleteTargetFormProps } from "./types";
 import { useTarget } from "@/app/hooks/useTarget";
 import { useToast } from "@/app/hooks/useToast";
 import { useEffect, useState } from "react";

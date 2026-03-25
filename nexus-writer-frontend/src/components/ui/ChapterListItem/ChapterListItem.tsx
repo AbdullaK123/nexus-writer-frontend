@@ -1,4 +1,4 @@
-import { ChapterListItemProps } from "@/app/types";
+import { ChapterListItemProps } from "./types";
 import styles from './ChapterListItem.module.css';
 import { ChapterListItemContextMenu } from "../ChapterListItemContextMenu";
 import { useInView } from "@/app/hooks/useInView";

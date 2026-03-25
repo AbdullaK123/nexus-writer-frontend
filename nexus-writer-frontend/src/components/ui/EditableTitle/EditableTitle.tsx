@@ -1,5 +1,5 @@
 import { useStories } from "@/app/hooks/useStories"
-import { EditableStoryTitleProps } from "@/app/types";
+import { EditableStoryTitleProps } from "./types";
 import { useEditable } from "@/app/hooks/useEditable";
 import { Input } from "@/components/ui/Input";
 import styles from './EditableTitle.module.css';

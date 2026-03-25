@@ -1,5 +1,6 @@
 'use client'
-import { Frequency, StoryListItemProps, TargetResponse } from "@/app/types";
+import { StoryListItemProps } from "./types";
+import { Frequency, TargetResponse } from "@/app/types";
 import styles from "./StoryListItem.module.css";
 import { formatWordCount } from "@/app/lib/utils";
 import { useContextMenu } from "@/app/hooks/useContextMenu";

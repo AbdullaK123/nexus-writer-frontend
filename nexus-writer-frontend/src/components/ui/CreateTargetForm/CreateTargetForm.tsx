@@ -1,6 +1,7 @@
 'use client'
 import { Modal } from "../Modal";
-import { CreateTargetFormProps, Frequency } from "@/app/types";
+import { CreateTargetFormProps } from "./types";
+import { Frequency } from "@/app/types";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"

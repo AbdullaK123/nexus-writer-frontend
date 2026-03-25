@@ -1,5 +1,5 @@
 'use client'
-import { StoryCardProps } from "@/app/types";
+import { StoryCardProps } from "./types";
 import styles from './StoryCard.module.css'
 import EditableStoryTitle from "../EditableTitle/EditableTitle";
 import EditableStatus from "../EditableStatus/EditableStatus";
