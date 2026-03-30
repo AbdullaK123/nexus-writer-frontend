@@ -9,7 +9,13 @@ import { Frequency } from "@/app/types";
 import TotalWordsKpiCard from "@/components/ui/TotalWordsKpiCard/TotalWordsKpiCard";
 import TotalDurationKpiCard from "@/components/ui/TotalDurationKpiCard/TotalDurationKpiCard";
 import AverageWordsPerMinuteCard from "@/components/ui/AverageWordsPerMinuteCard/AverageWordsPerMinuteKpiCard";
-import WordCountOverTimeChart from "@/components/ui/WordCountOverTimeChart/WordCountOverTimeChart";
+import dynamic from 'next/dynamic';
+import { ClipLoader } from 'react-spinners';
+
+const WordCountOverTimeChart = dynamic(
+    () => import('@/components/ui/WordCountOverTimeChart/WordCountOverTimeChart'),
+    { ssr: false, loading: () => <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}><ClipLoader size={30} color="#00d4ff" /></div> }
+);
 
 type Filter = {
     frequency: Frequency,

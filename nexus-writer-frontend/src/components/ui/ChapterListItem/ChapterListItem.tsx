@@ -1,3 +1,4 @@
+'use client'
 import { ChapterListItemProps } from "./types";
 import styles from './ChapterListItem.module.css';
 import { ChapterListItemContextMenu } from "../ChapterListItemContextMenu";

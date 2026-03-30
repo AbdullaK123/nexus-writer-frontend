@@ -4,7 +4,7 @@ import { useChapters } from '@/app/hooks/useChapters'
 import { useParams } from 'next/navigation'
 import ChapterNavHeader from '@/components/ui/ChapterNavHeader/ChapterNavHeader'
 import { useRouter } from 'next/navigation'
-import TipTapEditor from '@/components/features/TipTapEditor/TipTapEditor'
+import dynamic from 'next/dynamic'
 import { debounce } from 'lodash'
 import { useMemo } from 'react'
 import { useAuth } from '@/app/hooks/useAuth'
@@ -13,6 +13,11 @@ import { useToast } from '@/app/hooks/useToast'
 import { useChapterEdits } from '@/app/hooks/useChapterEdits'
 import { useBackgroundJobs } from '@/app/hooks/useBackgroundJobs'
 import { useJobProgress } from '@/app/hooks/useJobProgress'
+
+const TipTapEditor = dynamic(
+    () => import('@/components/features/TipTapEditor/TipTapEditor'),
+    { ssr: false, loading: () => <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}><ClipLoader size={50} color="#00d4ff" /></div> }
+)
 
 export default function Page() {
 

@@ -1,3 +1,4 @@
+'use client'
 import { useRouter } from "next/navigation";
 import { ChapterNavHeaderProps } from "./types"
 import styles from './ChapterNavHeader.module.css'

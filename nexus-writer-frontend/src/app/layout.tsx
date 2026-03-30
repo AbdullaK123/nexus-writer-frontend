@@ -3,8 +3,6 @@ import Navbar from "@/components/ui/Navbar/Navbar";
 import HolographicBackground from "@/components/ui/Background/HolographicBackground";
 import ClientProvider from "@/components/features/QueryClientProvider/QueryClientProvider";
 import "./globals.css";
-import { SocketProvider } from "./hooks/useWebsocket";
-import JobStatusWatcher from "@/components/features/JobStatusWatcher/JobStatusWatcher";
 import { ToastProvider } from "./hooks/useToast";
 
 export const metadata: Metadata = {
@@ -24,13 +22,10 @@ export default function RootLayout({
         <HolographicBackground/>
         <ClientProvider>
           <ToastProvider>
-            <JobStatusWatcher />
-              <SocketProvider>
-                <Navbar />
-                <main id="main-content">
-                  {children}
-                </main>
-              </SocketProvider>
+            <Navbar />
+            <main id="main-content">
+              {children}
+            </main>
           </ToastProvider>
         </ClientProvider>
       </body>

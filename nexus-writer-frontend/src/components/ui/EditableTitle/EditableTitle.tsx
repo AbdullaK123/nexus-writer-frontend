@@ -1,3 +1,4 @@
+'use client'
 import { useStories } from "@/app/hooks/useStories"
 import { EditableStoryTitleProps } from "./types";
 import { useEditable } from "@/app/hooks/useEditable";

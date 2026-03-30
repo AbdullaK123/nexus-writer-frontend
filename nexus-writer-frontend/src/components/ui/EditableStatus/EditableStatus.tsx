@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useRef, useEffect } from "react";
 import { useStories } from "@/app/hooks/useStories";
 import styles from './EditableStatus.module.css'
