@@ -1,79 +1,25 @@
-'use client'
-import StoryDetailSidebar from "@/components/ui/StoryDetailSidebar/StoryDetailSidebar";
-import StoryDetailHeader from "@/components/ui/StoryDetailHeader/StoryDetailHeader";
-import ChapterPreview from "@/components/ui/ChapterPreview/ChapterPreview";
-import styles from './page.module.css';
-import { useStoryDetail } from '@/app/hooks/useStoryDetail';
-import { ClipLoader } from 'react-spinners';
-import { useToast } from "@/app/hooks/useToast";
-import { useCallback, useRef } from "react";
+import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import StoryDetailContent from './StoryDetailContent'
+
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params
+    try {
+        const cookieStore = await cookies()
+        const sessionCookie = cookieStore.get('session_id')
+        const res = await fetch(`${API_URL}/stories/${id}`, {
+            headers: sessionCookie ? { Cookie: `session_id=${sessionCookie.value}` } : {},
+        })
+        if (res.ok) {
+            const story = await res.json()
+            return { title: story.title ?? 'Story' }
+        }
+    } catch {}
+    return { title: 'Story' }
+}
 
 export default function Page() {
-    const {
-        storyId,
-        isLoading,
-        storyInfo,
-        chaptersToShow,
-        title,
-        onFilterChange,
-        onCreateChapter,
-        isCreating,
-        creationSuccess,
-        selectedChapter,
-        isLoadingChapter,
-        handleChapterStatusUpdate,
-    } = useStoryDetail();
-
-    const { showToast } = useToast()
-
-    const onShowErrorToast = useCallback((msg: string) => showToast(msg, "error"), [showToast])
-    const onShowSuccessToast = useCallback((msg: string) => showToast(msg, "success"), [showToast])
-    const contextMenuRef = useRef({ menuIsOpen: false, storyId: null})
-
-    if (isLoading) {
-        return (
-            <div className={styles['centered']}>
-                <ClipLoader size={50} color="#00d4ff" />
-                <h1>Loading...</h1>
-            </div>
-        );
-    }
-
-    return (
-        <div className={styles['story-detail-page']}>
-            <StoryDetailHeader 
-                storyId={storyId} 
-                title={title} 
-                onCreateChapter={onCreateChapter}
-                isCreating={isCreating}
-                creationSuccess={creationSuccess}
-                onShowSuccessToast={onShowSuccessToast}
-            />
-            <div className={styles['story-content-layout']}>
-                <StoryDetailSidebar
-                    storyInfo={storyInfo}
-                    chapters={chaptersToShow}
-                    onFilterChange={onFilterChange}
-                    contextMenuRef={contextMenuRef}
-                />
-                {isLoadingChapter ? (
-                    <div className={styles['centered']}>
-                        <ClipLoader size={50} color="#00d4ff" />
-                        <h1>Loading chapter...</h1>
-                    </div>
-                ) : selectedChapter ? (
-                    <ChapterPreview 
-                        {...selectedChapter} 
-                        onStatusUpdate={handleChapterStatusUpdate}
-                        onShowErrorToast={onShowErrorToast}
-                        onShowSuccessToast={onShowSuccessToast}
-                    />
-                ) : (
-                    <div className={styles['centered']}>
-                        <h1>Select a chapter to preview</h1>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+    return <StoryDetailContent />
 }
