@@ -16,7 +16,7 @@ import { useJobProgress } from '@/app/hooks/useJobProgress'
 
 const TipTapEditor = dynamic(
     () => import('@/components/features/TipTapEditor/TipTapEditor'),
-    { ssr: false, loading: () => <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}><ClipLoader size={50} color="#00d4ff" /></div> }
+    { ssr: false, loading: () => <div className="loading-center"><ClipLoader size={50} color="#00d4ff" /></div> }
 )
 
 export default function ChapterEditorContent() {
@@ -71,7 +71,7 @@ export default function ChapterEditorContent() {
     return (
         <div className={styles['content-container']}>
             {isLoading && (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', padding: '40px' }}>
+                <div className="loading-column">
                     <ClipLoader size={50} color="#00d4ff" />
                     <h1>Loading Chapter...</h1>
                 </div>

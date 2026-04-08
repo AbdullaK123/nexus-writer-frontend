@@ -4,5 +4,4 @@ export * from "./user";
 export * from "./story";
 export * from "./components";
 export * from "./analytics"
-export * from "./misc"
 export * from "./ai"

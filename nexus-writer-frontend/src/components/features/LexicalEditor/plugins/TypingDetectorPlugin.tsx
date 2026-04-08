@@ -1,8 +1,14 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useTypingState } from '@/app/hooks/useTypingState';
 import { useEditorListener } from '@/app/hooks/useEditorListener';
-import { TypingDetectorPluginProps } from '@/app/types';
 import { useCallback } from 'react';
+
+type TypingDetectorPluginProps = {
+    storyId: string;
+    chapterId: string;
+    userId: string;
+    delay: number;
+}
 
 
 export default function TypingDetectorPlugin({ 

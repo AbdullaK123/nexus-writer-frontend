@@ -649,6 +649,18 @@
   animation: chartGrow 2s ease-out;
 }
 
+.chartBarShort {
+  height: 60%;
+}
+
+.chartBarMedium {
+  height: 80%;
+}
+
+.chartBarTall {
+  height: 100%;
+}
+
 @keyframes chartGrow {
   from {
     transform: scaleY(0);

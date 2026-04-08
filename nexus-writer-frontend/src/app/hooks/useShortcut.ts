@@ -1,5 +1,15 @@
 import { useEffect, useCallback } from 'react';
-import { Shortcut } from '../types';
+
+type ShortcutCallback = (event: KeyboardEvent) => void;
+
+export interface Shortcut {
+    key: string;
+    ctrlKey?: boolean;
+    metaKey?: boolean;
+    shiftKey?: boolean;
+    altKey?: boolean;
+    callback: ShortcutCallback;
+}
 
 export function useShortcut(shortcuts: Shortcut[]) {
     const handleKeyDown = useCallback((event: KeyboardEvent) => {

@@ -164,9 +164,9 @@ export default function Home() {
             <div className={styles.featureVisual}>
               <div className={styles.visualPlaceholder}>
                 <div className={styles.visualChart}>
-                  <div className={styles.chartBar} style={{height: '60%'}}></div>
-                  <div className={styles.chartBar} style={{height: '80%'}}></div>
-                  <div className={styles.chartBar} style={{height: '100%'}}></div>
+                  <div className={`${styles.chartBar} ${styles.chartBarShort}`}></div>
+                  <div className={`${styles.chartBar} ${styles.chartBarMedium}`}></div>
+                  <div className={`${styles.chartBar} ${styles.chartBarTall}`}></div>
                 </div>
               </div>
             </div>

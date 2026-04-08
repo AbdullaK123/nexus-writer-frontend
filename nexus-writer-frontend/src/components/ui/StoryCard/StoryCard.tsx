@@ -5,7 +5,8 @@ import EditableStoryTitle from "../EditableTitle/EditableTitle";
 import EditableStatus from "../EditableStatus/EditableStatus";
 import { StoryCardContextMenu } from '../StoryCardContextMenu'
 import { ContextMenuRoot, ContextMenuTrigger } from '@/components/ui/ContextMenu'
-import { formatWordCountStory, getDuration } from "@/app/lib/utils";
+import { formatWordCountStory } from "./utils";
+import { getDuration } from "@/app/lib/utils";
 import { useStoryNavigation } from "@/app/hooks/useStoryNavigation";
 import { useStoryContextMenuActions } from "@/app/hooks/useStoryContextMenuActions";
 import { Button } from "@/components/ui/Button";

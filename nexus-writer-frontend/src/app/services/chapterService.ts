@@ -5,12 +5,17 @@ import {
     CreateChapterRequest,
     ApiChapterListResponse,
     ApiChapterContentResponse,
-    UpdateMutationArgs,
+    UpdateChapterRequest,
     ApiLineEdit,
     ApiChapterEdit,
     LineEdit,
     ChapterEdit
 } from '../types';
+
+export interface UpdateMutationArgs {
+  chapterId: string;
+  requestBody: UpdateChapterRequest
+}
 
 // Transformation for a list of chapters
 const transformChapterList = (data: ApiChapterListResponse) => {

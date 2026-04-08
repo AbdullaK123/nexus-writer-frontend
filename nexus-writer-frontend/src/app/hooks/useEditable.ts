@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { UseEditableProps } from '../types';
+
+export interface UseEditableProps {
+    initialValue: string;
+    onSave: (newValue: string) => void;
+}
 
 
 export function useEditable({ initialValue, onSave }: UseEditableProps) {

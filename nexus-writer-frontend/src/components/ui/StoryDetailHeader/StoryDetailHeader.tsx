@@ -71,7 +71,7 @@ export default function StoryDetailHeader({
                      className={styles['create-chapter-button']}
                  >
                      {isCreating ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div className="loading-row">
                             <ClipLoader size={16} color="#fff" />
                             <span>Creating Chapter...</span>
                         </div>

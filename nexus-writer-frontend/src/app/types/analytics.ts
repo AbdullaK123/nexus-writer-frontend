@@ -9,13 +9,6 @@ export type AnalyticsEvent = {
 
 export type Callback = () => void;
 
-export type TypingDetectorPluginProps = {
-    storyId: string;
-    chapterId: string;
-    userId: string;
-    delay: number;
-}
-
 export type CreateTargetRequest = {
     quota: number;
     frequency: "Daily" | "Weekly" | "Monthly";

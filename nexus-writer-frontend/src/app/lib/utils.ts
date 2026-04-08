@@ -23,12 +23,6 @@ export function getChapterStatus(published: boolean, hasContent: boolean): Chapt
   return "outline";
 }
 
-// Helper for calculating reading time
-export function calculateReadingTime(wordCount: number): string {
-  const minutes = Math.round(wordCount / 200); // 200 WPM average
-  return minutes === 0 ? '< 1 min' : `${minutes} min`;
-}
-
 export const transformTarget = (target: ApiTargetResponse): TargetResponse => ({
     quota: target.quota,
     frequency: target.frequency,
@@ -123,13 +117,4 @@ export const getDuration = (date: Date | string) => {
     const parsed = new Date(date)
     if (isNaN(parsed.getTime())) return 'Unknown'
     return formatDistanceToNow(parsed, { addSuffix: true })
-}
-
-export const formatWordCountStory = (count: number | undefined) => {
-    if (!count) return 0;
-
-    if (count >= 1000) {
-        return `${(count / 1000).toFixed(1)}k`
-    }
-    return count.toString()
 }
