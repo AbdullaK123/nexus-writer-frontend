@@ -1,5 +1,3 @@
-import { RefObject } from "react";
-
 export interface ChapterListItemProps {
   storyId: string;
   id: string;
@@ -11,5 +9,4 @@ export interface ChapterListItemProps {
   updatedAt?: Date;
   handleOnClick: () => void;
   handleClearSelection: () => void;
-  contextMenuRef: RefObject<{ menuIsOpen: boolean, chapterId?: string }>
 }

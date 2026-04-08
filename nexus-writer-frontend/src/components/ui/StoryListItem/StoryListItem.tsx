@@ -3,7 +3,7 @@ import { StoryListItemProps } from "./types";
 import { Frequency, TargetResponse } from "@/app/types";
 import styles from "./StoryListItem.module.css";
 import { formatWordCount } from "@/app/lib/utils";
-import { useContextMenu } from "@/app/hooks/useContextMenu";
+import { ContextMenuRoot, ContextMenuTrigger } from "@/components/ui/ContextMenu";
 import { StoryListItemContextMenu } from "../StoryListItemContextMenu/StoryListItemContextMenu";
 import CreateTargetForm from "../CreateTargetForm/CreateTargetForm";
 import { useState } from "react";
@@ -26,7 +26,6 @@ export default function StoryListItem({
     ...divProps
 }: StoryListItemProps) {
 
-    const {menu, openMenu, closeMenu} = useContextMenu()
     const [modalState, setModalState] = useState<ModalState>({
         type: null,
         frequency: null,
@@ -53,43 +52,37 @@ export default function StoryListItem({
 
     return (
         <>
-            <div
-                className={`${styles['story-list-item-container']} ${isSelected ? styles['selected'] : ''}`}
-                onContextMenu={(e) => {
-                    e.preventDefault()
-                    openMenu(e)
-                }}
-                {...divProps}
-            >
-                <div className={styles['flex-col-container']}>
-                    <div className={styles['story-title']}>{title}</div>
-                    <div className={styles['story-metadata-container']}>
-                        <span>{formatWordCount(wordCount)}</span>
+            <ContextMenuRoot>
+                <ContextMenuTrigger asChild>
+                    <div
+                        className={`${styles['story-list-item-container']} ${isSelected ? styles['selected'] : ''}`}
+                        {...divProps}
+                    >
+                        <div className={styles['flex-col-container']}>
+                            <div className={styles['story-title']}>{title}</div>
+                            <div className={styles['story-metadata-container']}>
+                                <span>{formatWordCount(wordCount)}</span>
+                            </div>
+                            <div className={styles['story-target-badges-container']}>
+                                {targets && targets.length > 0 && targets.map((target: TargetResponse) => (
+                                    <span key={target.targetId} className={styles['target-badge']}>
+                                        {`${target.frequency}: ${target.quota}`}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className={styles['arrow-icon']}>
+                            →
+                        </div>
                     </div>
-                    <div className={styles['story-target-badges-container']}>
-                        {targets && targets.length > 0 && targets.map((target: TargetResponse) => (
-                            <span key={target.targetId} className={styles['target-badge']}>
-                                {`${target.frequency}: ${target.quota}`}
-                            </span>
-                        ))}
-                    </div>
-                </div>
-                <div className={styles['arrow-icon']}>
-                    →
-                </div>
-            </div>
-            {menu.visible && (
+                </ContextMenuTrigger>
                 <StoryListItemContextMenu 
-                    isOpen={menu.visible}
-                    x={menu.x}
-                    y={menu.y}
                     targets={targets}
-                    onClose={closeMenu}
                     onCreateTarget={handleCreateTarget}
                     onEditTarget={handleEditTarget}
                     onDeleteTarget={handleDeleteTarget}
                 />
-            )}
+            </ContextMenuRoot>
             {modalState.type === 'create' && modalState.frequency && (
                 <CreateTargetForm 
                     storyId={storyId}

@@ -5,7 +5,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import { useStories } from "@/app/hooks/useStories"
 import StoryCard from "@/components/ui/StoryCard/StoryCard"
 import { StoryCardProps } from "@/components/ui/StoryCard/types"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { ClipLoader } from "react-spinners";
 import { useToast } from "@/app/hooks/useToast";
 
@@ -24,8 +24,6 @@ export default function Dashboard() {
     } = useStories()
 
     const { showToast } = useToast()
-
-    const contextMenuStateRef = useRef({ menuIsOpen: false, storyId: null })
 
     const [filter, setFilter] = useState('')
 
@@ -80,7 +78,6 @@ export default function Dashboard() {
                         return (
                             <StoryCard 
                                 key={story.id} 
-                                contextMenuRef={contextMenuStateRef}
                                 {...story} 
                             />
                         )

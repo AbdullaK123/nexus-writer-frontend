@@ -119,8 +119,10 @@ export const formatWordCount = (count: number) => {
     return `${count} words`;
 }
 
-export const getDuration = (date: Date) => {
-    return formatDistanceToNow(date, { addSuffix: true })
+export const getDuration = (date: Date | string) => {
+    const parsed = new Date(date)
+    if (isNaN(parsed.getTime())) return 'Unknown'
+    return formatDistanceToNow(parsed, { addSuffix: true })
 }
 
 export const formatWordCountStory = (count: number | undefined) => {

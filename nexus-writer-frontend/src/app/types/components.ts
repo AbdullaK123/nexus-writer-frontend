@@ -9,7 +9,6 @@ export type { ChapterPreviewProps } from "@/components/ui/ChapterPreview/types";
 export type { ChapterNavHeaderProps } from "@/components/ui/ChapterNavHeader/types";
 export type { DashboardToolBarProps } from "@/components/ui/DashboardToolbar/types";
 export type { ModalProps } from "@/components/ui/Modal/types";
-export type { ContextMenuProps } from "@/components/ui/ContextMenu/types";
 export type { EditableStoryTitleProps } from "@/components/ui/EditableTitle/types";
 export type { CreateTargetFormProps } from "@/components/ui/CreateTargetForm/types";
 export type { EditTargetFormProps } from "@/components/ui/EditTargetForm/types";

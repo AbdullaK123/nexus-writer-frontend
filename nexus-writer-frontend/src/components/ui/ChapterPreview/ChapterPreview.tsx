@@ -1,7 +1,7 @@
 'use client'
 import styles from './ChapterPreview.module.css'
 import { ChapterPreviewProps } from './types'
-import { formatDistanceToNow } from 'date-fns'
+import { getDuration } from '@/app/lib/utils'
 import { useRouter } from 'next/navigation'
 import { useChapters } from '@/app/hooks/useChapters'
 import { useEffect } from 'react'
@@ -45,10 +45,6 @@ export default function ChapterPreview({
     const getReadingTime = (wordCount : number) => {
         const minutes = Math.round(wordCount / 200); // 200 WPM average
         return minutes === 0 ? '< 1 min' : `${minutes} min`;
-    }
-
-    const getDuration = (date: Date) => {
-        return formatDistanceToNow(date, { addSuffix: true })
     }
 
     const getStatusClass = (status : string) => {

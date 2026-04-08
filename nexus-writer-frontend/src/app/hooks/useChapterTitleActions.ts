@@ -1,6 +1,5 @@
 import { useChapters } from "./useChapters";
-import { useContextMenu } from "./useContextMenu";
-import { useEditable } from "./useEditable"; // Import the new hook
+import { useEditable } from "./useEditable";
 import { useEffect, useRef } from "react";
 import { useToast } from "./useToast";
 
@@ -18,7 +17,6 @@ export function useChapterTitleActions(
     // Update refs when callbacks change
     handleOnClickRef.current = handleOnClick;
     handleClearSelectionRef.current = handleClearSelection;
-    const { menu, openMenu, closeMenu } = useContextMenu();
     const { 
         deleteChapter, 
         isDeleting, 
@@ -69,14 +67,10 @@ export function useChapterTitleActions(
     const handleOnAction = (action: string) => {
         if (action === 'delete') {
             deleteChapter(chapterId);
-            closeMenu();
         }
     };
 
     return {
-        menu,
-        openMenu,
-        closeMenu,
         isEditingTitle: isEditing, 
         titleValue: value,        
         setTitleValue: setValue,  

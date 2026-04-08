@@ -1,5 +1,3 @@
-import { RefObject } from "react";
-
 export interface StoryCardProps {
   id: string; 
   latestChapterId?: string;
@@ -10,5 +8,4 @@ export interface StoryCardProps {
   totalChapters?: number;
   wordCount?: number;
   latestChapter?: string;
-  contextMenuRef: RefObject<{ menuIsOpen: boolean, storyId?: string }>
 }

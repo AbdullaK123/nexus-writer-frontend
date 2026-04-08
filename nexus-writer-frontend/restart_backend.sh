@@ -6,5 +6,5 @@ docker compose down
 
 docker compose up --build -d 
 
-docker compose logs prefect-worker -f
+docker compose logs nexus-writer -f
 

@@ -1,10 +1,8 @@
-import { useContextMenu } from "./useContextMenu"
 import { useCallback, useEffect } from "react"
 import { useStories } from "./useStories"
 import { useToast } from "./useToast"
 
 export function useStoryContextMenuActions(storyId: string) {
-    const {menu, openMenu, closeMenu} = useContextMenu()
     const { showToast } = useToast()
     const {
         deleteStory,
@@ -17,7 +15,6 @@ export function useStoryContextMenuActions(storyId: string) {
     const handleOnAction = (action: string) => {
         if (action === 'delete') {
             deleteStory(storyId)
-            closeMenu()
         }
     }
 
@@ -29,9 +26,6 @@ export function useStoryContextMenuActions(storyId: string) {
      }, [deleteError, onShowErrorToast])
 
      return {
-        menu,
-        openMenu,
-        closeMenu,
         isDeleting,
         handleOnAction
      }

@@ -6,7 +6,7 @@ import styles from './page.module.css';
 import { useStoryDetail } from '@/app/hooks/useStoryDetail';
 import { ClipLoader } from 'react-spinners';
 import { useToast } from "@/app/hooks/useToast";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 
 export default function StoryDetailContent() {
     const {
@@ -28,7 +28,6 @@ export default function StoryDetailContent() {
 
     const onShowErrorToast = useCallback((msg: string) => showToast(msg, "error"), [showToast])
     const onShowSuccessToast = useCallback((msg: string) => showToast(msg, "success"), [showToast])
-    const contextMenuRef = useRef({ menuIsOpen: false, storyId: null})
 
     if (isLoading) {
         return (
@@ -54,7 +53,6 @@ export default function StoryDetailContent() {
                     storyInfo={storyInfo}
                     chapters={chaptersToShow}
                     onFilterChange={onFilterChange}
-                    contextMenuRef={contextMenuRef}
                 />
                 {isLoadingChapter ? (
                     <div className={styles['centered']}>

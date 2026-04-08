@@ -1,13 +1,9 @@
 'use client'
-import { ContextMenu, MenuItem, MenuDivider } from '@/components/ui/ContextMenu'
+import { ContextMenuContent, MenuItem, MenuDivider, SubMenu } from '@/components/ui/ContextMenu'
 import { ChapterStatus } from '@/app/types'
 
 interface ChapterListItemContextMenuProps {
-  isOpen: boolean
-  x: number
-  y: number
   status: ChapterStatus
-  onClose: () => void
   onDelete: () => void
   onDuplicate?: () => void
   onChangeStatus?: (status: ChapterStatus) => void
@@ -16,33 +12,22 @@ interface ChapterListItemContextMenuProps {
 }
 
 export function ChapterListItemContextMenu({
-  isOpen,
-  x,
-  y,
   status,
-  onClose,
   onDelete,
   onDuplicate,
   onChangeStatus,
   onMoveUp,
   onMoveDown
 }: ChapterListItemContextMenuProps) {
-  
-  // Helper to close menu after action
-  const handleAction = (action: () => void) => {
-    action()
-    onClose()
-  }
-
   return (
-    <ContextMenu isOpen={isOpen} x={x} y={y} onClose={onClose}>
+    <ContextMenuContent>
       
       {/* Chapter Actions */}
       {onDuplicate && (
         <MenuItem 
           icon="📋" 
           label="Duplicate Chapter"
-          onClick={() => handleAction(onDuplicate)}
+          onClick={onDuplicate}
         />
       )}
       
@@ -54,14 +39,14 @@ export function ChapterListItemContextMenu({
             <MenuItem 
               icon="⬆️" 
               label="Move Up"
-              onClick={() => handleAction(onMoveUp)}
+              onClick={onMoveUp}
             />
           )}
           {onMoveDown && (
             <MenuItem 
               icon="⬇️" 
               label="Move Down"
-              onClick={() => handleAction(onMoveDown)}
+              onClick={onMoveDown}
             />
           )}
         </>
@@ -71,13 +56,13 @@ export function ChapterListItemContextMenu({
       {onChangeStatus && (
         <>
           <MenuDivider />
-          <MenuItem icon="📝" label="Change Status">
+          <SubMenu icon="📝" label="Change Status">
             {status !== 'outline' && (
               <MenuItem
                 icon="📄"
                 label="Outline"
                 meta="Planning stage"
-                onClick={() => handleAction(() => onChangeStatus('outline'))}
+                onClick={() => onChangeStatus('outline')}
               />
             )}
             {status !== 'draft' && (
@@ -85,7 +70,7 @@ export function ChapterListItemContextMenu({
                 icon="✍️"
                 label="Draft"
                 meta="Work in progress"
-                onClick={() => handleAction(() => onChangeStatus('draft'))}
+                onClick={() => onChangeStatus('draft')}
               />
             )}
             {status !== 'published' && (
@@ -93,10 +78,10 @@ export function ChapterListItemContextMenu({
                 icon="✅"
                 label="Published"
                 meta="Completed"
-                onClick={() => handleAction(() => onChangeStatus('published'))}
+                onClick={() => onChangeStatus('published')}
               />
             )}
-          </MenuItem>
+          </SubMenu>
         </>
       )}
 
@@ -106,8 +91,8 @@ export function ChapterListItemContextMenu({
         icon="🗑️" 
         label="Delete Chapter" 
         danger
-        onClick={() => handleAction(onDelete)}
+        onClick={onDelete}
       />
-    </ContextMenu>
+    </ContextMenuContent>
   )
 }

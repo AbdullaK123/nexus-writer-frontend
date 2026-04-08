@@ -1,8 +1,8 @@
 /* ContextMenu.module.css */
 
 .contextMenu {
-  position: fixed; /* Ensure fixed positioning escapes parent overflow */
   min-width: 240px;
+  z-index: 1000;
   background: linear-gradient(
     135deg,
     rgba(26, 26, 26, 0.95),
@@ -32,8 +32,8 @@
 }
 
 .submenu {
-  position: fixed; /* Match parent menu - uses portal at body level */
   min-width: 240px;
+  z-index: 1001;
   background: linear-gradient(
     135deg,
     rgba(26, 26, 26, 0.95),
@@ -96,7 +96,8 @@
   border: 1px solid transparent;
 }
 
-.menuItem:hover:not(:disabled) {
+.menuItem:hover:not(:disabled),
+.menuItem[data-highlighted] {
   background: linear-gradient(
     135deg,
     rgba(0, 212, 255, 0.15),
@@ -107,6 +108,7 @@
     0 0 8px rgba(0, 212, 255, 0.2),
     inset 0 0 5px rgba(0, 212, 255, 0.1);
   transform: translateX(2px);
+  outline: none;
 }
 
 .menuItem:active:not(:disabled) {
@@ -118,13 +120,15 @@
   transform: translateX(1px) scale(0.98);
 }
 
-.menuItem:disabled {
+.menuItem:disabled,
+.menuItem[data-disabled] {
   opacity: 0.4;
   cursor: not-allowed;
   filter: grayscale(0.5);
 }
 
-.menuItem:disabled:hover {
+.menuItem:disabled:hover,
+.menuItem[data-disabled]:hover {
   background: transparent;
   border-color: transparent;
   transform: none;
@@ -139,7 +143,8 @@
   transition: all var(--transition-fast);
 }
 
-.menuItem:hover:not(:disabled) .icon {
+.menuItem:hover:not(:disabled) .icon,
+.menuItem[data-highlighted] .icon {
   text-shadow: 0 0 8px var(--accent-primary);
   transform: scale(1.1);
 }
@@ -167,7 +172,8 @@
   transition: all var(--transition-fast);
 }
 
-.menuItem:hover:not(:disabled) .arrow {
+.menuItem:hover:not(:disabled) .arrow,
+.menuItem[data-highlighted] .arrow {
   opacity: 1;
   transform: translateX(2px);
 }
@@ -181,7 +187,8 @@
   color: var(--error);
 }
 
-.danger:hover:not(:disabled) {
+.danger:hover:not(:disabled),
+.danger[data-highlighted] {
   background: linear-gradient(
     135deg,
     rgba(255, 0, 64, 0.15),
@@ -193,7 +200,8 @@
     inset 0 0 5px rgba(255, 0, 64, 0.1);
 }
 
-.danger:hover:not(:disabled) .icon {
+.danger:hover:not(:disabled) .icon,
+.danger[data-highlighted] .icon {
   text-shadow: 0 0 8px var(--error);
 }
 

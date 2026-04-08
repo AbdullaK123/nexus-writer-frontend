@@ -1,5 +1,5 @@
 import { StoryInfoCardProps } from "./types";
-import { formatDistanceToNow } from "date-fns";
+import { getDuration } from "@/app/lib/utils";
 import styles from './StoryInfoCard.module.css'
 
 export default function StoryInfoCard({
@@ -24,10 +24,6 @@ export default function StoryInfoCard({
             return `${(wordCount / 1000).toFixed(1)}k`;
         }
         return wordCount.toString();
-    }
-
-    const getDuration = (date: Date) => {
-         return formatDistanceToNow(date, { addSuffix: true })
     }
 
     const getStatusText = (status: string) => {

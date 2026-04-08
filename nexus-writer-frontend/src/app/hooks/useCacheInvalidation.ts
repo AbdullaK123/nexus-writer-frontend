@@ -33,7 +33,6 @@ export function useCacheInvalidation() {
                 chapterNumber: (oldData?.chapters?.length || 0) + 1,
                 handleOnClick: () => {},
                 handleClearSelection: () => {},
-                contextMenuRef: undefined
             };
             return oldData ? { ...oldData, chapters: [...oldData.chapters, optimisticChapter] } : { chapters: [optimisticChapter] };
         });

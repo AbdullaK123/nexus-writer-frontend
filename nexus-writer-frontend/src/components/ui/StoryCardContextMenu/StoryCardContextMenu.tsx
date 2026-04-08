@@ -1,11 +1,7 @@
 'use client'
-import { ContextMenu, MenuItem, MenuDivider } from '@/components/ui/ContextMenu'
+import { ContextMenuContent, MenuItem, MenuDivider } from '@/components/ui/ContextMenu'
 
 interface StoryCardContextMenuProps {
-  isOpen: boolean
-  x: number
-  y: number
-  onClose: () => void
   onDelete: () => void
   onDuplicate?: () => void
   onExport?: () => void
@@ -13,24 +9,13 @@ interface StoryCardContextMenuProps {
 }
 
 export function StoryCardContextMenu({
-  isOpen,
-  x,
-  y,
-  onClose,
   onDelete,
   onDuplicate,
   onExport,
   onArchive
 }: StoryCardContextMenuProps) {
-  
-  // Helper to close menu after action
-  const handleAction = (action: () => void) => {
-    action()
-    onClose()
-  }
-
   return (
-    <ContextMenu isOpen={isOpen} x={x} y={y} onClose={onClose}>
+    <ContextMenuContent>
       
       {/* Story Actions */}
       {onDuplicate && (
@@ -38,7 +23,7 @@ export function StoryCardContextMenu({
           icon="📋" 
           label="Duplicate Story" 
           meta="Ctrl+D"
-          onClick={() => handleAction(onDuplicate)}
+          onClick={onDuplicate}
         />
       )}
       
@@ -47,7 +32,7 @@ export function StoryCardContextMenu({
           icon="📤" 
           label="Export Story" 
           meta="Ctrl+E"
-          onClick={() => handleAction(onExport)}
+          onClick={onExport}
         />
       )}
       
@@ -55,7 +40,7 @@ export function StoryCardContextMenu({
         <MenuItem 
           icon="📦" 
           label="Archive Story"
-          onClick={() => handleAction(onArchive)}
+          onClick={onArchive}
         />
       )}
 
@@ -65,8 +50,8 @@ export function StoryCardContextMenu({
         icon="🗑️" 
         label="Delete Story" 
         danger
-        onClick={() => handleAction(onDelete)}
+        onClick={onDelete}
       />
-    </ContextMenu>
+    </ContextMenuContent>
   )
 }

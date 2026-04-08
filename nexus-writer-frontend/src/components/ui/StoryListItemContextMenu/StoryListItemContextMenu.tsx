@@ -1,13 +1,9 @@
 'use client'
-import { ContextMenu, MenuItem, MenuDivider } from '@/components/ui/ContextMenu'
+import { ContextMenuContent, MenuItem, MenuDivider, SubMenu } from '@/components/ui/ContextMenu'
 import { Frequency, TargetResponse } from '@/app/types'
 
 interface StoryListItemContextMenuProps {
-  isOpen: boolean
-  x: number
-  y: number
   targets: TargetResponse[]
-  onClose: () => void
   onCreateTarget: (frequency: Frequency) => void
   onEditTarget: (frequency: Frequency) => void
   onDeleteTarget: (frequency: Frequency) => void
@@ -15,10 +11,6 @@ interface StoryListItemContextMenuProps {
 
 export function StoryListItemContextMenu({
   targets,
-  isOpen,
-  x,
-  y,
-  onClose,
   onCreateTarget,
   onEditTarget,
   onDeleteTarget
@@ -30,23 +22,17 @@ export function StoryListItemContextMenu({
   const hasMonthly = targets?.some(t => t.frequency === 'Monthly')
   const hasTargets = targets && targets.length > 0
 
-  // Helper to close menu after action
-  const handleAction = (action: () => void) => {
-    action()
-    onClose()
-  }
-
   return (
-    <ContextMenu isOpen={isOpen} x={x} y={y} onClose={onClose}>
+    <ContextMenuContent>
 
       {/* Create Target Submenu - Shows only missing frequencies */}
-      <MenuItem icon="➕" label="Create Target">
+      <SubMenu icon="➕" label="Create Target">
         {!hasDaily && (
           <MenuItem
             icon="📅"
             label="Daily Target"
             meta="Every day"
-            onClick={() => handleAction(() => onCreateTarget('Daily'))}
+            onClick={() => onCreateTarget('Daily')}
           />
         )}
         {!hasWeekly && (
@@ -54,7 +40,7 @@ export function StoryListItemContextMenu({
             icon="📅"
             label="Weekly Target"
             meta="Every week"
-            onClick={() => handleAction(() => onCreateTarget('Weekly'))}
+            onClick={() => onCreateTarget('Weekly')}
           />
         )}
         {!hasMonthly && (
@@ -62,7 +48,7 @@ export function StoryListItemContextMenu({
             icon="📅"
             label="Monthly Target"
             meta="Every month"
-            onClick={() => handleAction(() => onCreateTarget('Monthly'))}
+            onClick={() => onCreateTarget('Monthly')}
           />
         )}
         {hasDaily && hasWeekly && hasMonthly && (
@@ -72,40 +58,40 @@ export function StoryListItemContextMenu({
             disabled
           />
         )}
-      </MenuItem>
+      </SubMenu>
 
       {/* Edit Target Submenu - Shows existing targets */}
       {hasTargets && (
-        <MenuItem icon="✏️" label="Edit Target">
+        <SubMenu icon="✏️" label="Edit Target">
           {targets!.map(target => (
             <MenuItem
               key={target.targetId}
               icon="📝"
               label={`${target.frequency} Target`}
               meta={`${target.quota} words`}
-              onClick={() => handleAction(() => onEditTarget(target.frequency))}
+              onClick={() => onEditTarget(target.frequency)}
             />
           ))}
-        </MenuItem>
+        </SubMenu>
       )}
 
       {/* Delete Target Submenu - Danger style */}
       {hasTargets && (
         <>
           <MenuDivider />
-          <MenuItem icon="🗑️" label="Delete Target" danger>
+          <SubMenu icon="🗑️" label="Delete Target">
             {targets!.map(target => (
               <MenuItem
                 key={target.targetId}
                 icon="❌"
                 label={`${target.frequency} Target`}
                 danger
-                onClick={() => handleAction(() => onDeleteTarget(target.frequency))}
+                onClick={() => onDeleteTarget(target.frequency)}
               />
             ))}
-          </MenuItem>
+          </SubMenu>
         </>
       )}
-    </ContextMenu>
+    </ContextMenuContent>
   )
 }

@@ -16,7 +16,6 @@ export default function StoryDetailSidebar({
     storyInfo,
     chapters,
     onFilterChange,
-    contextMenuRef
  }: StoryDetailSideBarProps) {
 
     return (
@@ -38,7 +37,6 @@ export default function StoryDetailSidebar({
                         <ChapterListItem 
                             key={`chapter-${chapter.chapterNumber}-${index}`} 
                             {...chapter} 
-                            contextMenuRef={contextMenuRef}
                         />
                     ))
                 ) : (

@@ -1,20 +1,17 @@
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background: rgba(10, 10, 10, 0.8);
   backdrop-filter: blur(8px);
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   animation: fadeIn 0.3s ease-out;
 }
 
 .modal {
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: var(--color-bg-card);
   border: 1px solid rgba(0, 212, 255, 0.4);
   border-radius: var(--radius-lg);
@@ -23,6 +20,7 @@
   width: min(92vw, 560px);
   max-height: 80vh;
   overflow: hidden;
+  z-index: 1001;
   box-shadow: 
     0 8px 32px var(--color-shadow-depth),
     0 0 20px var(--color-shadow-glow),
@@ -107,11 +105,11 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translate(-50%, calc(-50% + 20px));
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%);
   }
 }
 

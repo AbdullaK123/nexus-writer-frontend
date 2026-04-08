@@ -25,9 +25,9 @@ const transformJobStatusResponse = (
         status: apiResponse.status,
         
         // Timestamps
-        queuedAt: apiResponse.queued_at ? new Date(apiResponse.queued_at) : undefined,
-        startedAt: apiResponse.started_at ? new Date(apiResponse.started_at) : undefined,
-        completedAt: apiResponse.completed_at ? new Date(apiResponse.completed_at) : undefined,
+        queuedAt: apiResponse.queued_at ? new Date(apiResponse.queued_at + 'Z') : undefined,
+        startedAt: apiResponse.started_at ? new Date(apiResponse.started_at + 'Z') : undefined,
+        completedAt: apiResponse.completed_at ? new Date(apiResponse.completed_at + 'Z') : undefined,
         
         // Result
         result: apiResponse.result,
@@ -51,7 +51,7 @@ const transformJobQueuedResponse = (
         jobId: apiResponse.job_id,
         jobName: apiResponse.job_name,
         jobType: apiResponse.job_type,
-        startedAt: new Date(apiResponse.started_at),
+        startedAt: new Date(apiResponse.started_at + 'Z'),
         status: apiResponse.status,
         
         // Extraction metadata
