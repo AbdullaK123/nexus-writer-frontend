@@ -1,4 +1,6 @@
 'use client'
+import * as Select from '@radix-ui/react-select'
+import styles from './FilterDropdown.module.css'
 
 type FilterDropdownProps = {
     onFilterChange: (filter: string) => void;
@@ -7,20 +9,32 @@ type FilterDropdownProps = {
 
 export default function FilterDropdown({ onFilterChange, filterOptions }: FilterDropdownProps) {
     return (
-        <div>
-            <label htmlFor='filter'>Filter by: </label>
-            <select
-                id='filter'
-                name='filter'
-                onChange={(e) => onFilterChange(e.target.value)}
-                defaultValue="" // Start with "All Stories"
-            >
-                {filterOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
+        <div className={styles.container}>
+            <label htmlFor='filter' className={styles.label}>Filter by: </label>
+            <Select.Root defaultValue="" onValueChange={onFilterChange}>
+                <Select.Trigger className={styles.trigger} id="filter">
+                    <Select.Value placeholder={filterOptions[0]?.label ?? 'Select...'} />
+                    <Select.Icon className={styles.icon}>▾</Select.Icon>
+                </Select.Trigger>
+                <Select.Portal>
+                    <Select.Content className={styles.content} position="popper" sideOffset={4}>
+                        <Select.Viewport className={styles.viewport}>
+                            {filterOptions.map((option) => (
+                                <Select.Item 
+                                    key={option.value} 
+                                    value={option.value} 
+                                    className={styles.item}
+                                >
+                                    <Select.ItemText>{option.label}</Select.ItemText>
+                                    <Select.ItemIndicator className={styles.indicator}>
+                                        ✓
+                                    </Select.ItemIndicator>
+                                </Select.Item>
+                            ))}
+                        </Select.Viewport>
+                    </Select.Content>
+                </Select.Portal>
+            </Select.Root>
         </div>
     )
 }

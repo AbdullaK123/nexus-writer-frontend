@@ -54,11 +54,11 @@
 }
 
 .select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  padding-right: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+  min-width: 120px;
 }
 
 .select:hover,
@@ -78,6 +78,72 @@
     0 0 10px var(--accent-primary),
     0 0 20px rgba(0, 212, 255, 0.4),
     inset 0 0 8px rgba(0, 212, 255, 0.15);
+}
+
+.selectIcon {
+  font-size: 0.75rem;
+  color: var(--accent-primary);
+}
+
+.selectContent {
+  background: linear-gradient(
+    135deg,
+    rgba(26, 26, 26, 0.95),
+    rgba(16, 16, 16, 0.98)
+  );
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 212, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  animation: selectSlideDown 0.15s ease-out;
+  min-width: var(--radix-select-trigger-width);
+}
+
+@keyframes selectSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.selectViewport {
+  padding: 0.25rem;
+}
+
+.selectItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  outline: none;
+  user-select: none;
+}
+
+.selectItem:hover,
+.selectItem[data-highlighted] {
+  background: rgba(0, 212, 255, 0.15);
+  color: var(--accent-primary);
+}
+
+.selectIndicator {
+  color: var(--accent-primary);
+  font-size: 0.875rem;
+  text-shadow: 0 0 6px var(--accent-primary);
 }
 
 /* Date input specific styles */

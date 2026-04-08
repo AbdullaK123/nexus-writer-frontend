@@ -1,5 +1,5 @@
 'use client'
-import { Modal } from "../Modal";
+import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import { DeleteTargetFormProps } from "./types";
 import { useTarget } from "@/app/hooks/useTarget";
 import { useToast } from "@/app/hooks/useToast";
@@ -82,87 +82,95 @@ export default function DeleteTargetForm({
     const toDate = formatDate(target.toDate)
 
     return (
-        <Modal 
-            title={`Delete ${target.frequency.toLowerCase()} target?`}
-            isOpen={isOpen} 
-            onClose={onClose}
-        >
-            <div className={styles.container}>
-                <div className={styles.warning}>
-                    <span className={styles.warningIcon} role="img" aria-label="warning">
-                        ⚠️
-                    </span>
-                    <p className={styles.warningText}>
-                        This action cannot be undone. This will permanently delete your writing target.
-                    </p>
-                </div>
-
-                <div className={styles.targetDetails}>
-                    <h3 className={styles.detailsTitle}>Target Details</h3>
-                    <div className={styles.detailsGrid}>
-                        <div className={styles.detailItem}>
-                            <span className={styles.detailLabel}>Frequency:</span>
-                            <span className={styles.detailValue}>{target.frequency}</span>
-                        </div>
-                        <div className={styles.detailItem}>
-                            <span className={styles.detailLabel}>Quota:</span>
-                            <span className={styles.detailValue}>
-                                {target.quota.toLocaleString()} words
+        <AlertDialog.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose() }}>
+            <AlertDialog.Portal>
+                <AlertDialog.Overlay className={styles.overlay} />
+                <AlertDialog.Content className={styles.content}>
+                    <AlertDialog.Title className={styles.title}>
+                        Delete {target.frequency.toLowerCase()} target?
+                    </AlertDialog.Title>
+                    <AlertDialog.Description asChild>
+                        <div className={styles.warning}>
+                            <span className={styles.warningIcon} role="img" aria-label="warning">
+                                ⚠️
                             </span>
+                            <p className={styles.warningText}>
+                                This action cannot be undone. This will permanently delete your writing target.
+                            </p>
                         </div>
-                        <div className={styles.detailItem}>
-                            <span className={styles.detailLabel}>From:</span>
-                            <span className={styles.detailValue}>{fromDate}</span>
-                        </div>
-                        <div className={styles.detailItem}>
-                            <span className={styles.detailLabel}>To:</span>
-                            <span className={styles.detailValue}>{toDate}</span>
+                    </AlertDialog.Description>
+
+                    <div className={styles.targetDetails}>
+                        <h3 className={styles.detailsTitle}>Target Details</h3>
+                        <div className={styles.detailsGrid}>
+                            <div className={styles.detailItem}>
+                                <span className={styles.detailLabel}>Frequency:</span>
+                                <span className={styles.detailValue}>{target.frequency}</span>
+                            </div>
+                            <div className={styles.detailItem}>
+                                <span className={styles.detailLabel}>Quota:</span>
+                                <span className={styles.detailValue}>
+                                    {target.quota.toLocaleString()} words
+                                </span>
+                            </div>
+                            <div className={styles.detailItem}>
+                                <span className={styles.detailLabel}>From:</span>
+                                <span className={styles.detailValue}>{fromDate}</span>
+                            </div>
+                            <div className={styles.detailItem}>
+                                <span className={styles.detailLabel}>To:</span>
+                                <span className={styles.detailValue}>{toDate}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className={styles.confirmation}>
-                    <label htmlFor="confirmText" className={styles.confirmLabel}>
-                        Type <strong>DELETE</strong> to confirm
-                    </label>
-                    <input 
-                        id="confirmText"
-                        type="text"
-                        value={confirmText}
-                        onChange={(e) => setConfirmText(e.target.value.toUpperCase())}
-                        placeholder="Type DELETE"
-                        className={styles.confirmInput}
-                        disabled={isDeleting}
-                        autoComplete="off"
-                    />
-                </div>
+                    <div className={styles.confirmation}>
+                        <label htmlFor="confirmText" className={styles.confirmLabel}>
+                            Type <strong>DELETE</strong> to confirm
+                        </label>
+                        <input 
+                            id="confirmText"
+                            type="text"
+                            value={confirmText}
+                            onChange={(e) => setConfirmText(e.target.value.toUpperCase())}
+                            placeholder="Type DELETE"
+                            className={styles.confirmInput}
+                            disabled={isDeleting}
+                            autoComplete="off"
+                        />
+                    </div>
 
-                <div className={styles.actions}>
-                    <Button 
-                        variant="secondary" 
-                        onClick={onCancel}
-                        type="button"
-                        disabled={isDeleting}
-                    >
-                        Cancel
-                    </Button>
-                    <Button 
-                        disabled={isDeleting || confirmText !== 'DELETE'}
-                        variant="danger"
-                        onClick={handleDelete}
-                        type="button"
-                    >
-                        {isDeleting ? (
-                            <>
-                                <ClipLoader size={16} color="white" />
-                                <span>Deleting...</span>
-                            </>
-                        ) : (
-                            "Delete Target"
-                        )}
-                    </Button>
-                </div>
-            </div>
-        </Modal>
+                    <div className={styles.actions}>
+                        <AlertDialog.Cancel asChild>
+                            <Button 
+                                variant="secondary" 
+                                onClick={onCancel}
+                                type="button"
+                                disabled={isDeleting}
+                            >
+                                Cancel
+                            </Button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild disabled={isDeleting || confirmText !== 'DELETE'}>
+                            <Button 
+                                disabled={isDeleting || confirmText !== 'DELETE'}
+                                variant="danger"
+                                onClick={handleDelete}
+                                type="button"
+                            >
+                                {isDeleting ? (
+                                    <>
+                                        <ClipLoader size={16} color="white" />
+                                        <span>Deleting...</span>
+                                    </>
+                                ) : (
+                                    "Delete Target"
+                                )}
+                            </Button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
     )
 }

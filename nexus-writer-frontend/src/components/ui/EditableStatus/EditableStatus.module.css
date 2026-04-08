@@ -2,32 +2,8 @@
 
 .editable-status-container {
     position: relative;
-    cursor: pointer;
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
-}
-
-.editable-status-container:hover .status-badge {
-    filter: brightness(1.1);
-}
-
-.edit-hint {
-    display: none;
-    position: absolute;
-    right: -1.25rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.75rem;
-    color: var(--accent-primary);
-    opacity: 0;
-    transition: opacity var(--transition-fast);
-    pointer-events: none;
-    filter: drop-shadow(0 0 4px var(--accent-primary));
-}
-
-.editable-status-container:hover .edit-hint {
-    display: block;
-    opacity: 0.7;
 }
 
 /* Status badges */
@@ -71,87 +47,98 @@
     text-shadow: none;
 }
 
-.status-select {
-  background: linear-gradient(
-    135deg,
-    rgba(26, 26, 26, 0.8),
-    rgba(16, 16, 16, 0.9)
-  );
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 8px;
-  color: var(--text-primary);
-  padding: 0.625rem 0.875rem;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  min-width: 120px;
-  transition: all 0.3s ease;
-  appearance: none;
-  
-  /* Custom dropdown arrow */
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2300d4ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-  background-position: right 0.5rem center;
-  background-repeat: no-repeat;
-  background-size: 1.5em 1.5em;
-  padding-right: 2.5rem;
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+/* Radix Select trigger */
+.select-trigger {
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    line-height: 1;
 }
 
-.status-select:hover {
-  border-color: var(--accent-primary);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 255, 0.15),
-    rgba(0, 212, 255, 0.05)
-  );
-  box-shadow: 
-    0 4px 12px rgba(0, 212, 255, 0.2),
-    0 0 10px rgba(0, 212, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.select-trigger:focus {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
 }
 
-.status-select:focus {
-  outline: none;
-  border-color: var(--accent-secondary);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 255, 0.2),
-    rgba(0, 212, 255, 0.08)
-  );
-  box-shadow: 
-    0 0 12px rgba(0, 212, 255, 0.4),
-    0 0 20px rgba(0, 255, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+.select-icon {
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
 }
 
-/* Option styling */
-.status-select option {
-  background: var(--background-secondary);
-  color: var(--text-primary);
-  padding: 0.75rem;
-  border: none;
-  font-family: var(--font-body);
-  font-weight: 500;
+.select-trigger:hover .select-icon {
+    opacity: 0.7;
 }
 
-.status-select option:checked {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 255, 0.3),
-    rgba(0, 212, 255, 0.1)
-  );
-  color: var(--accent-primary);
-  font-weight: 600;
+/* Radix Select content dropdown */
+.select-content {
+    background: linear-gradient(
+        135deg,
+        rgba(26, 26, 26, 0.95),
+        rgba(16, 16, 16, 0.98)
+    );
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    overflow: hidden;
+    animation: selectSlideDown 0.15s ease-out;
+}
+
+@keyframes selectSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.select-viewport {
+    padding: 0.25rem;
+}
+
+.select-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 0.875rem;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    outline: none;
+    user-select: none;
+}
+
+.select-item:hover,
+.select-item[data-highlighted] {
+    background: rgba(0, 212, 255, 0.15);
+    color: var(--accent-primary);
+}
+
+.select-indicator {
+    color: var(--accent-primary);
+    font-size: 0.875rem;
+    text-shadow: 0 0 6px var(--accent-primary);
 }
 
 /* Accessibility: Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .status-badge,
-  .status-select {
+  .select-content {
     transition: none;
+    animation: none;
   }
   
   .status-badge:hover {
@@ -161,13 +148,12 @@
 
 /* Accessibility: High contrast */
 @media (prefers-contrast: high) {
-  .status-badge,
-  .status-select {
+  .status-badge {
     border-width: 2px;
   }
   
   .status-badge,
-  .status-select option {
+  .select-item {
     font-weight: 700;
   }
 }

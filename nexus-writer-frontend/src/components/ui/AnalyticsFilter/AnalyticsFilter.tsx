@@ -1,5 +1,6 @@
 'use client'
 import { ChangeEvent } from 'react'
+import * as Select from '@radix-ui/react-select'
 import { Frequency } from '@/app/types'
 import styles from './AnalyticsFilter.module.css'
 
@@ -12,6 +13,12 @@ interface AnalyticsFilterProps {
   onToDateChange: (date: string) => void
 }
 
+const frequencyOptions = [
+  { value: 'Daily', label: 'Daily' },
+  { value: 'Weekly', label: 'Weekly' },
+  { value: 'Monthly', label: 'Monthly' },
+]
+
 export default function AnalyticsFilter({
   frequency,
   fromDate,
@@ -20,10 +27,6 @@ export default function AnalyticsFilter({
   onFromDateChange,
   onToDateChange
 }: AnalyticsFilterProps) {
-
-  const handleFrequencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    onFrequencyChange(e.target.value as Frequency)
-  }
 
   const handleFromDateChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.valueAsDate) {
@@ -49,19 +52,29 @@ export default function AnalyticsFilter({
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterGroup}>
-        <label htmlFor="frequency" className={styles.label}>
+        <label className={styles.label}>
           Frequency
         </label>
-        <select
-          id="frequency"
-          className={styles.select}
-          value={frequency}
-          onChange={handleFrequencyChange}
-        >
-          <option value="Daily">Daily</option>
-          <option value="Weekly">Weekly</option>
-          <option value="Monthly">Monthly</option>
-        </select>
+        <Select.Root value={frequency} onValueChange={(val) => onFrequencyChange(val as Frequency)}>
+          <Select.Trigger className={styles.select} id="frequency">
+            <Select.Value />
+            <Select.Icon className={styles.selectIcon}>▾</Select.Icon>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content className={styles.selectContent} position="popper" sideOffset={4}>
+              <Select.Viewport className={styles.selectViewport}>
+                {frequencyOptions.map((opt) => (
+                  <Select.Item key={opt.value} value={opt.value} className={styles.selectItem}>
+                    <Select.ItemText>{opt.label}</Select.ItemText>
+                    <Select.ItemIndicator className={styles.selectIndicator}>
+                      ✓
+                    </Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
       </div>
 
       <div className={styles.filterGroup}>

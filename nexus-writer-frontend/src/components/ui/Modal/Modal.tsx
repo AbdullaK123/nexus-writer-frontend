@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import styles from './Modal.module.css'
 
 export interface ModalProps {
@@ -38,7 +39,11 @@ export function Modal({
               )}
             </div>
           )}
-          {!title && <Dialog.Title className="sr-only">Dialog</Dialog.Title>}
+          {!title && (
+            <VisuallyHidden.Root asChild>
+              <Dialog.Title>Dialog</Dialog.Title>
+            </VisuallyHidden.Root>
+          )}
           <div className={styles.content}>{children}</div>
         </Dialog.Content>
       </Dialog.Portal>
