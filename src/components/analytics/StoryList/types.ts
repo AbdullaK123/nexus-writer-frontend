@@ -1,8 +1,8 @@
-import { StoryListItemProps } from "./components/StoryListItem/types";
+import { StoryListItemResponse } from "@/app/types";
 
 export type StoryListProps = {
     storiesLoading: boolean;
-    stories: StoryListItemProps[];
+    stories: StoryListItemResponse[];
     selectedStoryId: string;
     onSelectStory: (storyId: string) => void;
 }

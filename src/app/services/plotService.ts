@@ -1,58 +1,47 @@
-import { toDeusExMachinaResponse, toDormantThreadsResponse, toEventDensityResponse, toPlotDensityResponse, toPlotRhythmReportResponse, toPlotStructuralReportResponse, toPlotThreadsResponse, toSetupPayoffMap, toSetupResponse, toStoryQuestionsResponse, toThreadTimelineResponse } from "../types";
+import { ApiPlotThreadsResponse, ApiStoryQuestionsResponse, ApiSetupResponse, ApiDeusExMachinaResponse, ApiPlotStructuralReportResponse, ApiThreadTimelineResponse, ApiDormantThreadsResponse, ApiEventDensityResponse, ApiSetupPayoffMap, ApiPlotDensityResponse, ApiPlotRhythmReportResponse, toDeusExMachinaResponse, toDormantThreadsResponse, toEventDensityResponse, toPlotDensityResponse, toPlotRhythmReportResponse, toPlotStructuralReportResponse, toPlotThreadsResponse, toSetupPayoffMap, toSetupResponse, toStoryQuestionsResponse, toThreadTimelineResponse, mapResult } from "../types";
 import fetchApi from "./api";
 
 
 export const getUnresolvedPlotThreads = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/threads`);
-    return toPlotThreadsResponse(data);
+    return mapResult(await fetchApi<ApiPlotThreadsResponse>(`/stories/${storyId}/plot/threads`), toPlotThreadsResponse);
 }
 
 export const getUnansweredQuestions = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/questions`);
-    return toStoryQuestionsResponse(data);
+    return mapResult(await fetchApi<ApiStoryQuestionsResponse>(`/stories/${storyId}/plot/questions`), toStoryQuestionsResponse);
 }
 
 export const getSetupsWithNoPayoff = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/setups`);
-    return toSetupResponse(data);
+    return mapResult(await fetchApi<ApiSetupResponse>(`/stories/${storyId}/plot/setups`), toSetupResponse);
 }
 
 export const getDeusExMachinas = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/deus-ex-machinas`);
-    return toDeusExMachinaResponse(data);
+    return mapResult(await fetchApi<ApiDeusExMachinaResponse>(`/stories/${storyId}/plot/deus-ex-machinas`), toDeusExMachinaResponse);
 }
 
 export const getPlotReport = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/report`);
-    return toPlotStructuralReportResponse(data);
+    return mapResult(await fetchApi<ApiPlotStructuralReportResponse>(`/stories/${storyId}/plot/report`), toPlotStructuralReportResponse);
 }
 
 export const getThreadTimeline = async (storyId: string, threadName: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/thread-timeline?thread_name=${encodeURIComponent(threadName)}`);
-    return toThreadTimelineResponse(data);
+    return mapResult(await fetchApi<ApiThreadTimelineResponse>(`/stories/${storyId}/plot/thread-timeline?thread_name=${encodeURIComponent(threadName)}`), toThreadTimelineResponse);
 }
 
 export const getDormantThreads = async (storyId: string, minGap: number = 3) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/dormant-threads?min_gap=${minGap}`);
-    return toDormantThreadsResponse(data);
+    return mapResult(await fetchApi<ApiDormantThreadsResponse>(`/stories/${storyId}/plot/dormant-threads?min_gap=${minGap}`), toDormantThreadsResponse);
 }
 
 export const getEventDensity = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/event-density`);
-    return toEventDensityResponse(data);
+    return mapResult(await fetchApi<ApiEventDensityResponse>(`/stories/${storyId}/plot/event-density`), toEventDensityResponse);
 }
 
 export const getSetupPayoffMap = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/setup-payoff-map`);
-    return (data as unknown[]).map(toSetupPayoffMap);
+    return mapResult(await fetchApi<ApiSetupPayoffMap[]>(`/stories/${storyId}/plot/setup-payoff-map`), data => data.map(toSetupPayoffMap));
 }
 
 export const getPlotDensity = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/density`);
-    return toPlotDensityResponse(data);
+    return mapResult(await fetchApi<ApiPlotDensityResponse>(`/stories/${storyId}/plot/density`), toPlotDensityResponse);
 }
 
 export const getPlotRhythmReport = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/plot/rhythm-report`);
-    return toPlotRhythmReportResponse(data);
+    return mapResult(await fetchApi<ApiPlotRhythmReportResponse>(`/stories/${storyId}/plot/rhythm-report`), toPlotRhythmReportResponse);
 }

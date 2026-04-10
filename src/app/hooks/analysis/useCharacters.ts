@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import * as characterService from "@/app/services/characterService"
+import { unwrapResult } from "@/app/types"
 
 
 export function useCharacter(
@@ -15,7 +16,7 @@ export function useCharacter(
         isSuccess: characterArcSuccess
     } = useQuery({
         queryKey:  ['stories', storyId, 'characters', characterName, 'arc'],
-        queryFn: () => characterService.getCharacterArc(storyId, characterName)
+        queryFn: () => characterService.getCharacterArc(storyId, characterName).then(unwrapResult)
     })
 
 
@@ -28,7 +29,7 @@ export function useCharacter(
         queryKey: chapterNumber ? 
             ['stories', storyId, 'characters', characterName, 'knowledge', chapterNumber] : 
             ['stories', storyId, 'characters', characterName, 'knowledge'],
-        queryFn: () => characterService.getCharacterKnowledge(storyId, characterName, chapterNumber)
+        queryFn: () => characterService.getCharacterKnowledge(storyId, characterName, chapterNumber).then(unwrapResult)
     })
 
     const {
@@ -38,7 +39,7 @@ export function useCharacter(
         isSuccess: characterInconsistenciesSuccess
     } = useQuery({
         queryKey:  ['stories', storyId, 'characters', characterName, 'inconsistencies'],
-        queryFn: () => characterService.getCharacterInconsistencies(storyId, characterName)
+        queryFn: () => characterService.getCharacterInconsistencies(storyId, characterName).then(unwrapResult)
     })
 
     const {
@@ -48,7 +49,7 @@ export function useCharacter(
         isSuccess: characterGoalsSuccess
     } = useQuery({
         queryKey:  ['stories', storyId, 'characters', characterName, 'goals'],
-        queryFn: () => characterService.getGoalEvolution(storyId, characterName)
+        queryFn: () => characterService.getGoalEvolution(storyId, characterName).then(unwrapResult)
     })
 
     const {
@@ -60,7 +61,7 @@ export function useCharacter(
         queryKey: chapterNumber ? 
             ['stories', storyId, 'characters', characterName, 'knowledge-map', chapterNumber] : 
             ['stories', storyId, 'characters', characterName, 'knowledge-map'],
-        queryFn: () => characterService.getKnowledgeAsymmetry(storyId, characterName, chapterNumber)
+        queryFn: () => characterService.getKnowledgeAsymmetry(storyId, characterName, chapterNumber).then(unwrapResult)
     })
 
     return {
@@ -103,7 +104,7 @@ export function useCharacters(storyId: string) {
         isSuccess: charactersLoadingSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'characters'],
-        queryFn: () => characterService.getCharacters(storyId)
+        queryFn: () => characterService.getCharacters(storyId).then(unwrapResult)
     })
 
     const {
@@ -113,7 +114,7 @@ export function useCharacters(storyId: string) {
         isSuccess: characterPresenceMapSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'characters', 'presence-map'],
-        queryFn: () => characterService.getCharacterPresenceMap(storyId)
+        queryFn: () => characterService.getCharacterPresenceMap(storyId).then(unwrapResult)
     })
 
     const {
@@ -123,7 +124,7 @@ export function useCharacters(storyId: string) {
         isSuccess: characterIntroductionRateSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'characters', 'introduction-rate'],
-        queryFn: () => characterService.getCharacterIntroductionRate(storyId)
+        queryFn: () => characterService.getCharacterIntroductionRate(storyId).then(unwrapResult)
     })
 
     const {
@@ -133,7 +134,7 @@ export function useCharacters(storyId: string) {
         isSuccess: castDensitySuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'characters', 'density'],
-        queryFn: () => characterService.getCastDensity(storyId)
+        queryFn: () => characterService.getCastDensity(storyId).then(unwrapResult)
     })
 
     const {
@@ -143,7 +144,7 @@ export function useCharacters(storyId: string) {
         isSuccess: castReportSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'characters', 'cast-report'],
-        queryFn: () => characterService.getCastManagementReport(storyId)
+        queryFn: () => characterService.getCastManagementReport(storyId).then(unwrapResult)
     })
 
     return {

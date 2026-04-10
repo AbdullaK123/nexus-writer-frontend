@@ -1,20 +1,23 @@
 // src/app/hooks/useAuth.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as authService from '@/app/services/authService';
+import { credentials, registrationInfo, isSome, unwrapResult } from "@/app/types";
 
 export function useAuth() {
     const queryClient = useQueryClient();
 
-    const { data: user, isLoading, isError, isSuccess } = useQuery({
+    const { data: userData, isLoading, isError, isSuccess } = useQuery({
         queryKey: ['auth'],
         queryFn: authService.getMe, 
         retry: false,
         staleTime: 5 * 60 * 1000,
     });
 
+    const user = userData && isSome(userData) ? userData.value : null;
+
     const registerMutation = useMutation({
-        mutationFn: authService.register,
-        onSuccess: async (data, variables) => {
+        mutationFn: (userInfo: registrationInfo) => authService.register(userInfo).then(unwrapResult),
+        onSuccess: async (_data, variables) => {
             loginMutation.mutate({
                 email: variables.email,
                 password: variables.password
@@ -23,12 +26,12 @@ export function useAuth() {
     });
 
     const loginMutation = useMutation({
-        mutationFn: authService.login, 
+        mutationFn: (creds: credentials) => authService.login(creds).then(unwrapResult),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['auth'] }),
     });
 
     const logoutMutation = useMutation({
-        mutationFn: authService.logout, 
+        mutationFn: () => authService.logout().then(unwrapResult),
         onSuccess: () => {
             queryClient.setQueryData(['auth'], null);
             queryClient.clear();

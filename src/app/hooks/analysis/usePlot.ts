@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import * as plotService from "@/app/services/plotService";
+import { unwrapResult } from "@/app/types"
 
 
 export function usePlot(storyId: string) {
@@ -11,7 +12,7 @@ export function usePlot(storyId: string) {
         isSuccess: plotThreadsSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'threads'],
-        queryFn: () => plotService.getUnresolvedPlotThreads(storyId)
+        queryFn: () => plotService.getUnresolvedPlotThreads(storyId).then(unwrapResult)
     })
 
     const {
@@ -21,7 +22,7 @@ export function usePlot(storyId: string) {
         isSuccess: unansweredQuestionsSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'questions'],
-        queryFn: () => plotService.getUnansweredQuestions(storyId)
+        queryFn: () => plotService.getUnansweredQuestions(storyId).then(unwrapResult)
     })
 
     const {
@@ -31,7 +32,7 @@ export function usePlot(storyId: string) {
         isSuccess: setupsWithNoPayoffSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'setups'],
-        queryFn: () => plotService.getSetupsWithNoPayoff(storyId)
+        queryFn: () => plotService.getSetupsWithNoPayoff(storyId).then(unwrapResult)
     })
 
     const {
@@ -41,7 +42,7 @@ export function usePlot(storyId: string) {
         isSuccess: deusExMachinasSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'deus-ex-machinas'],
-        queryFn: () => plotService.getDeusExMachinas(storyId)
+        queryFn: () => plotService.getDeusExMachinas(storyId).then(unwrapResult)
     })
 
     const {
@@ -51,7 +52,7 @@ export function usePlot(storyId: string) {
         isSuccess: plotReportSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'report'],
-        queryFn: () => plotService.getPlotReport(storyId)
+        queryFn: () => plotService.getPlotReport(storyId).then(unwrapResult)
     })
 
     const {
@@ -61,7 +62,7 @@ export function usePlot(storyId: string) {
         isSuccess: eventDensitySuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'event-density'],
-        queryFn: () => plotService.getEventDensity(storyId)
+        queryFn: () => plotService.getEventDensity(storyId).then(unwrapResult)
     })
 
     const {
@@ -71,7 +72,7 @@ export function usePlot(storyId: string) {
         isSuccess: setupPayoffMapSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'setup-payoff-map'],
-        queryFn: () => plotService.getSetupPayoffMap(storyId)
+        queryFn: () => plotService.getSetupPayoffMap(storyId).then(unwrapResult)
     })
 
     const {
@@ -81,7 +82,7 @@ export function usePlot(storyId: string) {
         isSuccess: plotDensitySuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'density'],
-        queryFn: () => plotService.getPlotDensity(storyId)
+        queryFn: () => plotService.getPlotDensity(storyId).then(unwrapResult)
     })
 
     const {
@@ -91,7 +92,7 @@ export function usePlot(storyId: string) {
         isSuccess: plotRhythmReportSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'rhythm-report'],
-        queryFn: () => plotService.getPlotRhythmReport(storyId)
+        queryFn: () => plotService.getPlotRhythmReport(storyId).then(unwrapResult)
     })
 
     return {
@@ -153,7 +154,7 @@ export function usePlotThreadTimeline(storyId: string, threadName: string) {
         isSuccess: threadTimelineSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'thread-timeline', threadName],
-        queryFn: () => plotService.getThreadTimeline(storyId, threadName)
+        queryFn: () => plotService.getThreadTimeline(storyId, threadName).then(unwrapResult)
     })
 
     return {
@@ -174,7 +175,7 @@ export function useDormantThreads(storyId: string, minGap: number = 3) {
         isSuccess: dormantThreadsSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'plot', 'dormant-threads', minGap],
-        queryFn: () => plotService.getDormantThreads(storyId, minGap)
+        queryFn: () => plotService.getDormantThreads(storyId, minGap).then(unwrapResult)
     })
 
     return {

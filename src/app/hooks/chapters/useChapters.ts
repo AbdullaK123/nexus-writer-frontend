@@ -1,7 +1,7 @@
 import { useQuery, useMutation} from '@tanstack/react-query';
 import { useCacheInvalidation } from './useCacheInvalidation';
 import * as chapterService from '@/app/services/chapterService';
-import { CreateChapterRequest } from '@/app/types';
+import { CreateChapterRequest, unwrapResult } from '@/app/types';
 
 export function useChapters(storyId: string) {
 
@@ -9,17 +9,17 @@ export function useChapters(storyId: string) {
 
     const { data: chapters, isLoading, isError, isSuccess } = useQuery({
         queryKey: cache.CACHE_KEYS.chapterList(storyId),
-        queryFn: () => chapterService.getChaptersForStory(storyId),
+        queryFn: () => chapterService.getChaptersForStory(storyId).then(unwrapResult),
         enabled: !!storyId,
     });
 
     const useChapter = (chapterId: string, asHtml: boolean) => useQuery({
         queryKey: ['chapters', chapterId, asHtml ? 'True' : 'False'],
-        queryFn: () => chapterService.getChapter(chapterId, asHtml),
+        queryFn: () => chapterService.getChapter(chapterId, asHtml).then(unwrapResult),
     });
 
     const createMutation = useMutation({
-        mutationFn: (chapterInfo: CreateChapterRequest) => chapterService.createChapter(storyId, chapterInfo),
+        mutationFn: (chapterInfo: CreateChapterRequest) => chapterService.createChapter(storyId, chapterInfo).then(unwrapResult),
         onMutate: (newChapter) => cache.optimisticChapterCreate(storyId, newChapter),
         onError: (err, variables, context) => {
             if (context?.previousData) {
@@ -30,7 +30,7 @@ export function useChapters(storyId: string) {
     });
 
     const updateMutation = useMutation({
-        mutationFn: chapterService.updateChapter,
+        mutationFn: (args: chapterService.UpdateMutationArgs) => chapterService.updateChapter(args).then(unwrapResult),
         onMutate: async ({ chapterId, requestBody }) => {
             return cache.optimisticChapterUpdate(storyId, chapterId, requestBody);
         },
@@ -54,7 +54,7 @@ export function useChapters(storyId: string) {
     });
 
     const deleteMutation = useMutation({
-        mutationFn: chapterService.deleteChapter,
+        mutationFn: (chapterId: string) => chapterService.deleteChapter(chapterId).then(unwrapResult),
         onSuccess: () => {
             cache.invalidateChapterList(storyId);
             cache.invalidateStories();

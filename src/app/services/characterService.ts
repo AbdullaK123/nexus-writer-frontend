@@ -1,71 +1,57 @@
-import { toCharacterAppearancesResponse, toCharacterArcResponse, toCharacterDensityResponse, toCharacterGoalsResponse, toCharacterInconsistencyResponse, toCharacterIntroductionResponse, toCharacterKnowledgeMapResponse, toCharacterKnowledgeResponse, toCharacterResponse } from "../types";
+import { ApiCharacterResponse, ApiCharacterArcResponse, ApiCharacterKnowledgeResponse, ApiCharacterInconsistencyResponse, ApiCharacterAppearancesResponse, ApiCharacterIntroductionResponse, ApiCharacterDensityResponse, ApiCharacterGoalsResponse, ApiCharacterKnowledgeMapResponse, toCharacterAppearancesResponse, toCharacterArcResponse, toCharacterDensityResponse, toCharacterGoalsResponse, toCharacterInconsistencyResponse, toCharacterIntroductionResponse, toCharacterKnowledgeMapResponse, toCharacterKnowledgeResponse, toCharacterResponse, mapResult } from "../types";
 import fetchApi from "./api";
 
 
 export const getCharacters = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters`);
-    return toCharacterResponse(data)
+    return mapResult(await fetchApi<ApiCharacterResponse>(`/stories/${storyId}/characters`), toCharacterResponse);
 }
 
 export const getCharacterArc = async (storyId: string, characterName: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/${characterName}/arc`);
-    return toCharacterArcResponse(data)
+    return mapResult(await fetchApi<ApiCharacterArcResponse>(`/stories/${storyId}/characters/${characterName}/arc`), toCharacterArcResponse);
 }
 
-export const getCharacterKnowledge = 
-async (
+export const getCharacterKnowledge = async (
     storyId: string, 
     characterName: string,
     chapterNumber?: number
 ) => {
-    const url = 
-        chapterNumber ? 
-            `/stories/${storyId}/characters/${characterName}/knowledge?chapter_number=${chapterNumber}`
-            : `/stories/${storyId}/characters/${characterName}/knowledge`
-    const data = await fetchApi(url)
-    return toCharacterKnowledgeResponse(data)
+    const url = chapterNumber
+        ? `/stories/${storyId}/characters/${characterName}/knowledge?chapter_number=${chapterNumber}`
+        : `/stories/${storyId}/characters/${characterName}/knowledge`;
+    return mapResult(await fetchApi<ApiCharacterKnowledgeResponse>(url), toCharacterKnowledgeResponse);
 }
 
 export const getCharacterInconsistencies = async (storyId: string, characterName: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/${characterName}/inconsistencies`)
-    return toCharacterInconsistencyResponse(data)
+    return mapResult(await fetchApi<ApiCharacterInconsistencyResponse>(`/stories/${storyId}/characters/${characterName}/inconsistencies`), toCharacterInconsistencyResponse);
 }
 
 export const getCharacterPresenceMap = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/presence-map`)
-    return toCharacterAppearancesResponse(data)
+    return mapResult(await fetchApi<ApiCharacterAppearancesResponse>(`/stories/${storyId}/characters/presence-map`), toCharacterAppearancesResponse);
 }
 
 export const getCharacterIntroductionRate = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/introduction-rate`)
-    return toCharacterIntroductionResponse(data)
+    return mapResult(await fetchApi<ApiCharacterIntroductionResponse>(`/stories/${storyId}/characters/introduction-rate`), toCharacterIntroductionResponse);
 }
 
 export const getCastDensity = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/density`)
-    return toCharacterDensityResponse(data)
+    return mapResult(await fetchApi<ApiCharacterDensityResponse>(`/stories/${storyId}/characters/density`), toCharacterDensityResponse);
 }
 
 export const getCastManagementReport = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/cast-report`)
-    return toCharacterDensityResponse(data)
+    return mapResult(await fetchApi<ApiCharacterDensityResponse>(`/stories/${storyId}/characters/cast-report`), toCharacterDensityResponse);
 }
 
 export const getGoalEvolution = async (storyId: string, characterName: string) => {
-    const data = await fetchApi(`/stories/${storyId}/characters/${characterName}/goals`)
-    return toCharacterGoalsResponse(data)
+    return mapResult(await fetchApi<ApiCharacterGoalsResponse>(`/stories/${storyId}/characters/${characterName}/goals`), toCharacterGoalsResponse);
 }
 
-export const getKnowledgeAsymmetry = 
-async (
+export const getKnowledgeAsymmetry = async (
     storyId: string, 
     characterName: string,
     chapterNumber?: number
 ) => {
-    const url = 
-        chapterNumber ? 
-            `/stories/${storyId}/characters/${characterName}/knowledge-map?chapter_number=${chapterNumber}`
-            : `/stories/${storyId}/characters/${characterName}/knowledge-map`
-    const data = await fetchApi(url)
-    return toCharacterKnowledgeMapResponse(data)
+    const url = chapterNumber
+        ? `/stories/${storyId}/characters/${characterName}/knowledge-map?chapter_number=${chapterNumber}`
+        : `/stories/${storyId}/characters/${characterName}/knowledge-map`;
+    return mapResult(await fetchApi<ApiCharacterKnowledgeMapResponse>(url), toCharacterKnowledgeMapResponse);
 }

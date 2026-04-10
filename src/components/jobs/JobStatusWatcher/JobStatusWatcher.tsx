@@ -5,6 +5,7 @@ import { useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as jobService from "@/app/services/jobService"
 import { useEffect } from "react";
 import { differenceInMinutes } from "date-fns";
+import { unwrapResult } from "@/app/types";
 
 
 
@@ -24,7 +25,7 @@ export default function JobStatusWatcher() {
     const jobQueries = useQueries({
         queries: activeJobs.map(job => ({
             queryKey: ['jobs', job.jobId],
-            queryFn: () => jobService.getJobStatus(job.jobId),
+            queryFn: () => jobService.getJobStatus(job.jobId).then(unwrapResult),
             refetchInterval: (query: any) => {
                 const status = query.state.data?.status
                 return status === "success" || status === "failure" ? false : 200

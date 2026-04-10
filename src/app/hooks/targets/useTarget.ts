@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as targetService from '@/app/services/targetService';
-import { CreateTargetRequest, Frequency, UpdateTargetRequest } from "@/app/types";
+import { CreateTargetRequest, Frequency, UpdateTargetRequest, unwrapResult } from "@/app/types";
 
 export function useTarget(storyId: string, frequency: Frequency) {
 
@@ -14,7 +14,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
         isSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'targets', frequency],
-        queryFn: () => targetService.getTarget(storyId, frequency)
+        queryFn: () => targetService.getTarget(storyId, frequency).then(unwrapResult)
     })
 
     const {
@@ -24,7 +24,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
         error: updateError,
         isSuccess: updateSuccess
     } = useMutation({
-        mutationFn: (variables: { targetId: string, payload: UpdateTargetRequest }) => targetService.updateTarget(storyId, variables.targetId, variables.payload),
+        mutationFn: (variables: { targetId: string, payload: UpdateTargetRequest }) => targetService.updateTarget(storyId, variables.targetId, variables.payload).then(unwrapResult),
         onSuccess: () => {
             // Invalidate all target queries for this story
             queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
@@ -40,7 +40,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
         error: deleteError,
         isSuccess: deleteSuccess
     } = useMutation({
-        mutationFn: (variables: {targetId: string}) => targetService.deleteTarget(storyId, variables.targetId),
+        mutationFn: (variables: {targetId: string}) => targetService.deleteTarget(storyId, variables.targetId).then(unwrapResult),
         onSuccess: () => {
             // Invalidate all target queries for this story
             queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})
@@ -57,7 +57,7 @@ export function useTarget(storyId: string, frequency: Frequency) {
         error: createError,
         isSuccess: createSuccess
     } = useMutation({
-        mutationFn: (variables: {payload: CreateTargetRequest}) => targetService.createTarget(storyId, variables.payload),
+        mutationFn: (variables: {payload: CreateTargetRequest}) => targetService.createTarget(storyId, variables.payload).then(unwrapResult),
         onSuccess: () => {
             // Invalidate all target queries for this story
             queryClient.invalidateQueries({ queryKey: ['stories', storyId, 'targets']})

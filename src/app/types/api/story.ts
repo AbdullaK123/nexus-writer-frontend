@@ -1,10 +1,11 @@
 import { ApiTargetResponse } from "./analytics";
+import { StoryStatus } from "../story";
 
 export interface ApiStory {
     id: string;
     latest_chapter_id?: string;
     title: string;
-    status: string;
+    status: StoryStatus;
     total_chapters: number;
     word_count: number;
     created_at: string;

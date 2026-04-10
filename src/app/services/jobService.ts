@@ -1,4 +1,4 @@
-import { ApiJobQueuedResponse, ApiJobStatusResponse, ApiExtractionProgress } from "@/app/types";
+import { ApiJobQueuedResponse, ApiJobStatusResponse, ApiExtractionProgress, Result, ApiError, mapResult } from "@/app/types";
 import { JobQueuedResponse, JobStatusResponse, ExtractionProgress } from "../types/jobs";
 import fetchApi from "./api";
 
@@ -62,27 +62,20 @@ const transformJobQueuedResponse = (
     };
 };
 
-export const getJobStatus = async (jobId: string): Promise<JobStatusResponse> => {
-    const data: ApiJobStatusResponse = await fetchApi(`/jobs/${jobId}`);
-    return transformJobStatusResponse(data);
+export const getJobStatus = async (jobId: string): Promise<Result<JobStatusResponse, ApiError>> => {
+    return mapResult(await fetchApi<ApiJobStatusResponse>(`/jobs/${jobId}`), transformJobStatusResponse);
 };
 
 export const queueLineEditJob = async (
     chapterId: string
-): Promise<JobQueuedResponse> => {
+): Promise<Result<JobQueuedResponse, ApiError>> => {
     const url = `/jobs/line-edits/${chapterId}`;
-    const data: ApiJobQueuedResponse = await fetchApi(url, {
-        method: "POST"
-    });
-    return transformJobQueuedResponse(data);
+    return mapResult(await fetchApi<ApiJobQueuedResponse>(url, { method: "POST" }), transformJobQueuedResponse);
 };
 
 export const queueExtractionJob = async (
     chapterId: string
-): Promise<JobQueuedResponse> => {
+): Promise<Result<JobQueuedResponse, ApiError>> => {
     const url = `/jobs/extraction/${chapterId}`;
-    const data: ApiJobQueuedResponse = await fetchApi(url, {
-        method: "POST"
-    });
-    return transformJobQueuedResponse(data);
+    return mapResult(await fetchApi<ApiJobQueuedResponse>(url, { method: "POST" }), transformJobQueuedResponse);
 };

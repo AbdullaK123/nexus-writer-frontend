@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import * as structureService from "@/app/services/structureService";
+import { unwrapResult } from "@/app/types"
 
 
 export function useStructure(storyId: string) {
@@ -11,7 +12,7 @@ export function useStructure(storyId: string) {
         isSuccess: weakScenesSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'scenes', 'weak'],
-        queryFn: () => structureService.getWeakScenes(storyId)
+        queryFn: () => structureService.getWeakScenes(storyId).then(unwrapResult)
     })
 
     const {
@@ -21,7 +22,7 @@ export function useStructure(storyId: string) {
         isSuccess: sceneTypeDistributionSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'scenes', 'distribution'],
-        queryFn: () => structureService.getSceneTypeDistribution(storyId)
+        queryFn: () => structureService.getSceneTypeDistribution(storyId).then(unwrapResult)
     })
 
     const {
@@ -31,7 +32,7 @@ export function useStructure(storyId: string) {
         isSuccess: povBalanceSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'pov-balance'],
-        queryFn: () => structureService.getPOVBalance(storyId)
+        queryFn: () => structureService.getPOVBalance(storyId).then(unwrapResult)
     })
 
     const {
@@ -41,7 +42,7 @@ export function useStructure(storyId: string) {
         isSuccess: pacingCurveSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'pacing'],
-        queryFn: () => structureService.getPacingCurve(storyId)
+        queryFn: () => structureService.getPacingCurve(storyId).then(unwrapResult)
     })
 
     const {
@@ -51,7 +52,7 @@ export function useStructure(storyId: string) {
         isSuccess: structuralArcSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'arc'],
-        queryFn: () => structureService.getStructuralArc(storyId)
+        queryFn: () => structureService.getStructuralArc(storyId).then(unwrapResult)
     })
 
     const {
@@ -61,7 +62,7 @@ export function useStructure(storyId: string) {
         isSuccess: themeDistributionSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'themes'],
-        queryFn: () => structureService.getThemeDistribution(storyId)
+        queryFn: () => structureService.getThemeDistribution(storyId).then(unwrapResult)
     })
 
     const {
@@ -71,7 +72,7 @@ export function useStructure(storyId: string) {
         isSuccess: emotionalBeatsSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'emotional-beats'],
-        queryFn: () => structureService.getEmotionalBeats(storyId)
+        queryFn: () => structureService.getEmotionalBeats(storyId).then(unwrapResult)
     })
 
     const {
@@ -81,7 +82,7 @@ export function useStructure(storyId: string) {
         isSuccess: developmentalReportSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'report'],
-        queryFn: () => structureService.getDevelopmentalReport(storyId)
+        queryFn: () => structureService.getDevelopmentalReport(storyId).then(unwrapResult)
     })
 
     return {
@@ -143,7 +144,7 @@ export function useSceneIndex(
         isSuccess: sceneIndexSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'structure', 'scenes', { sceneType, pov, location }],
-        queryFn: () => structureService.getSceneIndex(storyId, sceneType, pov, location)
+        queryFn: () => structureService.getSceneIndex(storyId, sceneType, pov, location).then(unwrapResult)
     })
 
     return {

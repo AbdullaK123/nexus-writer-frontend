@@ -1,6 +1,6 @@
 import { transformStoryAnalyticResponse, transformTarget } from '../lib/utils';
 import fetchApi from './api';
-import { ApiStory, ApiStoryListItemResponse, ApiTargetResponse, Frequency, StoryAnalytics, StoryCreateRequest, StoryListItemProps, StoryListItemResponse, StoryUpdateRequest } from '@/app/types';
+import { ApiStory, ApiStoryAnalyticsResponse, ApiStoryListItemResponse, ApiTargetResponse, Frequency, StoryAnalytics, StoryCreateRequest, StoryListItemResponse, StoryUpdateRequest, Result, ApiError, mapResult } from '@/app/types';
 
 // This function will handle the transformation
 const transformStory = (story: ApiStory) => ({
@@ -11,6 +11,8 @@ const transformStory = (story: ApiStory) => ({
     totalChapters: story.total_chapters,
     wordCount: story.word_count,
 });
+
+export type TransformedStory = ReturnType<typeof transformStory>;
 
 const transformStoryListItemResponse = (storyListItem: ApiStoryListItemResponse): StoryListItemResponse => ({
     storyId: storyListItem.id,
@@ -24,7 +26,7 @@ export const getStoryAnalytics = async (
     frequency: Frequency, 
     fromDate?: string, 
     toDate?: string
-): Promise<StoryAnalytics> => {
+): Promise<Result<StoryAnalytics, ApiError>> => {
     let baseUrl = `/stories/${storyId}/analytics?frequency=${frequency}`
     if (fromDate) {
         baseUrl += `&from_date=${fromDate}`
@@ -32,42 +34,42 @@ export const getStoryAnalytics = async (
     if (toDate) {
         baseUrl += `&to_date=${toDate}`
     }
-    const data = await fetchApi(baseUrl)
-    return transformStoryAnalyticResponse(data)
+    return mapResult(await fetchApi<ApiStoryAnalyticsResponse>(baseUrl), transformStoryAnalyticResponse);
 }
 
-export const getStories = async () => {
-    const data = await fetchApi('/stories');
-    // Transform the data before returning it
-    return data.stories ? data.stories.map(transformStory) : [];
+export const getStories = async (): Promise<Result<TransformedStory[], ApiError>> => {
+    return mapResult(
+        await fetchApi<{ stories: ApiStory[] }>('/stories'),
+        data => data.stories ? data.stories.map(transformStory) : []
+    );
 };
 
-export const getStoriesWithTargets = async (): Promise<StoryListItemProps[]> => {
-    const data = await fetchApi('/stories/targets');
-    return data ? data.map(transformStoryListItemResponse) : [];
+export const getStoriesWithTargets = async (): Promise<Result<StoryListItemResponse[], ApiError>> => {
+    return mapResult(
+        await fetchApi<ApiStoryListItemResponse[]>('/stories/targets'),
+        data => data.map(transformStoryListItemResponse)
+    );
 }
 
-export const getStory = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}`);
-    // Also transform single story responses if needed
-    return data ? transformStory(data) : null;
+export const getStory = async (storyId: string): Promise<Result<TransformedStory, ApiError>> => {
+    return mapResult(await fetchApi<ApiStory>(`/stories/${storyId}`), transformStory);
 };
 
-export const createStory = (storyInfo: StoryCreateRequest) => {
-    return fetchApi('/stories', {
+export const createStory = (storyInfo: StoryCreateRequest): Promise<Result<ApiStory, ApiError>> => {
+    return fetchApi<ApiStory>('/stories', {
         method: 'POST',
         body: JSON.stringify(storyInfo),
     });
 };
 
-export const updateStory = ({ storyId, body }: StoryUpdateRequest) => {
-    return fetchApi(`/stories/${storyId}`, {
+export const updateStory = ({ storyId, body }: StoryUpdateRequest): Promise<Result<ApiStory, ApiError>> => {
+    return fetchApi<ApiStory>(`/stories/${storyId}`, {
         method: 'PUT',
         body: JSON.stringify(body),
     });
 };
 
-export const deleteStory = (storyId: string) => {
+export const deleteStory = (storyId: string): Promise<Result<void, ApiError>> => {
     return fetchApi(`/stories/${storyId}`, {
         method: 'DELETE',
     });

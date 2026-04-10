@@ -1,4 +1,4 @@
-import { toDevelopmentalReportResponse, toEmotionalBeatsResponse, toPacingCurveResponse, toPOVBalanceResponse, toSceneIndexResponse, toSceneTypeDistributionResponse, toStructuralArcResponse, toThemeDistributionResponse, toWeakScenesResponse } from "../types";
+import { ApiSceneIndexResponse, ApiWeakScenesResponse, ApiSceneTypeDistributionResponse, ApiPOVBalanceResponse, ApiPacingCurveResponse, ApiStructuralArcResponse, ApiThemeDistributionResponse, ApiEmotionalBeatsResponse, ApiDevelopmentalReportResponse, toDevelopmentalReportResponse, toEmotionalBeatsResponse, toPacingCurveResponse, toPOVBalanceResponse, toSceneIndexResponse, toSceneTypeDistributionResponse, toStructuralArcResponse, toThemeDistributionResponse, toWeakScenesResponse, mapResult } from "../types";
 import fetchApi from "./api";
 
 
@@ -14,46 +14,37 @@ export const getSceneIndex = async (
     if (location) params.set('location', location);
     const query = params.toString();
     const url = `/stories/${storyId}/structure/scenes${query ? `?${query}` : ''}`;
-    const data = await fetchApi(url);
-    return toSceneIndexResponse(data);
+    return mapResult(await fetchApi<ApiSceneIndexResponse>(url), toSceneIndexResponse);
 }
 
 export const getWeakScenes = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/scenes/weak`);
-    return toWeakScenesResponse(data);
+    return mapResult(await fetchApi<ApiWeakScenesResponse>(`/stories/${storyId}/structure/scenes/weak`), toWeakScenesResponse);
 }
 
 export const getSceneTypeDistribution = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/scenes/distribution`);
-    return toSceneTypeDistributionResponse(data);
+    return mapResult(await fetchApi<ApiSceneTypeDistributionResponse>(`/stories/${storyId}/structure/scenes/distribution`), toSceneTypeDistributionResponse);
 }
 
 export const getPOVBalance = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/pov-balance`);
-    return toPOVBalanceResponse(data);
+    return mapResult(await fetchApi<ApiPOVBalanceResponse>(`/stories/${storyId}/structure/pov-balance`), toPOVBalanceResponse);
 }
 
 export const getPacingCurve = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/pacing`);
-    return toPacingCurveResponse(data);
+    return mapResult(await fetchApi<ApiPacingCurveResponse>(`/stories/${storyId}/structure/pacing`), toPacingCurveResponse);
 }
 
 export const getStructuralArc = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/arc`);
-    return toStructuralArcResponse(data);
+    return mapResult(await fetchApi<ApiStructuralArcResponse>(`/stories/${storyId}/structure/arc`), toStructuralArcResponse);
 }
 
 export const getThemeDistribution = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/themes`);
-    return toThemeDistributionResponse(data);
+    return mapResult(await fetchApi<ApiThemeDistributionResponse>(`/stories/${storyId}/structure/themes`), toThemeDistributionResponse);
 }
 
 export const getEmotionalBeats = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/emotional-beats`);
-    return toEmotionalBeatsResponse(data);
+    return mapResult(await fetchApi<ApiEmotionalBeatsResponse>(`/stories/${storyId}/structure/emotional-beats`), toEmotionalBeatsResponse);
 }
 
 export const getDevelopmentalReport = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/structure/report`);
-    return toDevelopmentalReportResponse(data);
+    return mapResult(await fetchApi<ApiDevelopmentalReportResponse>(`/stories/${storyId}/structure/report`), toDevelopmentalReportResponse);
 }

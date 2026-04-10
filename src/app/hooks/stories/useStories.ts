@@ -1,7 +1,7 @@
 // src/app/hooks/useStories.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as storyService from '@/app/services/storyService';
-import { Frequency } from "@/app/types";
+import { Frequency, StoryCreateRequest, StoryUpdateRequest, unwrapResult } from "@/app/types";
 
 export function useStories() {
     const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export function useStories() {
         isSuccess 
     } = useQuery({
         queryKey: ['stories'],
-        queryFn: storyService.getStories
+        queryFn: () => storyService.getStories().then(unwrapResult)
     });
 
     const {
@@ -23,7 +23,7 @@ export function useStories() {
         isSuccess: listItemsSuccess
     } = useQuery({
         queryKey: ['stories', 'targets'],
-        queryFn: storyService.getStoriesWithTargets
+        queryFn: () => storyService.getStoriesWithTargets().then(unwrapResult)
     })
 
     const useStoryAnalytics = (
@@ -33,27 +33,27 @@ export function useStories() {
         toDate: string,
     ) => useQuery({
         queryKey: ['stories', storyId, 'analytics', frequency, fromDate, toDate],
-        queryFn: () => storyService.getStoryAnalytics(storyId, frequency, fromDate, toDate),
+        queryFn: () => storyService.getStoryAnalytics(storyId, frequency, fromDate, toDate).then(unwrapResult),
         enabled: !!storyId
     })
 
     const useStory = (storyId: string) => useQuery({
         queryKey: ['stories', storyId],
-        queryFn: () => storyService.getStory(storyId)
+        queryFn: () => storyService.getStory(storyId).then(unwrapResult)
     });
 
     const createStoryMutation = useMutation({
-        mutationFn: storyService.createStory,
+        mutationFn: (info: StoryCreateRequest) => storyService.createStory(info).then(unwrapResult),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories'] })
     });
 
     const deleteStoryMutation = useMutation({
-        mutationFn: storyService.deleteStory,
+        mutationFn: (storyId: string) => storyService.deleteStory(storyId).then(unwrapResult),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories'] })
     });
 
     const updateStoryMutation = useMutation({
-        mutationFn: storyService.updateStory,
+        mutationFn: (args: StoryUpdateRequest) => storyService.updateStory(args).then(unwrapResult),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['stories'] })
     });
 

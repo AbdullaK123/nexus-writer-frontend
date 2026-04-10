@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import * as worldService from "@/app/services/worldService";
+import { unwrapResult } from "@/app/types"
 
 
 export function useWorld(storyId: string) {
@@ -11,7 +12,7 @@ export function useWorld(storyId: string) {
         isSuccess: contradictionsSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'world', 'contradictions'],
-        queryFn: () => worldService.getContradictions(storyId)
+        queryFn: () => worldService.getContradictions(storyId).then(unwrapResult)
     })
 
     const {
@@ -21,7 +22,7 @@ export function useWorld(storyId: string) {
         isSuccess: factDensitySuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'world', 'fact-density'],
-        queryFn: () => worldService.getFactDensity(storyId)
+        queryFn: () => worldService.getFactDensity(storyId).then(unwrapResult)
     })
 
     const {
@@ -31,7 +32,7 @@ export function useWorld(storyId: string) {
         isSuccess: worldConsistencyReportSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'world', 'report'],
-        queryFn: () => worldService.getWorldConsistencyReport(storyId)
+        queryFn: () => worldService.getWorldConsistencyReport(storyId).then(unwrapResult)
     })
 
     return {
@@ -63,7 +64,7 @@ export function useEntityRegistry(storyId: string, entities?: string[]) {
         isSuccess: entityRegistrySuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'world', 'entities', { entities }],
-        queryFn: () => worldService.getEntityRegistry(storyId, entities)
+        queryFn: () => worldService.getEntityRegistry(storyId, entities).then(unwrapResult)
     })
 
     return {
@@ -84,7 +85,7 @@ export function useEntityTimeline(storyId: string, entity: string) {
         isSuccess: entityTimelineSuccess
     } = useQuery({
         queryKey: ['stories', storyId, 'world', 'entities', entity, 'timeline'],
-        queryFn: () => worldService.getEntityTimeline(storyId, entity)
+        queryFn: () => worldService.getEntityTimeline(storyId, entity).then(unwrapResult)
     })
 
     return {

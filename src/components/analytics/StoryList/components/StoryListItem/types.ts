@@ -7,5 +7,5 @@ export type StoryListItemProps = {
   wordCount: number;
   isSelected: boolean;
   targets: TargetResponse[];
-  handleOnContextMenu: () => void;
+  handleOnContextMenu?: () => void;
 } & React.HTMLProps<HTMLDivElement>;

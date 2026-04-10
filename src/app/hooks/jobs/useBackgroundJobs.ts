@@ -1,12 +1,13 @@
-import { useQuery, useMutation, useQueryClient, QueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, QueryClient } from "@tanstack/react-query";
 import * as jobService from "@/app/services/jobService";
 import { useToast } from "@/app/hooks/common/useToast";
 import { QueuedJob } from "@/app/types/jobs";
+import { unwrapResult } from "@/app/types";
 
 type JobType = "extraction" | "line-edit"
 
 function addJobToCache(queryClient: QueryClient, jobId: string, jobName: string, chapterId: string, jobType: JobType) {
-    const currentJobs: QueuedJob[] = queryClient.getQueryData<QueuedJob[]>(['active-jobs']);
+    const currentJobs: QueuedJob[] = queryClient.getQueryData<QueuedJob[]>(['active-jobs']) ?? [];
     const newJob: QueuedJob = {
         jobId: jobId,
         chapterId: chapterId,
@@ -30,7 +31,7 @@ export const useBackgroundJobs = () => {
     const queryClient = useQueryClient()
 
     const queueLineEditJobMutation = useMutation({
-        mutationFn: ({ chapterId }: { chapterId: string }) => jobService.queueLineEditJob(chapterId),
+        mutationFn: ({ chapterId }: { chapterId: string }) => jobService.queueLineEditJob(chapterId).then(unwrapResult),
         onError: (error) => {
              showToast(`Failed to start line edit job job: ${error.message}`, "error")
         },
@@ -41,7 +42,7 @@ export const useBackgroundJobs = () => {
     })
 
     const queueExtractionJobMutation = useMutation({
-        mutationFn: ({ chapterId }: { chapterId: string }) => jobService.queueExtractionJob(chapterId),
+        mutationFn: ({ chapterId }: { chapterId: string }) => jobService.queueExtractionJob(chapterId).then(unwrapResult),
         onError: (error) => {
             showToast(`Failed to start extraction job: ${error.message}`, "error")
         },

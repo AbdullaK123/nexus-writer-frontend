@@ -1,10 +1,9 @@
-import { toContradictionResponse, toEntityFactResponse, toEntityTimelineResponse, toStoryFactCountsResponse, toWorldConsistencyReport } from "../types";
+import { ApiContradictionResponse, ApiEntityFactResponse, ApiEntityTimelineResponse, ApiStoryFactCountsResponse, ApiWorldConsistencyReport, toContradictionResponse, toEntityFactResponse, toEntityTimelineResponse, toStoryFactCountsResponse, toWorldConsistencyReport, mapResult } from "../types";
 import fetchApi from "./api";
 
 
 export const getContradictions = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/world/contradictions`);
-    return toContradictionResponse(data);
+    return mapResult(await fetchApi<ApiContradictionResponse>(`/stories/${storyId}/world/contradictions`), toContradictionResponse);
 }
 
 export const getEntityRegistry = async (storyId: string, entities?: string[]) => {
@@ -14,21 +13,17 @@ export const getEntityRegistry = async (storyId: string, entities?: string[]) =>
     }
     const query = params.toString();
     const url = `/stories/${storyId}/world/entities${query ? `?${query}` : ''}`;
-    const data = await fetchApi(url);
-    return (data as unknown[]).map(toEntityFactResponse);
+    return mapResult(await fetchApi<ApiEntityFactResponse[]>(url), data => data.map(toEntityFactResponse));
 }
 
 export const getEntityTimeline = async (storyId: string, entity: string) => {
-    const data = await fetchApi(`/stories/${storyId}/world/entities/${encodeURIComponent(entity)}/timeline`);
-    return toEntityTimelineResponse(data);
+    return mapResult(await fetchApi<ApiEntityTimelineResponse>(`/stories/${storyId}/world/entities/${encodeURIComponent(entity)}/timeline`), toEntityTimelineResponse);
 }
 
 export const getFactDensity = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/world/fact-density`);
-    return toStoryFactCountsResponse(data);
+    return mapResult(await fetchApi<ApiStoryFactCountsResponse>(`/stories/${storyId}/world/fact-density`), toStoryFactCountsResponse);
 }
 
 export const getWorldConsistencyReport = async (storyId: string) => {
-    const data = await fetchApi(`/stories/${storyId}/world/report`);
-    return toWorldConsistencyReport(data);
+    return mapResult(await fetchApi<ApiWorldConsistencyReport>(`/stories/${storyId}/world/report`), toWorldConsistencyReport);
 }

@@ -1,7 +1,8 @@
-// src/app/services/api.ts
+import { Ok, Err, Result, ApiError } from '@/app/types/common';
+
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN;
 
-async function fetchApi(path: string, options: RequestInit = {}) {
+async function fetchApi<T = void>(path: string, options: RequestInit = {}): Promise<Result<T, ApiError>> {
     const defaultOptions: RequestInit = {
         credentials: 'include',
         headers: {
@@ -10,24 +11,35 @@ async function fetchApi(path: string, options: RequestInit = {}) {
         },
     };
 
-    const response = await fetch(`${API_URL}${path}`, {
-        ...defaultOptions,
-        ...options,
-    });
+    let response: Response;
+    try {
+        response = await fetch(`${API_URL}${path}`, {
+            ...defaultOptions,
+            ...options,
+        });
+    } catch (error) {
+        return Err(new ApiError(0, error instanceof Error ? error.message : "Network error"));
+    }
 
     if (!response.ok) {
-        // You can add more robust error handling here
-        const errorBody = await response.text();
-        const errorJson = JSON.parse(errorBody);
-        throw new Error(`${errorJson?.detail}`);
+        let detail: string;
+        try {
+            const errorBody = await response.text();
+            const parsed = JSON.parse(errorBody);
+            detail = parsed?.detail ?? errorBody;
+        } catch {
+            detail = `HTTP ${response.status}`;
+        }
+        return Err(new ApiError(response.status, detail));
     }
 
-    // Handle cases where there is no JSON body to parse
     const contentType = response.headers.get("content-type");
-    if (contentType && contentType.indexOf("application/json") !== -1) {
-        return response.json();
+    if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        return Ok(data as T);
     }
-    return; 
+
+    return Ok(undefined as T);
 }
 
 export default fetchApi;
