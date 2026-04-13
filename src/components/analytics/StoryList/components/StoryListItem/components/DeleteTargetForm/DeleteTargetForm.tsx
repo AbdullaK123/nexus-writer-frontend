@@ -1,8 +1,8 @@
 'use client'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import { DeleteTargetFormProps } from "./types";
-import { useTarget } from "@/app/hooks/targets/useTarget";
-import { useToast } from "@/app/hooks/common/useToast";
+import { useTarget } from "@/data/hooks/useTarget";
+import { useToast } from "@/shared/providers/ToastProvider";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/common/Button";
 import { ClipLoader } from "react-spinners";

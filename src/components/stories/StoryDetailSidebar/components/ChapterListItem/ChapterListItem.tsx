@@ -3,8 +3,8 @@ import { ChapterListItemProps } from "./types";
 import styles from './ChapterListItem.module.css';
 import { ChapterListItemContextMenu } from "./components/ChapterListItemContextMenu";
 import { ContextMenuRoot, ContextMenuTrigger } from "@/components/common/ContextMenu";
-import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/app/lib/utils";
-import { useChapterTitleActions } from "@/app/hooks/chapters/useChapterTitleActions";
+import { getStatusIndicatorClass, getBadgeCss, formatWordCount } from "@/compatability/formatters";
+import { useChapterTitleActions } from "@/features/chapters/hooks/useChapterTitleActions";
 import React, { useRef, useEffect } from "react";
 import { Input } from "@/components/common/Input";
 

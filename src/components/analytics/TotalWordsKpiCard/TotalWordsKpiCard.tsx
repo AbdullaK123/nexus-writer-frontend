@@ -1,4 +1,4 @@
-import { Frequency } from "@/app/types";
+import { Frequency } from "@/data/types";
 import styles from './TotalWordsKpiCard.module.css'
 
 
@@ -25,11 +25,11 @@ export default function TotalWordsKpiCard({
 
 
     return (
-        <div className={styles['kpi-card']}>
-            <h3 className={styles['kpi-title']}>Total Words</h3>
-            <div className={styles['metrics-container']}>
-                <span className={styles['kpi-value']}>{totalWords}</span>
-                <span className={styles['kpi-label']}>{`words written ${getDisplayedFrequency(frequency)}`}</span>
+        <div className="kpi-card">
+            <h3 className="kpi-title">Total Words</h3>
+            <div className="kpi-metrics">
+                <span className="kpi-value">{totalWords}</span>
+                <span className="kpi-label">{`words written ${getDisplayedFrequency(frequency)}`}</span>
                 {(target > 0) && (
                     <span className={isAboveTarget ? styles['above-target'] : styles['below-target']}>
                         {isAboveTarget ? `+${percTarget}% of target` : `${percTarget}% of target`}

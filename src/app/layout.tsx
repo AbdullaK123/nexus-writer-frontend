@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar/Navbar";
-import HolographicBackground from "@/components/common/Background/HolographicBackground";
-import ClientProvider from "@/components/layout/QueryClientProvider/QueryClientProvider";
+import Navbar from "@/features/layout/Navbar/Navbar";
+import CanvasBackground from "@/components/common/Background/CanvasBackground";
+import ClientProvider from "@/shared/providers/QueryClientProvider";
 import "./globals.css";
-import { ToastProvider } from "./hooks/common/useToast";
+import { ToastProvider } from "@/shared/providers/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Nexus Writer",
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <a href="#main-content" className="skip-to-content">Skip to content</a>
-        <HolographicBackground/>
+        <CanvasBackground />
         <ClientProvider>
           <ToastProvider>
             <Navbar />

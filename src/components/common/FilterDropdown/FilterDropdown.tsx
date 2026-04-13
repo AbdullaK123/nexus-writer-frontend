@@ -17,16 +17,16 @@ export default function FilterDropdown({ onFilterChange, filterOptions }: Filter
                     <Select.Icon className={styles.icon}>▾</Select.Icon>
                 </Select.Trigger>
                 <Select.Portal>
-                    <Select.Content className={styles.content} position="popper" sideOffset={4}>
-                        <Select.Viewport className={styles.viewport}>
+                    <Select.Content className="select-content" position="popper" sideOffset={4}>
+                        <Select.Viewport className="select-viewport">
                             {filterOptions.map((option) => (
                                 <Select.Item 
                                     key={option.value} 
                                     value={option.value} 
-                                    className={styles.item}
+                                    className="select-item"
                                 >
                                     <Select.ItemText>{option.label}</Select.ItemText>
-                                    <Select.ItemIndicator className={styles.indicator}>
+                                    <Select.ItemIndicator className="select-indicator">
                                         ✓
                                     </Select.ItemIndicator>
                                 </Select.Item>

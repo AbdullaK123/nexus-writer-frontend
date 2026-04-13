@@ -7,7 +7,7 @@
 }
 
 .label {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     font-weight: 600;
     font-family: var(--font-heading);
     color: var(--text-secondary);
@@ -23,16 +23,16 @@
         rgba(26, 26, 26, 0.8),
         rgba(16, 16, 16, 0.9)
     );
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
     padding: 0.5rem 0.75rem;
     color: var(--text-primary);
     font-family: var(--font-body);
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     font-weight: 500;
     cursor: pointer;
     min-width: 120px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -60,72 +60,11 @@
     color: var(--accent-primary);
 }
 
-.content {
-    background: linear-gradient(
-        135deg,
-        rgba(26, 26, 26, 0.95),
-        rgba(16, 16, 16, 0.98)
-    );
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    border-radius: 8px;
-    box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.5),
-        0 0 15px rgba(0, 212, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-    overflow: hidden;
-    animation: slideDown 0.15s ease-out;
-    min-width: var(--radix-select-trigger-width);
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.viewport {
-    padding: 0.25rem;
-}
-
-.item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    outline: none;
-    user-select: none;
-}
-
-.item:hover,
-.item[data-highlighted] {
-    background: rgba(0, 212, 255, 0.15);
-    color: var(--accent-primary);
-}
-
-.indicator {
-    color: var(--accent-primary);
-    font-size: 0.875rem;
-    text-shadow: 0 0 6px var(--accent-primary);
-}
+/* Select dropdown: see globals.css .select-content, .select-viewport, .select-item, .select-indicator */
 
 /* Accessibility: Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .trigger,
-    .content {
+    .trigger {
         transition: none;
-        animation: none;
     }
 }

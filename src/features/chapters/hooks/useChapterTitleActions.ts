@@ -1,0 +1,84 @@
+import { useChapters } from "@/data/hooks/useChapters";
+import { useEditable } from "@/shared/hooks/useEditable";
+import { useEffect, useRef } from "react";
+import { useToast } from "@/shared/providers/ToastProvider";
+
+export function useChapterTitleActions(
+    storyId: string, 
+    chapterId: string,
+    title: string,
+    handleOnClick: () => void, 
+    handleClearSelection: () => void
+) {
+    const { showToast } = useToast();
+    const handleOnClickRef = useRef(handleOnClick);
+    const handleClearSelectionRef = useRef(handleClearSelection);
+    
+    // Update refs when callbacks change
+    handleOnClickRef.current = handleOnClick;
+    handleClearSelectionRef.current = handleClearSelection;
+    const { 
+        deleteChapter, 
+        isDeleting, 
+        deleteError, 
+        deleteSuccess, 
+        update, 
+        isUpdating,
+        updateError, 
+        updateSuccess
+     } = useChapters(storyId);
+
+    const handleSave = (newTitle: string) => {
+        update({ chapterId, requestBody: { title: newTitle } });
+    };
+
+    const { 
+        isEditing, 
+        value, 
+        setValue, 
+        ref, 
+        handleDoubleClick, 
+        handleKeyDown
+     } = useEditable({
+        initialValue: title,
+        onSave: handleSave,
+    });
+
+    useEffect(() => {
+        if (updateSuccess) {
+            handleOnClickRef.current()
+        }
+    }, [updateSuccess]);
+
+    useEffect(() => {
+        if (deleteSuccess) {
+            handleClearSelectionRef.current()
+        }
+    }, [deleteSuccess]);
+
+    useEffect(() => {
+        if (updateError) showToast('Failed to update chapter. Check server logs.', 'error');
+    }, [updateError, showToast]);
+
+    useEffect(() => {
+        if (deleteError) showToast('Failed to delete chapter. Check server logs.', 'error');
+    }, [deleteError, showToast]);
+
+    const handleOnAction = (action: string) => {
+        if (action === 'delete') {
+            deleteChapter(chapterId);
+        }
+    };
+
+    return {
+        isEditingTitle: isEditing, 
+        titleValue: value,        
+        setTitleValue: setValue,  
+        containerRef: ref,        
+        isUpdating,
+        isDeleting,
+        handleOnAction,
+        handleTitleDoubleClick: handleDoubleClick, 
+        handleTitleKeyDown: handleKeyDown,         
+    };
+}

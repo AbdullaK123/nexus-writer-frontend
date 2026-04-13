@@ -1,0 +1,111 @@
+.container {
+    composes: card-glass from global;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+}
+
+.title {
+    composes: text-gradient from global;
+    margin: 0;
+    font-size: var(--text-lg);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.entry {
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 0, 64, 0.03);
+    border: 1px solid rgba(255, 0, 64, 0.1);
+    transition: background var(--transition-fast);
+}
+
+.entry:hover {
+    background: rgba(255, 0, 64, 0.06);
+    border-color: rgba(255, 0, 64, 0.2);
+}
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.entity {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.attribute {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-full);
+    background: rgba(255, 128, 0, 0.12);
+    border: 1px solid rgba(255, 128, 0, 0.3);
+    color: #ff9933;
+}
+
+.occurrences {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid rgba(255, 0, 64, 0.2);
+}
+
+.occurrence {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.occurrence-value {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    flex: 1;
+}
+
+.chapter-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 128, 255, 0.08);
+    border: 1px solid rgba(0, 128, 255, 0.15);
+    color: var(--interactive);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.chapter-link:hover {
+    background: rgba(0, 128, 255, 0.2);
+    border-color: rgba(0, 128, 255, 0.4);
+    color: var(--text-primary);
+}
+
+.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+}
+
+.empty p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+

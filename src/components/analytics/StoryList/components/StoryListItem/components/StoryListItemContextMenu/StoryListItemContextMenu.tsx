@@ -1,6 +1,5 @@
-'use client'
 import { ContextMenuContent, MenuItem, MenuDivider, SubMenu } from '@/components/common/ContextMenu'
-import { Frequency, TargetResponse } from '@/app/types'
+import { Frequency, TargetResponse } from '@/data/types'
 
 interface StoryListItemContextMenuProps {
   targets: TargetResponse[]

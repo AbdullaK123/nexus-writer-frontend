@@ -4,11 +4,10 @@ import { EditTargetFormProps } from "./types";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useTarget } from "@/app/hooks/targets/useTarget";
-import { useToast } from "@/app/hooks/common/useToast";
+import { useTarget } from "@/data/hooks/useTarget";
+import { useToast } from "@/shared/providers/ToastProvider";
 import { useEffect, useMemo } from "react";
 import { Button } from "@/components/common/Button";
-import styles from "./EditTargetForm.module.css"
 
 const schema = z.object({
     quota: z.coerce.number().positive("Quota must be greater than 0"),
@@ -125,9 +124,9 @@ export default function EditTargetForm({
             isOpen={isOpen} 
             onClose={onClose}
         >
-            <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-                <div className={styles.field}>
-                    <label htmlFor="quota" className={styles.label}>
+            <form onSubmit={handleSubmit(onSubmit)} className="form-container">
+                <div className="form-field">
+                    <label htmlFor="quota" className="form-label">
                         Word Count Quota
                     </label>
                     <input 
@@ -137,53 +136,53 @@ export default function EditTargetForm({
                         min="1"
                         step="1"
                         placeholder="Enter word count quota"
-                        className={styles.input}
+                        className="form-input"
                         aria-invalid={!!errors.quota}
                     />
                     {errors.quota && (
-                        <span className={styles.error} role="alert">
+                        <span className="form-error" role="alert">
                             {errors.quota.message}
                         </span>
                     )}
                 </div>
 
-                <div className={styles.field}>
-                    <label htmlFor="fromDate" className={styles.label}>
+                <div className="form-field">
+                    <label htmlFor="fromDate" className="form-label">
                         From Date
                     </label>
                     <input 
                         id="fromDate"
                         {...register("fromDate")} 
                         type="date"
-                        className={styles.input}
+                        className="form-input"
                         aria-invalid={!!errors.fromDate}
                     />
                     {errors.fromDate && (
-                        <span className={styles.error} role="alert">
+                        <span className="form-error" role="alert">
                             {errors.fromDate.message}
                         </span>
                     )}
                 </div>
 
-                <div className={styles.field}>
-                    <label htmlFor="toDate" className={styles.label}>
+                <div className="form-field">
+                    <label htmlFor="toDate" className="form-label">
                         To Date
                     </label>
                     <input 
                         id="toDate"
                         {...register("toDate")} 
                         type="date"
-                        className={styles.input}
+                        className="form-input"
                         aria-invalid={!!errors.toDate}
                     />
                     {errors.toDate && (
-                        <span className={styles.error} role="alert">
+                        <span className="form-error" role="alert">
                             {errors.toDate.message}
                         </span>
                     )}
                 </div>
 
-                <div className={styles.actions}>
+                <div className="form-actions">
                     <Button 
                         variant="secondary" 
                         onClick={handleCancel}

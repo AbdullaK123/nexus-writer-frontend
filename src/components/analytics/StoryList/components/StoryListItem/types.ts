@@ -1,5 +1,5 @@
 import React from "react";
-import { TargetResponse } from "@/app/types/targets";
+import { TargetResponse } from "@/data/types/targets";
 
 export type StoryListItemProps = {
   storyId: string;

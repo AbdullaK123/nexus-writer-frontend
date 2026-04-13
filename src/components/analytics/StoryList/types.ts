@@ -1,4 +1,4 @@
-import { StoryListItemResponse } from "@/app/types";
+import { StoryListItemResponse } from "@/data/types";
 
 export type StoryListProps = {
     storiesLoading: boolean;

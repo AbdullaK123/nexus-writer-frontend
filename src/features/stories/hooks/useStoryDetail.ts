@@ -1,0 +1,104 @@
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useChapters } from '@/data/hooks/useChapters';
+import { useSelectedChapter } from '@/data/hooks/useSelectedChapter';
+import { CreateChapterRequest } from '@/data/types';
+import { getChapterStatus } from '@/compatability/transformers';
+import { useToast } from '@/shared/providers/ToastProvider';
+
+export function useStoryDetail() {
+    const router = useRouter();
+    const params = useParams();
+    const storyId = params?.id as string;
+    const { showToast } = useToast();
+
+    const [filter, setFilter] = useState('');
+
+    const {
+        chapters: chapterData,
+        isLoading: isLoadingChapters,
+        isError,
+        create,
+        isCreating,
+        creationError,
+        creationSuccess,
+    } = useChapters(storyId);
+
+    const { 
+        selectedChapter, 
+        selectChapter, 
+        isLoadingChapter,
+        clearSelection
+     } = useSelectedChapter(storyId);
+
+     const stableChapterSelect = useCallback((chapterId: string) => selectChapter(chapterId), [selectChapter])
+     const stableClearSelection = useCallback(() => clearSelection(), [clearSelection])
+
+    useEffect(() => {
+        if (isError) {
+            showToast(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`, 'error');
+            router.push('/dashboard');
+        }
+    }, [isError, router, storyId, showToast]);
+
+    useEffect(() => {
+          if (creationError) {
+              showToast('Failed to create chapter. Please check the server logs', 'error');
+          }
+    }, [creationError, showToast]);
+
+    const handleChapterStatusUpdate = useCallback(() => {
+        if (selectedChapter?.id) {
+            selectChapter(selectedChapter.id);
+        }
+    }, [selectedChapter, selectChapter]);
+
+    const chapters = useMemo(() => {
+        if (!chapterData?.chapters) return [];
+    
+        const chaptersWithStatusAndNumbers = chapterData.chapters.map((chapter, index) => ({
+            ...chapter,
+            storyId: storyId,
+            chapterNumber: index + 1,
+            status: getChapterStatus(chapter.published, chapter.wordCount > 0),
+            handleOnClick: () => stableChapterSelect(chapter.id),
+            handleClearSelection: stableClearSelection,
+        }));
+
+        if (!filter) return chaptersWithStatusAndNumbers;
+        return chaptersWithStatusAndNumbers.filter((chapter) => chapter.status === filter);
+    }, [chapterData, filter, storyId, stableChapterSelect, stableClearSelection]);
+
+    const storyInfo = useMemo(() => {
+        if (!chapterData) return null;
+        return {
+            status: chapterData.storyStatus || "Ongoing",
+            totalChapters: chapterData.chapters.length,
+            wordCount: chapterData.chapters.reduce((acc, current) => acc + current.wordCount, 0),
+            updatedAt: chapterData.storyLastUpdated || new Date(),
+        };
+    }, [chapterData]);
+
+    const onCreateChapter = (chapterInfo: CreateChapterRequest) => {
+        if(!chapterInfo.title.trim()) {
+            showToast('Chapter title can not be empty!', 'warning')
+            return
+        }
+        create(chapterInfo)
+    }
+
+    return {
+        storyId,
+        isLoading: isLoadingChapters || !storyId,
+        storyInfo,
+        chaptersToShow: chapters,
+        title: chapterData?.storyTitle,
+        onFilterChange: setFilter,
+        onCreateChapter,
+        isCreating,
+        creationSuccess,
+        selectedChapter,
+        isLoadingChapter,
+        handleChapterStatusUpdate,
+    };
+}

@@ -92,7 +92,7 @@
   position: relative;
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   border: 1px solid transparent;
 }
 

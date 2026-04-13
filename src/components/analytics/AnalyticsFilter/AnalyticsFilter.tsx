@@ -1,7 +1,7 @@
 'use client'
 import { ChangeEvent } from 'react'
 import * as Select from '@radix-ui/react-select'
-import { Frequency } from '@/app/types'
+import { Frequency } from '@/data/types'
 import styles from './AnalyticsFilter.module.css'
 
 interface AnalyticsFilterProps {
@@ -61,12 +61,12 @@ export default function AnalyticsFilter({
             <Select.Icon className={styles.selectIcon}>▾</Select.Icon>
           </Select.Trigger>
           <Select.Portal>
-            <Select.Content className={styles.selectContent} position="popper" sideOffset={4}>
-              <Select.Viewport className={styles.selectViewport}>
+            <Select.Content className="select-content" position="popper" sideOffset={4}>
+              <Select.Viewport className="select-viewport">
                 {frequencyOptions.map((opt) => (
-                  <Select.Item key={opt.value} value={opt.value} className={styles.selectItem}>
+                  <Select.Item key={opt.value} value={opt.value} className="select-item">
                     <Select.ItemText>{opt.label}</Select.ItemText>
-                    <Select.ItemIndicator className={styles.selectIndicator}>
+                    <Select.ItemIndicator className="select-indicator">
                       ✓
                     </Select.ItemIndicator>
                   </Select.Item>

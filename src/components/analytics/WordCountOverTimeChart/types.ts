@@ -1,3 +1,5 @@
+import { Frequency, WordsWrittenTimeSeries } from "@/data/types";
+
 export type ReferenceLineLabelConfig = {
     value: string;
     position: 'top' | 'bottom' | 'left' | 'right' | 'inside' | 'insideLeft' | 'insideRight' | 'insideTop' | 'insideBottom' | 'insideTopLeft' | 'insideTopRight' | 'insideBottomLeft' | 'insideBottomRight' | 'center';
@@ -32,4 +34,10 @@ export type DataPoint = {
 export type BarChartProps = {
     data: DataPoint[];
     config: BarChartConfig;
+}
+
+export type WordCountOverTimeChart = {
+    data: WordsWrittenTimeSeries;
+    target: number;
+    frequency: Frequency;
 }

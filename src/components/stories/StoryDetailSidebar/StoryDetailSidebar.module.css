@@ -54,7 +54,7 @@
     background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(16, 16, 16, 0.98));
     backdrop-filter: blur(8px);
     padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+    border-bottom: 1px solid var(--color-border);
     margin-bottom: 1rem;
     z-index: 1;
     color: var(--accent-primary);
@@ -105,7 +105,7 @@
 @media (max-width: 600px) {
     .sidebar-section {
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: var(--radius-md);
     }
     
     .chapter-items-container {

@@ -1,4 +1,4 @@
-import { CreateChapterRequest } from "@/app/types/chapter";
+import { CreateChapterRequest } from "@/data/types/chapter";
 
 export interface StoryDetailHeaderProps {
   title: string;

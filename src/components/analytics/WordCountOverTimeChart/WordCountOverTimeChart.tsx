@@ -1,49 +1,37 @@
-import { DailyWordsWrittenRecord, Frequency, MonthlyWordsWrittenRecord, WeeklyWordsWrittenRecord, WordsWrittenTimeSeries } from "@/app/types"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine, ResponsiveContainer } from 'recharts'
+import { type WordCountOverTimeChart } from "./types"
+import {
+     BarChart, 
+     Bar, 
+     XAxis, 
+     YAxis, 
+     CartesianGrid, 
+     Tooltip, 
+     Legend, 
+     ReferenceLine, 
+     ResponsiveContainer
+ } from 'recharts'
 import styles from './WordCountOverTimeChart.module.css'
+import { getChartData } from "@/compatability/formatters";
+import {
+    CHART_HEIGHT,
+    CHART_MARGIN,
+    GRID_PROPS,
+    X_AXIS_PROPS,
+    getXAxisLabel,
+    Y_AXIS_PROPS,
+    TOOLTIP_PROPS,
+    LEGEND_PROPS,
+    REFERENCE_LINE_PROPS,
+    BAR_PROPS,
+} from './config'
 
-type WordCountOverTimeChart = {
-    data: WordsWrittenTimeSeries;
-    target: number;
-    frequency: Frequency;
-}
+
 
 export default function WordCountOverTimeChart({
     data,
     target,
     frequency
 }: WordCountOverTimeChart) {
-
-    const formatDate = (dateString: string | Date) => {
-        const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-
-    const getChartData = (data: WordsWrittenTimeSeries, frequency: Frequency) => {
-        if (frequency === "Daily")  {
-            const dailyData = data as DailyWordsWrittenRecord[];
-            return dailyData.map((record: DailyWordsWrittenRecord) => ({
-                name: formatDate(record.date),
-                words: record.totalWords
-            }))
-        }
-        if (frequency === "Weekly")  {
-            const weeklyData = data as WeeklyWordsWrittenRecord[];
-            return weeklyData.map((record: WeeklyWordsWrittenRecord) => ({
-                name: `Week ${record.weekNum}`,
-                words: record.totalWords
-            }))
-        }
-        if (frequency === "Monthly")  {
-            const monthlyData = data as MonthlyWordsWrittenRecord[];
-            return monthlyData.map((record: MonthlyWordsWrittenRecord) => ({
-                name: record.monthName,
-                words: record.totalWords
-            }))
-        }
-        // Default fallback
-        return []
-    }
 
     const chartData = getChartData(data, frequency)
     const hasData = chartData.length > 0
@@ -59,80 +47,15 @@ export default function WordCountOverTimeChart({
                 </div>
             ) : (
                 <div className={styles['chart-wrapper']}>
-                    <ResponsiveContainer width="100%" height={400}>
-                        <BarChart 
-                            data={chartData} 
-                            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-                        >
-                            <CartesianGrid 
-                                strokeDasharray="3 3" 
-                                stroke="rgba(255, 255, 255, 0.05)" 
-                            />
-                            <XAxis 
-                                dataKey="name"
-                                tick={{ fill: '#ffffff', fontFamily: 'var(--font-body)', fontSize: 12 }}
-                                stroke="rgba(0, 212, 255, 0.3)"
-                                label={{ 
-                                    value: xAxisLabel, 
-                                    position: 'insideBottom', 
-                                    offset: -10,
-                                    style: { fill: '#ffffff', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600 }
-                                }}
-                            />
-                            <YAxis 
-                                tick={{ fill: '#ffffff', fontFamily: 'var(--font-body)', fontSize: 12 }}
-                                stroke="rgba(0, 212, 255, 0.3)"
-                                label={{ 
-                                    value: 'Words Written', 
-                                    angle: -90, 
-                                    position: 'insideLeft',
-                                    style: { fill: '#ffffff', fontFamily: 'var(--font-body)', fontSize: 14, fontWeight: 600 }
-                                }}
-                            />
-                            <Tooltip 
-                                cursor={{ fill: 'transparent' }}
-                                contentStyle={{ 
-                                    backgroundColor: 'rgba(16, 16, 16, 0.95)',
-                                    border: '1px solid rgba(0, 212, 255, 0.3)',
-                                    borderRadius: '8px',
-                                    color: '#ffffff',
-                                    fontFamily: 'var(--font-body)'
-                                }}
-                                labelStyle={{ color: '#00d4ff' }}
-                            />
-                            <Legend 
-                                wrapperStyle={{ 
-                                    color: '#ffffff',
-                                    fontFamily: 'var(--font-body)',
-                                    paddingTop: '20px'
-                                }}
-                                iconType="rect"
-                            />
-                            <ReferenceLine 
-                                y={target} 
-                                stroke="#00ff41" 
-                                strokeWidth={2}
-                                strokeDasharray="5 5"
-                                label={{ 
-                                    value: 'Target', 
-                                    fill: '#ffffff',
-                                    fontFamily: 'var(--font-body)',
-                                    fontWeight: 600,
-                                    position: 'right'
-                                }}
-                            />
-                            <Bar 
-                                dataKey="words" 
-                                fill="#00d4ff" 
-                                name="Total Words"
-                                radius={[8, 8, 0, 0]}
-                                activeBar={{ 
-                                    fill: '#00ffff',  // Change this color for different hover background
-                                    stroke: '#00ff41',
-                                    strokeWidth: 3,
-                                    filter: 'drop-shadow(0 0 15px rgba(0, 212, 255, 1))'
-                                }}
-                            />
+                    <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+                        <BarChart data={chartData} margin={CHART_MARGIN}>
+                            <CartesianGrid {...GRID_PROPS} />
+                            <XAxis {...X_AXIS_PROPS} label={getXAxisLabel(xAxisLabel)} />
+                            <YAxis {...Y_AXIS_PROPS} />
+                            <Tooltip {...TOOLTIP_PROPS} />
+                            <Legend {...LEGEND_PROPS} />
+                            <ReferenceLine y={target} {...REFERENCE_LINE_PROPS} />
+                            <Bar {...BAR_PROPS} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

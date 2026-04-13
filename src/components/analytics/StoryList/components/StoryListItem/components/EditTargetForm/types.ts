@@ -1,4 +1,4 @@
-import { TargetResponse } from "@/app/types/targets";
+import { TargetResponse } from "@/data/types/targets";
 
 export type EditTargetFormProps = {
   target: TargetResponse

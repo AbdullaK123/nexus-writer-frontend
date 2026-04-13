@@ -7,4 +7,4 @@ export { default as MenuDivider } from './ContextMenu/MenuDivider';
 export { default as MenuItem } from './ContextMenu/MenuItem';
 export { default as MenuSection } from './ContextMenu/MenuSection';
 export { default as FilterDropdown } from './FilterDropdown/FilterDropdown';
-export { default as HolographicBackground } from './Background/HolographicBackground';
+export { default as CanvasBackground } from './Background/CanvasBackground';

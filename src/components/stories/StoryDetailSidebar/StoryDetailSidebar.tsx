@@ -1,4 +1,3 @@
-'use client'
 import StoryInfoCard from "./components/StoryInfoCard/StoryInfoCard";
 import ChapterListItem from "./components/ChapterListItem/ChapterListItem";
 import FilterDropdown from "@/components/common/FilterDropdown/FilterDropdown";

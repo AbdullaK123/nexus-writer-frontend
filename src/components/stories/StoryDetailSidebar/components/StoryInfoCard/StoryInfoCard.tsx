@@ -1,5 +1,5 @@
 import { StoryInfoCardProps } from "./types";
-import { getDuration } from "@/app/lib/utils";
+import { getDuration } from "@/compatability/formatters";
 import styles from './StoryInfoCard.module.css'
 
 export default function StoryInfoCard({

@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
-import StoryDetailContent from './StoryDetailContent'
+import StoryDetailContent from '@/features/stories/StoryDetailContent'
+import { env } from '@/infrastructure/config/env'
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
+const API_URL = env.apiUrl
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params

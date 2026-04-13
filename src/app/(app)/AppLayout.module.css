@@ -159,12 +159,12 @@
     rgba(0, 255, 255, 0.04)
   );
   transform: translateY(-2px);
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
 .empty-state:hover .empty-state-icon {
   transform: translateY(-10px) scale(1.05);
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
 }
 
 /* Mobile adjustments */
@@ -189,7 +189,7 @@
   .empty-state {
     padding: 2rem 1rem;
     min-height: 35vh;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     margin: 0 1rem;
   }
   

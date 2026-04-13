@@ -1,6 +1,5 @@
-'use client'
 import { ContextMenuContent, MenuItem, MenuDivider, SubMenu } from '@/components/common/ContextMenu'
-import { ChapterStatus } from '@/app/types'
+import { ChapterStatus } from '@/data/types'
 
 interface ChapterListItemContextMenuProps {
   status: ChapterStatus

@@ -1,4 +1,4 @@
-import { Frequency } from "@/app/types/targets";
+import { Frequency } from "@/data/types/targets";
 
 export type DashboardFilter = {
     frequency: Frequency;

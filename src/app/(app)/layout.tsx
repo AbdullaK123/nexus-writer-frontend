@@ -1,9 +1,8 @@
-'use client'
 import React from 'react';
 import styles from './AppLayout.module.css'
-import AuthWrapper from '@/components/auth/AuthWrapper/AuthWrapper';
-import { SocketProvider } from '@/app/hooks/common/useWebsocket';
-import JobStatusWatcher from '@/components/jobs/JobStatusWatcher/JobStatusWatcher';
+import AuthWrapper from '@/features/auth/AuthWrapper/AuthWrapper';
+import { SocketProvider } from '@/shared/providers/SocketProvider';
+import JobStatusWatcher from '@/features/jobs/JobStatusWatcher/JobStatusWatcher';
 
 export default function AppLayout({
     children

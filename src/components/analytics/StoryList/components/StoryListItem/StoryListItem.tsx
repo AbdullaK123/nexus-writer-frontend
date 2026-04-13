@@ -1,8 +1,8 @@
 'use client'
 import { StoryListItemProps } from "./types";
-import { Frequency, TargetResponse } from "@/app/types";
+import { Frequency, TargetResponse } from "@/data/types";
 import styles from "./StoryListItem.module.css";
-import { formatWordCount } from "@/app/lib/utils";
+import { formatWordCount } from "@/compatability/formatters";
 import { ContextMenuRoot, ContextMenuTrigger } from "@/components/common/ContextMenu";
 import { StoryListItemContextMenu } from "./components/StoryListItemContextMenu/StoryListItemContextMenu";
 import CreateTargetForm from "./components/CreateTargetForm/CreateTargetForm";

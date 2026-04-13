@@ -70,11 +70,11 @@
         rgba(255, 0, 64, 0.05)
     );
     border: 1px solid var(--error);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     box-shadow: 
         0 0 8px rgba(255, 0, 64, 0.4),
         inset 0 0 5px rgba(255, 0, 64, 0.1);
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
 }
 
 .warningIcon {
@@ -107,8 +107,8 @@
 /* Target details section */
 .targetDetails {
     background: var(--background-secondary);
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
     padding: 1.25rem;
     box-shadow: 
         0 0 5px rgba(0, 212, 255, 0.2),
@@ -169,7 +169,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
 }
 
 .confirmLabel strong {
@@ -180,7 +180,7 @@
 .confirmInput {
     background: var(--background-secondary);
     border: 1px solid var(--error);
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     padding: 0.875rem 1rem;
     width: 100%;
     color: var(--text-primary);
@@ -189,7 +189,7 @@
     box-shadow: 
         0 0 5px rgba(255, 0, 64, 0.3),
         inset 0 0 5px rgba(255, 0, 64, 0.1);
-    transition: all 0.3s ease;
+    transition: all var(--transition-base);
 }
 
 .confirmInput:focus {
@@ -251,7 +251,7 @@
     }
 
     .warningText {
-        font-size: 0.875rem;
+        font-size: var(--text-sm);
     }
 
     .targetDetails {
