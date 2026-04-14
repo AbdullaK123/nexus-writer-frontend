@@ -20,38 +20,38 @@ export default function Home() {
           </div>
           
           <h1 className={styles.heroTitle}>
-            YOUR UNIVERSE
-            <span className={styles.heroTitleGlow}> DEMANDS</span>
+            WRITE THE STORY.
             <br />
-            MORE THAN A TEXT EDITOR
+            <span className={styles.heroTitleGlow}>AI HANDLES THE REST.</span>
           </h1>
           
           <p className={styles.heroSubtitle}>
-            The AI-powered writing platform built for sci-fi authors who craft worlds, not just words.
+            A chapter editor with built-in AI that extracts your characters, tracks your plot threads,
+            maps your world&mdash;and edits your prose. You write. Nexus understands.
           </p>
           
           <div className={styles.ctaButtons}>
             <Link href="/register" className={styles.ctaPrimary}>
-              <span className={styles.ctaText}>INITIALIZE NEXUS</span>
+              <span className={styles.ctaText}>START WRITING</span>
               <span className={styles.ctaIcon}>→</span>
             </Link>
             <Link href="/login" className={styles.ctaSecondary}>
-              <span className={styles.ctaText}>EXISTING USER</span>
+              <span className={styles.ctaText}>SIGN IN</span>
             </Link>
           </div>
           
           <div className={styles.heroStats}>
             <div className={styles.statItem}>
-              <span className={styles.statNumber}>∞</span>
-              <span className={styles.statLabel}>WORLDS CREATED</span>
+              <span className={styles.statNumber}>4</span>
+              <span className={styles.statLabel}>ANALYSIS DIMENSIONS</span>
             </div>
             <div className={styles.statItem}>
               <span className={styles.statNumber}>24/7</span>
-              <span className={styles.statLabel}>AI ASSISTANCE</span>
+              <span className={styles.statLabel}>AI DEV EDITOR</span>
             </div>
             <div className={styles.statItem}>
-              <span className={styles.statNumber}>100%</span>
-              <span className={styles.statLabel}>CONTINUITY</span>
+              <span className={styles.statNumber}>Live</span>
+              <span className={styles.statLabel}>SESSION TRACKING</span>
             </div>
           </div>
         </div>
@@ -64,34 +64,37 @@ export default function Home() {
       {/* Problem/Solution Section */}
       <section className={styles.problemSection}>
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionTag}>[SYSTEM DIAGNOSTIC]</span>
+          <span className={styles.sectionTag}>[THE PROBLEM]</span>
           <h2 className={styles.sectionTitle}>
-            YOUR CURRENT WORKFLOW IS <span className={styles.errorText}>CORRUPTED</span>
+            COMPLEX STORIES <span className={styles.errorText}>BREAK</span> SIMPLE TOOLS
           </h2>
         </div>
         
         <div className={styles.problemGrid}>
           <div className={styles.problemCard}>
             <div className={styles.problemIcon}>⚠️</div>
-            <h3 className={styles.problemTitle}>Timeline Paradoxes</h3>
+            <h3 className={styles.problemTitle}>Contradictions Slip Through</h3>
             <p className={styles.problemDesc}>
-              Character ages don&apos;t add up. Events contradict previous chapters. Your readers notice before you do.
+              A character&apos;s eye color changes in chapter 9. A resolved plot thread resurfaces
+              with different details. Your world&apos;s rules quietly break. Readers notice.
             </p>
           </div>
           
           <div className={styles.problemCard}>
             <div className={styles.problemIcon}>💥</div>
-            <h3 className={styles.problemTitle}>Fragmented Lore</h3>
+            <h3 className={styles.problemTitle}>No Structural Visibility</h3>
             <p className={styles.problemDesc}>
-              Planet descriptions scattered across 47 notes. Technology specs lost in Google Docs chaos. World-building entropy.
+              Is your pacing off? Are your POV scenes balanced? Which plot threads went dormant?
+              You can&apos;t fix what you can&apos;t see. And you can&apos;t see any of it.
             </p>
           </div>
           
           <div className={styles.problemCard}>
             <div className={styles.problemIcon}>📉</div>
-            <h3 className={styles.problemTitle}>Invisible Progress</h3>
+            <h3 className={styles.problemTitle}>Writing Without Feedback</h3>
             <p className={styles.problemDesc}>
-              No idea how many words this week. Goals vague. Motivation dying. Your writing habit is on life support.
+              No word count trends. No session tracking. No way to know if you&apos;re building
+              momentum or losing it. Your writing habit flies blind.
             </p>
           </div>
         </div>
@@ -100,32 +103,71 @@ export default function Home() {
       {/* Features Section */}
       <section className={styles.featuresSection}>
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionTag}>[NEXUS CAPABILITIES]</span>
+          <span className={styles.sectionTag}>[HOW NEXUS WORKS]</span>
           <h2 className={styles.sectionTitle}>
-            THREE SYSTEMS. <span className={styles.successText}>INFINITE POSSIBILITIES.</span>
+            WRITE CHAPTERS. <span className={styles.successText}>AI DOES THE ANALYSIS.</span>
           </h2>
         </div>
 
         <div className={styles.featuresList}>
-          {/* Feature 1: Story Bible */}
+          {/* Feature 1: Editor + AI Line Edits */}
           <div className={styles.featureCard}>
             <div className={styles.featureNumber}>01</div>
             <div className={styles.featureContent}>
               <div className={styles.featureHeader}>
-                <div className={styles.featureIcon}>📚</div>
-                <h3 className={styles.featureTitle}>AUTOMATED STORY BIBLE</h3>
-                <span className={styles.featureBadge}>NEURAL MAPPING</span>
+                <div className={styles.featureIcon}>✍️</div>
+                <h3 className={styles.featureTitle}>WRITE WITH AN AI EDITOR</h3>
+                <span className={styles.featureBadge}>LINE EDITS</span>
               </div>
               <p className={styles.featureDesc}>
-                Your universe, automatically documented. Characters, locations, technologies, factions—all tracked, 
-                cross-referenced, and instantly searchable. No more hunting through notes.
+                Write in a rich text editor with real-time autosave. When you&apos;re ready, trigger AI
+                line edits&mdash;paragraph-level suggestions appear as highlights in your text. Accept or
+                reject each one with a click. Like track changes, but from an AI developmental editor.
               </p>
               <ul className={styles.featureList}>
-                <li>🔗 Automatic relationship mapping</li>
-                <li>⏱️ Timeline validation</li>
-                <li>🌍 Location hierarchies</li>
-                <li>🔬 Technology evolution tracking</li>
-                <li>🎭 Character arc analysis</li>
+                <li>✏️ Rich text editor with autosave</li>
+                <li>🔮 AI paragraph-level edit suggestions</li>
+                <li>✓/✗ Accept or reject each edit inline</li>
+                <li>📖 Chapter-to-chapter navigation</li>
+                <li>📊 Live word count per chapter</li>
+              </ul>
+            </div>
+            <div className={styles.featureVisual}>
+              <div className={styles.visualPlaceholder}>
+                <div className={styles.visualCode}>
+                  <div className={styles.codeLine}>
+                    <span className={styles.codeGood}>✓</span> Accept suggestion
+                  </div>
+                  <div className={styles.codeLine}>
+                    <span className={styles.codeWarning}>⚠</span> Paragraph rewrite proposed
+                  </div>
+                  <div className={styles.codeLine}>
+                    <span className={styles.codeError}>✗</span> Reject suggestion
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature 2: AI Extraction & Insights */}
+          <div className={`${styles.featureCard} ${styles.featureReverse}`}>
+            <div className={styles.featureNumber}>02</div>
+            <div className={styles.featureContent}>
+              <div className={styles.featureHeader}>
+                <div className={styles.featureIcon}>🔍</div>
+                <h3 className={styles.featureTitle}>AI STORY INSIGHTS</h3>
+                <span className={styles.featureBadge}>4 DIMENSIONS</span>
+              </div>
+              <p className={styles.featureDesc}>
+                AI reads your chapters and extracts everything&mdash;characters, plot threads, world
+                facts, structural patterns. Then it surfaces insights: contradictions in your world,
+                dormant plot threads, pacing imbalances, weak scenes, unresolved setups.
+              </p>
+              <ul className={styles.featureList}>
+                <li>🎭 Characters &mdash; arcs, goals, knowledge, presence heatmaps</li>
+                <li>📐 Plot &mdash; threads, setups &amp; payoffs, story questions, contrivance detection</li>
+                <li>🏗️ Structure &mdash; pacing curves, POV balance, scene types, emotional beats</li>
+                <li>🌍 World &mdash; entity facts, contradiction tracking, consistency reports</li>
               </ul>
             </div>
             <div className={styles.featureVisual}>
@@ -140,25 +182,25 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Feature 2: Analytics */}
-          <div className={`${styles.featureCard} ${styles.featureReverse}`}>
-            <div className={styles.featureNumber}>02</div>
+          {/* Feature 3: Analytics & Session Tracking */}
+          <div className={styles.featureCard}>
+            <div className={styles.featureNumber}>03</div>
             <div className={styles.featureContent}>
               <div className={styles.featureHeader}>
                 <div className={styles.featureIcon}>📊</div>
-                <h3 className={styles.featureTitle}>ANALYTICS & GOAL TRACKING</h3>
-                <span className={styles.featureBadge}>PROGRESS METRICS</span>
+                <h3 className={styles.featureTitle}>WRITING ANALYTICS</h3>
+                <span className={styles.featureBadge}>SESSION TRACKING</span>
               </div>
               <p className={styles.featureDesc}>
-                Know exactly where you stand. Daily word counts, writing velocity, goal achievement—visualized in real-time. 
-                Build consistency. Measure momentum. Hit your deadlines.
+                Every writing session is tracked automatically via WebSocket&mdash;words written,
+                time spent, words per minute. Set daily or weekly targets and watch your
+                progress on real-time charts. Build the habit with data, not willpower.
               </p>
               <ul className={styles.featureList}>
-                <li>📈 Daily/weekly/monthly dashboards</li>
-                <li>🎯 Custom writing goals</li>
-                <li>⚡ Productivity streaks</li>
-                <li>📅 Chapter progress tracking</li>
-                <li>🏆 Milestone celebrations</li>
+                <li>📈 Word count over time (daily/weekly/monthly)</li>
+                <li>⏱️ Total duration &amp; words per minute</li>
+                <li>🎯 Custom writing targets with progress tracking</li>
+                <li>🔄 Automatic session detection (start typing → tracking begins)</li>
               </ul>
             </div>
             <div className={styles.featureVisual}>
@@ -171,44 +213,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* Feature 3: AI Editor */}
-          <div className={styles.featureCard}>
-            <div className={styles.featureNumber}>03</div>
-            <div className={styles.featureContent}>
-              <div className={styles.featureHeader}>
-                <div className={styles.featureIcon}>🤖</div>
-                <h3 className={styles.featureTitle}>AI DEVELOPMENTAL EDITOR</h3>
-                <span className={styles.featureBadge}>CONTINUITY ENGINE</span>
-              </div>
-              <p className={styles.featureDesc}>
-                Your 24/7 editor that never sleeps. Catches contradictions, flags weak prose, ensures world-building 
-                consistency. Like having a developmental editor watching every word.
-              </p>
-              <ul className={styles.featureList}>
-                <li>🔍 Real-time continuity checking</li>
-                <li>✍️ Prose quality analysis</li>
-                <li>🎨 Style consistency tracking</li>
-                <li>🚨 Contradiction detection</li>
-                <li>💡 Improvement suggestions</li>
-              </ul>
-            </div>
-            <div className={styles.featureVisual}>
-              <div className={styles.visualPlaceholder}>
-                <div className={styles.visualCode}>
-                  <div className={styles.codeLine}>
-                    <span className={styles.codeGood}>✓</span> Continuity verified
-                  </div>
-                  <div className={styles.codeLine}>
-                    <span className={styles.codeWarning}>⚠</span> Weak prose detected
-                  </div>
-                  <div className={styles.codeLine}>
-                    <span className={styles.codeError}>✗</span> Contradiction found
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -216,19 +220,19 @@ export default function Home() {
       <section className={styles.finalCta}>
         <div className={styles.ctaBox}>
           <h2 className={styles.ctaTitle}>
-            STOP FIGHTING YOUR TOOLS.
+            YOUR STORY IS COMPLEX.
             <br />
-            START BUILDING YOUR EMPIRE.
+            YOUR TOOLS SHOULD KEEP UP.
           </h2>
           <p className={styles.ctaSubtitle}>
-            Join sci-fi authors who chose to write at the speed of thought.
+            Write chapters. Get AI insights. Track your progress. All in one place.
           </p>
           <Link href="/register" className={styles.ctaFinalButton}>
-            <span className={styles.ctaText}>INITIALIZE YOUR NEXUS</span>
+            <span className={styles.ctaText}>START WRITING</span>
             <span className={styles.ctaIcon}>→</span>
           </Link>
           <p className={styles.ctaNote}>
-            Free to start. No credit card required. Your universe awaits.
+            Free to start. No credit card required.
           </p>
         </div>
       </section>

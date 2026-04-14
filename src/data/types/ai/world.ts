@@ -8,5 +8,6 @@ export type {
     EntityTimelineResponse,
     ChapterFactCount,
     StoryFactCountsResponse,
+    WorldFactsResponse,
     WorldConsistencyReport,
 } from "@/compatability/transformers/world";

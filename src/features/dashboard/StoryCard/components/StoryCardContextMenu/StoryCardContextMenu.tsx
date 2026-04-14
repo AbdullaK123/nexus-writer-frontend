@@ -1,17 +1,20 @@
-import { ContextMenuContent, MenuItem, MenuDivider } from '@/components/common/ContextMenu'
+import { ContextMenuContent, MenuItem, MenuDivider, SubMenu } from '@/components/common/ContextMenu'
+import { insightsSections, type InsightsSection } from '@/features/stories/hooks/useStoryNavigation'
 
 interface StoryCardContextMenuProps {
   onDelete: () => void
   onDuplicate?: () => void
   onExport?: () => void
   onArchive?: () => void
+  onInsightsNavigate?: (section: InsightsSection) => void
 }
 
 export function StoryCardContextMenu({
   onDelete,
   onDuplicate,
   onExport,
-  onArchive
+  onArchive,
+  onInsightsNavigate,
 }: StoryCardContextMenuProps) {
   return (
     <ContextMenuContent>
@@ -41,6 +44,23 @@ export function StoryCardContextMenu({
           label="Archive Story"
           onClick={onArchive}
         />
+      )}
+
+      {/* Insights Submenu */}
+      {onInsightsNavigate && (
+        <>
+          <MenuDivider />
+          <SubMenu icon="🔍" label="Insights">
+            {insightsSections.map(({ key, label, icon }) => (
+              <MenuItem
+                key={key}
+                icon={icon}
+                label={label}
+                onClick={() => onInsightsNavigate(key)}
+              />
+            ))}
+          </SubMenu>
+        </>
       )}
 
       {/* Danger Zone */}

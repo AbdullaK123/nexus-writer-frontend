@@ -64,6 +64,10 @@ export const StoryFactCountsResponseSchema = z.object({
     counts: z.array(ChapterFactCountSchema),
 });
 
+export const WorldFactsResponseSchema = z.object({
+    entries: z.array(EntityFactResponseSchema),
+});
+
 export const WorldConsistencyReportSchema = z.object({
     story_id: z.string(),
     report: z.string(),
@@ -83,6 +87,7 @@ export type ApiChapterEntityFacts = z.input<typeof ChapterEntityFactsSchema>;
 export type ApiEntityTimelineResponse = z.input<typeof EntityTimelineResponseSchema>;
 export type ApiChapterFactCount = z.input<typeof ChapterFactCountSchema>;
 export type ApiStoryFactCountsResponse = z.input<typeof StoryFactCountsResponseSchema>;
+export type ApiWorldFactsResponse = z.input<typeof WorldFactsResponseSchema>;
 export type ApiWorldConsistencyReport = z.input<typeof WorldConsistencyReportSchema>;
 
 // ─── Output Types (frontend camelCase) ───────────────────────
@@ -96,6 +101,7 @@ export type ChapterEntityFacts = z.output<typeof ChapterEntityFactsSchema>;
 export type EntityTimelineResponse = z.output<typeof EntityTimelineResponseSchema>;
 export type ChapterFactCount = z.output<typeof ChapterFactCountSchema>;
 export type StoryFactCountsResponse = z.output<typeof StoryFactCountsResponseSchema>;
+export type WorldFactsResponse = z.output<typeof WorldFactsResponseSchema>;
 export type WorldConsistencyReport = z.output<typeof WorldConsistencyReportSchema>;
 
 // ─── Transform Functions ─────────────────────────────────────
@@ -109,4 +115,5 @@ export const toChapterEntityFacts = (data: ApiChapterEntityFacts) => ChapterEnti
 export const toEntityTimelineResponse = (data: ApiEntityTimelineResponse) => EntityTimelineResponseSchema.parse(data);
 export const toChapterFactCount = (data: ApiChapterFactCount) => ChapterFactCountSchema.parse(data);
 export const toStoryFactCountsResponse = (data: ApiStoryFactCountsResponse) => StoryFactCountsResponseSchema.parse(data);
+export const toWorldFactsResponse = (data: ApiWorldFactsResponse) => WorldFactsResponseSchema.parse(data);
 export const toWorldConsistencyReport = (data: ApiWorldConsistencyReport) => WorldConsistencyReportSchema.parse(data);
