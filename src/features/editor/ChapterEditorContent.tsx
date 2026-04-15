@@ -11,12 +11,18 @@ import { useAuth } from '@/data/hooks/useAuth'
 import { ClipLoader } from 'react-spinners'
 import { useToast } from '@/shared/providers/ToastProvider'
 import { useChapterEdits } from '@/data/hooks/useChapterEdits'
-import { useBackgroundJobs } from '@/features/jobs/hooks/useBackgroundJobs'
-import { useJobProgress } from '@/data/hooks/useJobProgress'
+import { AsyncBoundary } from '@/components/common'
+import { toChapterNavHeaderProps, toTipTapEditorProps } from '@/compatability/transformers'
 
 const TipTapEditor = dynamic(
-    () => import('@/features/editor/TipTapEditor/TipTapEditor'),
-    { ssr: false, loading: () => <div className="loading-center"><ClipLoader size={50} color="#00d4ff" /></div> }
+    () => import('@/features/editor/TipTapEditor/TipTapEditor'), { 
+        ssr: false, 
+        loading: () => (
+            <div className="loading-center">
+                <ClipLoader size={50} color="#00d4ff" />
+            </div>
+        ) 
+    }
 )
 
 export default function ChapterEditorContent() {
@@ -30,7 +36,6 @@ export default function ChapterEditorContent() {
 
     const {
         data: chapter,
-        isSuccess,
         isError,
         isLoading
     } = useChapter(chapterId, true)
@@ -39,9 +44,6 @@ export default function ChapterEditorContent() {
 
     const {
         data: edits,
-        isError: editsError,
-        isLoading: editsLoading,
-        isSuccess: editsSuccess
     } = useChapterEdits(chapterId)
 
     // Create debounced update function once, memoized by chapterId
@@ -70,46 +72,37 @@ export default function ChapterEditorContent() {
     
     return (
         <div className={styles['content-container']}>
-            {isLoading && (
-                <div className="loading-column">
-                    <ClipLoader size={50} color="#00d4ff" />
-                    <h1>Loading Chapter...</h1>
-                </div>
-            )}
-            {isError && (
-                <h1>Error loading chapter. Please try again.</h1>
-            )}
-            {isSuccess && chapter && (
-                <div className={styles['back-to-stories-container']}>
-                    <button 
-                        onClick={() => router.push(`/stories/${storyId}`)}
-                        className={styles['back-to-story-button']}
-                    >
-                        ← Back to story page
-                    </button>
-                </div>
-            )}
-            {isSuccess && chapter && user && user.id && (
-                <>
-                    <ChapterNavHeader 
-                        storyId={storyId}
-                        chapterTitle={chapter.title}
-                        chapterId={chapterId}
-                        prevChapterId={chapter.previousChapterId}
-                        nextChapterId={chapter.nextChapterId}
-                        onShowErrorToast={onShowErrorToast}
-                    />
-                    <TipTapEditor
-                        storyId={storyId}
-                        chapterId={chapterId}
-                        isSaving={isUpdating}
-                        userId={user.id}
-                        content={chapter.content}
-                        edits={!edits?.isStale ? edits : null}
-                        onUpdateAction={handleUpdate}
-                    />
-                </>
-            )}
+            <AsyncBoundary
+                data={chapter}
+                isLoading={isLoading}
+                isError={isError}
+                errorMessage="Error loading chapter. Please try again."
+            >
+                {(chapterData) => (
+                    <>
+                        <div className={styles['back-to-stories-container']}>
+                            <button 
+                                onClick={() => router.push(`/stories/${storyId}`)}
+                                className={styles['back-to-story-button']}
+                            >
+                                ← Back to story page
+                            </button>
+                        </div>
+                        {user?.id && (
+                            <>
+                                <ChapterNavHeader 
+                                    {...toChapterNavHeaderProps(storyId, chapterId, chapterData)}
+                                    onShowErrorToast={onShowErrorToast}
+                                />
+                                <TipTapEditor
+                                    {...toTipTapEditorProps(storyId, chapterId, chapterData, isUpdating, user.id, !edits?.isStale ? edits : null)}
+                                    onUpdateAction={handleUpdate}
+                                />
+                            </>
+                        )}
+                    </>
+                )}
+            </AsyncBoundary>
         </div>
     )
 }

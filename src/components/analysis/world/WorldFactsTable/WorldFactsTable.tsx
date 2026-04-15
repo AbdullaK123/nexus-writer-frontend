@@ -1,19 +1,12 @@
 import { WorldFactsTableProps } from "./types";
 import styles from "./WorldFactsTable.module.css";
+import WorldFactRow from "./components/WorldFactRow";
 
-export default function WorldFactsTable({ entries }: WorldFactsTableProps) {
-    const rows = entries.flatMap((entry) =>
-        entry.facts.map((fact) => ({
-            entity: entry.entity,
-            attribute: fact.attribute,
-            value: fact.value,
-        }))
-    );
-
+export default function WorldFactsTable({ storyId, entries }: WorldFactsTableProps) {
     return (
         <div className={styles.container}>
             <h3 className={styles.title}>World Facts</h3>
-            {rows.length === 0 ? (
+            {entries.length === 0 ? (
                 <div className={styles.empty}>
                     <p>No world facts recorded yet.</p>
                 </div>
@@ -28,12 +21,12 @@ export default function WorldFactsTable({ entries }: WorldFactsTableProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {rows.map((row, idx) => (
-                                <tr key={idx} className={styles.row}>
-                                    <td className={styles.entity}>{row.entity}</td>
-                                    <td className={styles.attribute}>{row.attribute}</td>
-                                    <td className={styles.value}>{row.value}</td>
-                                </tr>
+                            {entries.map((entry) => (
+                                <WorldFactRow
+                                    key={entry.entity}
+                                    storyId={storyId}
+                                    entry={entry}
+                                />
                             ))}
                         </tbody>
                     </table>

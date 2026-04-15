@@ -1,3 +1,4 @@
+export { default as AsyncBoundary } from './AsyncBoundary/AsyncBoundary';
 export { Button } from './Button';
 export { Input } from './Input';
 export { Modal } from './Modal';
@@ -8,3 +9,4 @@ export { default as MenuItem } from './ContextMenu/MenuItem';
 export { default as MenuSection } from './ContextMenu/MenuSection';
 export { default as FilterDropdown } from './FilterDropdown/FilterDropdown';
 export { default as CanvasBackground } from './Background/CanvasBackground';
+export { default as Tooltip } from './Tooltip/Tooltip';

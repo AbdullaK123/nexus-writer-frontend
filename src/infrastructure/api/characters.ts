@@ -1,5 +1,5 @@
-import { ApiCharacterResponse, ApiCharacterArcResponse, ApiCharacterKnowledgeResponse, ApiCharacterInconsistencyResponse, ApiCharacterAppearancesResponse, ApiCharacterIntroductionResponse, ApiCharacterDensityResponse, ApiCharacterGoalsResponse, ApiCharacterKnowledgeMapResponse, mapResult } from "@/data/types";
-import { toCharacterAppearancesResponse, toCharacterArcResponse, toCharacterDensityResponse, toCharacterGoalsResponse, toCharacterInconsistencyResponse, toCharacterIntroductionResponse, toCharacterKnowledgeMapResponse, toCharacterKnowledgeResponse, toCharacterResponse } from "@/compatability/transformers";
+import { ApiCharacterResponse, ApiCharacterArcResponse, ApiCharacterKnowledgeResponse, ApiCharacterInconsistencyResponse, ApiCharacterAppearancesResponse, ApiCharacterIntroductionResponse, ApiCharacterDensityResponse, ApiCastManagementReportResponse, ApiCharacterGoalsResponse, ApiCharacterKnowledgeMapResponse, mapResult } from "@/data/types";
+import { toCastManagementReportResponse, toCharacterAppearancesResponse, toCharacterArcResponse, toCharacterDensityResponse, toCharacterGoalsResponse, toCharacterInconsistencyResponse, toCharacterIntroductionResponse, toCharacterKnowledgeMapResponse, toCharacterKnowledgeResponse, toCharacterResponse } from "@/compatability/transformers";
 import fetchApi from "./client";
 
 
@@ -39,7 +39,7 @@ export const getCastDensity = async (storyId: string) => {
 }
 
 export const getCastManagementReport = async (storyId: string) => {
-    return mapResult(await fetchApi<ApiCharacterDensityResponse>(`/stories/${storyId}/characters/cast-report`), toCharacterDensityResponse);
+    return mapResult(await fetchApi<ApiCastManagementReportResponse>(`/stories/${storyId}/characters/cast-report`), toCastManagementReportResponse);
 }
 
 export const getGoalEvolution = async (storyId: string, characterName: string) => {

@@ -1,0 +1,28 @@
+.content {
+    background-color: var(--tooltip-bg, #1a1a2e);
+    color: var(--tooltip-text, #e0e0e0);
+    border: 1px solid var(--tooltip-border, #2a2a4a);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    max-width: var(--tooltip-max-width, 260px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 150ms ease-out;
+    z-index: 1000;
+}
+
+.arrow {
+    fill: var(--tooltip-bg, #1a1a2e);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -3,7 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useChapters } from '@/data/hooks/useChapters';
 import { useSelectedChapter } from '@/data/hooks/useSelectedChapter';
 import { CreateChapterRequest } from '@/data/types';
-import { getChapterStatus } from '@/compatability/transformers';
+import { toStoryInfoCardProps, toChapterListItemProps } from '@/compatability/transformers';
 import { useToast } from '@/shared/providers/ToastProvider';
 
 export function useStoryDetail() {
@@ -56,14 +56,15 @@ export function useStoryDetail() {
     const chapters = useMemo(() => {
         if (!chapterData?.chapters) return [];
     
-        const chaptersWithStatusAndNumbers = chapterData.chapters.map((chapter, index) => ({
-            ...chapter,
-            storyId: storyId,
-            chapterNumber: index + 1,
-            status: getChapterStatus(chapter.published, chapter.wordCount > 0),
-            handleOnClick: () => stableChapterSelect(chapter.id),
-            handleClearSelection: stableClearSelection,
-        }));
+        const chaptersWithStatusAndNumbers = chapterData.chapters.map((chapter, index) =>
+            toChapterListItemProps(
+                chapter,
+                storyId,
+                index,
+                () => stableChapterSelect(chapter.id),
+                stableClearSelection,
+            )
+        );
 
         if (!filter) return chaptersWithStatusAndNumbers;
         return chaptersWithStatusAndNumbers.filter((chapter) => chapter.status === filter);
@@ -71,12 +72,7 @@ export function useStoryDetail() {
 
     const storyInfo = useMemo(() => {
         if (!chapterData) return null;
-        return {
-            status: chapterData.storyStatus || "Ongoing",
-            totalChapters: chapterData.chapters.length,
-            wordCount: chapterData.chapters.reduce((acc, current) => acc + current.wordCount, 0),
-            updatedAt: chapterData.storyLastUpdated || new Date(),
-        };
+        return toStoryInfoCardProps(chapterData);
     }, [chapterData]);
 
     const onCreateChapter = (chapterInfo: CreateChapterRequest) => {

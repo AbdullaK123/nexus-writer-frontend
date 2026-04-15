@@ -1,3 +1,6 @@
-export default function InsightsPage() {
-  return null;
+import { redirect } from "next/navigation";
+
+export default async function InsightsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  redirect(`/stories/${id}/insights/characters`);
 }

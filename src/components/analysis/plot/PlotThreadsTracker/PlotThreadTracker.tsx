@@ -1,14 +1,9 @@
 import { PlotThreadsTrackerProps } from "./types";
 import styles from "./PlotThreadTracker.module.css";
-
-const STATUS_CLASS: Record<string, string> = {
-    introduced: styles['status-introduced'],
-    active: styles['status-active'],
-    resolved: styles['status-resolved'],
-    dormant: styles['status-dormant'],
-};
+import PlotThreadItem from "./components/PlotThreadItem";
 
 export default function PlotThreadsTracker({
+    storyId,
     threads
 }: PlotThreadsTrackerProps) {
     return (
@@ -16,16 +11,11 @@ export default function PlotThreadsTracker({
             <h3 className={styles.title}>Plot Threads</h3>
             <div className={styles.list}>
                 {threads.map((thread) => (
-                    <div key={thread.name} className={styles.entry}>
-                        <div className={styles['entry-content']}>
-                            <span className={styles['entry-name']}>{thread.name}</span>
-                            <div className={styles['entry-meta']}>
-                                <span className={`${styles.badge} ${STATUS_CLASS[thread.status] ?? ''}`}>{thread.status}</span>
-                                <span className={styles.detail}>Importance: {thread.importance}</span>
-                                {thread.mustResolve && <span className={`${styles.badge} ${styles['priority-badge']}`}>Must Resolve</span>}
-                            </div>
-                        </div>
-                    </div>
+                    <PlotThreadItem
+                        key={thread.name}
+                        storyId={storyId}
+                        thread={thread}
+                    />
                 ))}
             </div>
         </div>

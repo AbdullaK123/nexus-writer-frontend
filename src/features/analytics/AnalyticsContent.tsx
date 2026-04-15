@@ -11,6 +11,8 @@ import TotalDurationKpiCard from "@/components/analytics/TotalDurationKpiCard/To
 import AverageWordsPerMinuteCard from "@/components/analytics/AverageWordsPerMinuteCard/AverageWordsPerMinuteKpiCard";
 import dynamic from 'next/dynamic';
 import { ClipLoader } from 'react-spinners';
+import { AsyncBoundary } from '@/components/common';
+import { toTotalWordsKpiCardProps, toTotalDurationKpiCardProps, toAverageWordsPerMinuteCardProps, toWordCountOverTimeChartProps } from '@/compatability/transformers';
 
 const WordCountOverTimeChart = dynamic(
     () => import('@/components/analytics/WordCountOverTimeChart/WordCountOverTimeChart'),
@@ -59,25 +61,13 @@ export default function AnalyticsContent() {
     const {
         data: storyAnalytics,
         isError: storyAnalyticsError,
-        isSuccess: storyAnalyticsSuccess
+        isLoading: storyAnalyticsLoading
     } = useStoryAnalytics(
         selectedStoryId, 
         selectedFilter.frequency, 
         selectedFilter.fromDate, 
         selectedFilter.toDate
     )
-
-    useEffect(() => {
-        if (storyAnalyticsSuccess) {
-            // Analytics data loaded successfully
-        }
-    }, [storyAnalyticsSuccess, storyAnalytics])
-
-    useEffect(() => {
-        if (storyAnalyticsError) {
-            showToast("Failed to fetch story analytics. The server might be experiencing issues.", "error")
-        }
-    }, [showToast, storyAnalyticsError])
 
     return (
         <div className={styles['analytics-page-content']}>
@@ -99,32 +89,25 @@ export default function AnalyticsContent() {
                     onFromDateChange={(fromDate) => setSelectedFilter(prev => ({ ...prev, fromDate }))}
                     onToDateChange={(toDate) => setSelectedFilter(prev => ({ ...prev, toDate }))}
                 />
-                <div className={styles['kpi-cards-container']}>
-                    {storyAnalytics && storyAnalytics.kpis && (
+                <AsyncBoundary
+                    data={storyAnalytics}
+                    isLoading={storyAnalyticsLoading}
+                    isError={storyAnalyticsError}
+                    errorMessage="Failed to fetch story analytics."
+                >
+                    {(analytics) => (
                         <>
-                            <TotalWordsKpiCard
-                                totalWords={storyAnalytics.kpis.totalWords}
-                                target={storyAnalytics.target.quota}
-                                frequency={storyAnalytics.target.frequency}
-                            />
-                            <TotalDurationKpiCard 
-                                duration={storyAnalytics.kpis.totalDuration}
-                            />
-                            <AverageWordsPerMinuteCard 
-                                avgWordsPerMinute={storyAnalytics.kpis.avgWordsPerMinute}
-                            />
+                            <div className={styles['kpi-cards-container']}>
+                                <TotalWordsKpiCard {...toTotalWordsKpiCardProps(analytics)} />
+                                <TotalDurationKpiCard {...toTotalDurationKpiCardProps(analytics)} />
+                                <AverageWordsPerMinuteCard {...toAverageWordsPerMinuteCardProps(analytics)} />
+                            </div>
+                            <div className={styles['barchart-container']}>
+                                <WordCountOverTimeChart {...toWordCountOverTimeChartProps(analytics)} />
+                            </div>
                         </>
                     )}
-                </div>
-                <div className={styles['barchart-container']}>
-                    {storyAnalytics && storyAnalytics.wordsOverTime && storyAnalytics.target && (
-                        <WordCountOverTimeChart
-                            data={storyAnalytics.wordsOverTime}
-                            target={storyAnalytics.target.quota}
-                            frequency={storyAnalytics.target.frequency}  
-                        />
-                    )}
-                </div>
+                </AsyncBoundary>
             </div>
         </div>
     );

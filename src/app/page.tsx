@@ -18,18 +18,19 @@ export default function Home() {
             />
             <span className={styles.logoText}>NEXUS</span>
           </div>
-          
+
           <h1 className={styles.heroTitle}>
-            WRITE THE STORY.
+            YOUR NOVEL IS COMPLEX.
             <br />
-            <span className={styles.heroTitleGlow}>AI HANDLES THE REST.</span>
+            <span className={styles.heroTitleGlow}>YOUR TOOLS SHOULD BE TOO.</span>
           </h1>
-          
+
           <p className={styles.heroSubtitle}>
-            A chapter editor with built-in AI that extracts your characters, tracks your plot threads,
-            maps your world&mdash;and edits your prose. You write. Nexus understands.
+            Nexus Writer reads every chapter as you write. It tracks your characters,
+            catches your contradictions, maps your plot threads, and edits your prose&mdash;so
+            you can focus on the story.
           </p>
-          
+
           <div className={styles.ctaButtons}>
             <Link href="/register" className={styles.ctaPrimary}>
               <span className={styles.ctaText}>START WRITING</span>
@@ -39,23 +40,23 @@ export default function Home() {
               <span className={styles.ctaText}>SIGN IN</span>
             </Link>
           </div>
-          
+
           <div className={styles.heroStats}>
             <div className={styles.statItem}>
-              <span className={styles.statNumber}>4</span>
-              <span className={styles.statLabel}>ANALYSIS DIMENSIONS</span>
+              <span className={styles.statNumber}>Characters</span>
+              <span className={styles.statLabel}>TRACKED</span>
             </div>
             <div className={styles.statItem}>
-              <span className={styles.statNumber}>24/7</span>
-              <span className={styles.statLabel}>AI DEV EDITOR</span>
+              <span className={styles.statNumber}>Contradictions</span>
+              <span className={styles.statLabel}>CAUGHT</span>
             </div>
             <div className={styles.statItem}>
-              <span className={styles.statNumber}>Live</span>
-              <span className={styles.statLabel}>SESSION TRACKING</span>
+              <span className={styles.statNumber}>Threads</span>
+              <span className={styles.statLabel}>MAPPED</span>
             </div>
           </div>
         </div>
-        
+
         {/* Animated grid background */}
         <div className={styles.heroGrid}></div>
         <div className={styles.heroGradient}></div>
@@ -69,32 +70,35 @@ export default function Home() {
             COMPLEX STORIES <span className={styles.errorText}>BREAK</span> SIMPLE TOOLS
           </h2>
         </div>
-        
+
         <div className={styles.problemGrid}>
           <div className={styles.problemCard}>
             <div className={styles.problemIcon}>⚠️</div>
-            <h3 className={styles.problemTitle}>Contradictions Slip Through</h3>
+            <h3 className={styles.problemTitle}>Your characters drift.</h3>
             <p className={styles.problemDesc}>
-              A character&apos;s eye color changes in chapter 9. A resolved plot thread resurfaces
-              with different details. Your world&apos;s rules quietly break. Readers notice.
+              Eye color changes in chapter 9. A dead side character shows up in chapter 14.
+              Their motivations quietly contradict what you established in book one.
+              You won&apos;t catch it. Your readers will.
             </p>
           </div>
-          
+
           <div className={styles.problemCard}>
             <div className={styles.problemIcon}>💥</div>
-            <h3 className={styles.problemTitle}>No Structural Visibility</h3>
+            <h3 className={styles.problemTitle}>Your plot threads vanish.</h3>
             <p className={styles.problemDesc}>
-              Is your pacing off? Are your POV scenes balanced? Which plot threads went dormant?
-              You can&apos;t fix what you can&apos;t see. And you can&apos;t see any of it.
+              That mystery you set up in chapter 3&mdash;did you ever resolve it?
+              The foreshadowing in chapter 7&mdash;does it pay off?
+              You&apos;re holding a hundred threads in your head. Some are slipping.
             </p>
           </div>
-          
+
           <div className={styles.problemCard}>
             <div className={styles.problemIcon}>📉</div>
-            <h3 className={styles.problemTitle}>Writing Without Feedback</h3>
+            <h3 className={styles.problemTitle}>Your structure is invisible.</h3>
             <p className={styles.problemDesc}>
-              No word count trends. No session tracking. No way to know if you&apos;re building
-              momentum or losing it. Your writing habit flies blind.
+              Pacing, POV balance, scene types, emotional beats&mdash;every craft book
+              talks about them, but no tool actually shows you yours. You&apos;re flying
+              blind on the things that matter most.
             </p>
           </div>
         </div>
@@ -105,7 +109,7 @@ export default function Home() {
         <div className={styles.sectionHeader}>
           <span className={styles.sectionTag}>[HOW NEXUS WORKS]</span>
           <h2 className={styles.sectionTitle}>
-            WRITE CHAPTERS. <span className={styles.successText}>AI DOES THE ANALYSIS.</span>
+            WRITE CHAPTERS. <span className={styles.successText}>NEXUS DOES THE REST.</span>
           </h2>
         </div>
 
@@ -116,19 +120,20 @@ export default function Home() {
             <div className={styles.featureContent}>
               <div className={styles.featureHeader}>
                 <div className={styles.featureIcon}>✍️</div>
-                <h3 className={styles.featureTitle}>WRITE WITH AN AI EDITOR</h3>
-                <span className={styles.featureBadge}>LINE EDITS</span>
+                <h3 className={styles.featureTitle}>LINE EDITS, ON DEMAND</h3>
+                <span className={styles.featureBadge}>PARAGRAPH-LEVEL</span>
               </div>
               <p className={styles.featureDesc}>
-                Write in a rich text editor with real-time autosave. When you&apos;re ready, trigger AI
-                line edits&mdash;paragraph-level suggestions appear as highlights in your text. Accept or
-                reject each one with a click. Like track changes, but from an AI developmental editor.
+                Write in a clean editor with autosave. When you&apos;re ready, fire off a
+                line-edit pass. Suggestions appear inline as highlights&mdash;accept or
+                reject each one with a click. Like track changes from a developmental
+                editor who works at machine speed.
               </p>
               <ul className={styles.featureList}>
                 <li>✏️ Rich text editor with autosave</li>
-                <li>🔮 AI paragraph-level edit suggestions</li>
+                <li>🔮 Paragraph-level edit suggestions</li>
                 <li>✓/✗ Accept or reject each edit inline</li>
-                <li>📖 Chapter-to-chapter navigation</li>
+                <li>📖 Seamless chapter-to-chapter navigation</li>
                 <li>📊 Live word count per chapter</li>
               </ul>
             </div>
@@ -155,19 +160,19 @@ export default function Home() {
             <div className={styles.featureContent}>
               <div className={styles.featureHeader}>
                 <div className={styles.featureIcon}>🔍</div>
-                <h3 className={styles.featureTitle}>AI STORY INSIGHTS</h3>
-                <span className={styles.featureBadge}>4 DIMENSIONS</span>
+                <h3 className={styles.featureTitle}>FOUR LENSES ON YOUR STORY</h3>
+                <span className={styles.featureBadge}>CHARACTERS · PLOT · STRUCTURE · WORLD</span>
               </div>
               <p className={styles.featureDesc}>
-                AI reads your chapters and extracts everything&mdash;characters, plot threads, world
-                facts, structural patterns. Then it surfaces insights: contradictions in your world,
-                dormant plot threads, pacing imbalances, weak scenes, unresolved setups.
+                Nexus reads every chapter and builds a living map of your story. Who knows
+                what, and when. Which threads went dormant. Where your pacing sags. What your
+                world says it is&mdash;and where it contradicts itself.
               </p>
               <ul className={styles.featureList}>
-                <li>🎭 Characters &mdash; arcs, goals, knowledge, presence heatmaps</li>
-                <li>📐 Plot &mdash; threads, setups &amp; payoffs, story questions, contrivance detection</li>
-                <li>🏗️ Structure &mdash; pacing curves, POV balance, scene types, emotional beats</li>
-                <li>🌍 World &mdash; entity facts, contradiction tracking, consistency reports</li>
+                <li>🎭 <strong>Characters</strong> &mdash; arcs, goals, knowledge, presence heatmaps</li>
+                <li>📐 <strong>Plot</strong> &mdash; threads, setups &amp; payoffs, dormant arcs, contrivance detection</li>
+                <li>🏗️ <strong>Structure</strong> &mdash; pacing curves, POV balance, scene types, emotional beats</li>
+                <li>🌍 <strong>World</strong> &mdash; entity facts, contradiction tracking, consistency reports</li>
               </ul>
             </div>
             <div className={styles.featureVisual}>
@@ -188,19 +193,19 @@ export default function Home() {
             <div className={styles.featureContent}>
               <div className={styles.featureHeader}>
                 <div className={styles.featureIcon}>📊</div>
-                <h3 className={styles.featureTitle}>WRITING ANALYTICS</h3>
+                <h3 className={styles.featureTitle}>BUILD THE HABIT, WITH DATA</h3>
                 <span className={styles.featureBadge}>SESSION TRACKING</span>
               </div>
               <p className={styles.featureDesc}>
-                Every writing session is tracked automatically via WebSocket&mdash;words written,
-                time spent, words per minute. Set daily or weekly targets and watch your
-                progress on real-time charts. Build the habit with data, not willpower.
+                Every writing session is tracked automatically&mdash;words written, time
+                spent, words per minute. Set daily or weekly targets and watch your
+                progress climb. Build the habit on evidence, not willpower.
               </p>
               <ul className={styles.featureList}>
-                <li>📈 Word count over time (daily/weekly/monthly)</li>
+                <li>📈 Word count over time (daily, weekly, monthly)</li>
                 <li>⏱️ Total duration &amp; words per minute</li>
                 <li>🎯 Custom writing targets with progress tracking</li>
-                <li>🔄 Automatic session detection (start typing → tracking begins)</li>
+                <li>🔄 Sessions detected automatically&mdash;start typing, tracking begins</li>
               </ul>
             </div>
             <div className={styles.featureVisual}>
@@ -225,7 +230,7 @@ export default function Home() {
             YOUR TOOLS SHOULD KEEP UP.
           </h2>
           <p className={styles.ctaSubtitle}>
-            Write chapters. Get AI insights. Track your progress. All in one place.
+            Write chapters. Get insights. Track your progress. All in one place.
           </p>
           <Link href="/register" className={styles.ctaFinalButton}>
             <span className={styles.ctaText}>START WRITING</span>
