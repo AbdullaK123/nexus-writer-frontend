@@ -26,7 +26,7 @@ const ChapterListItemSchema = z.object({
     title: dto.title,
     published: dto.published,
     wordCount: dto.word_count,
-    updatedAt: new Date(dto.updated_at + 'Z'),
+    updatedAt: new Date(dto.updated_at),
 }));
 
 export const ChapterListResponseSchema = z.object({
@@ -39,7 +39,7 @@ export const ChapterListResponseSchema = z.object({
     storyId: dto.story_id,
     storyTitle: dto.story_title,
     storyStatus: dto.story_status,
-    storyLastUpdated: new Date(dto.story_last_updated + 'Z'),
+    storyLastUpdated: new Date(dto.story_last_updated),
     chapters: dto.chapters,
 }));
 
@@ -48,14 +48,14 @@ export const ChapterListResponseSchema = z.object({
 export const ChapterContentResponseSchema = z.object({
     id: z.string(),
     title: z.string(),
-    content: z.string(),
+    content: z.string().nullable(),
     published: z.boolean(),
     story_id: z.string(),
     story_title: z.string(),
     created_at: z.string(),
     updated_at: z.string(),
-    previous_chapter_id: z.string(),
-    next_chapter_id: z.string(),
+    previous_chapter_id: z.string().nullable(),
+    next_chapter_id: z.string().nullable(),
 }).transform((dto) => ({
     id: dto.id,
     title: dto.title,
@@ -63,8 +63,8 @@ export const ChapterContentResponseSchema = z.object({
     published: dto.published,
     storyId: dto.story_id,
     storyTitle: dto.story_title,
-    createdAt: new Date(dto.created_at + 'Z'),
-    updatedAt: new Date(dto.updated_at + 'Z'),
+    createdAt: new Date(dto.created_at),
+    updatedAt: new Date(dto.updated_at),
     previousChapterId: dto.previous_chapter_id,
     nextChapterId: dto.next_chapter_id,
 }));
@@ -89,7 +89,7 @@ export const ChapterEditSchema = z.object({
     is_stale: z.boolean(),
 }).transform((dto) => ({
     edits: dto.edits,
-    lastGeneratedAt: new Date(dto.last_generated_at + 'Z'),
+    lastGeneratedAt: new Date(dto.last_generated_at),
     isStale: dto.is_stale,
 }));
 
@@ -98,14 +98,14 @@ export const ChapterEditSchema = z.object({
 export const ChapterPreviewSchema = z.object({
     id: z.string(),
     title: z.string(),
-    content: z.string(),
+    content: z.string().nullable(),
     published: z.boolean(),
     story_id: z.string(),
     story_title: z.string(),
     created_at: z.string(),
     updated_at: z.string(),
-    previous_chapter_id: z.string(),
-    next_chapter_id: z.string(),
+    previous_chapter_id: z.string().nullable(),
+    next_chapter_id: z.string().nullable(),
 }).transform((dto) => {
     const wordCount = dto.content ? dto.content.split(' ').length : 0;
     return {
@@ -113,7 +113,7 @@ export const ChapterPreviewSchema = z.object({
         title: dto.title,
         status: getChapterStatus(dto.published, wordCount > 0),
         wordCount,
-        updatedAt: new Date(dto.updated_at + 'Z'),
+        updatedAt: new Date(dto.updated_at),
         previewContent: dto.content,
         storyId: dto.story_id,
         storyTitle: dto.story_title,

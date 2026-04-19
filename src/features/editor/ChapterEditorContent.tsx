@@ -13,6 +13,9 @@ import { useToast } from '@/shared/providers/ToastProvider'
 import { useChapterEdits } from '@/data/hooks/useChapterEdits'
 import { AsyncBoundary } from '@/components/common'
 import { toChapterNavHeaderProps, toTipTapEditorProps } from '@/compatability/transformers'
+import EditorLoadingState from './components/EditorLoadingState'
+import EditorErrorState from './components/EditorErrorState'
+import EditorEmptyState from './components/EditorEmptyState'
 
 const TipTapEditor = dynamic(
     () => import('@/features/editor/TipTapEditor/TipTapEditor'), { 
@@ -70,13 +73,18 @@ export default function ChapterEditorContent() {
         )
     }
     
+    const navigateToStory = () => router.push(`/stories/${storyId}`)
+
     return (
         <div className={styles['content-container']}>
             <AsyncBoundary
                 data={chapter}
                 isLoading={isLoading}
                 isError={isError}
-                errorMessage="Error loading chapter. Please try again."
+                errorMessage="Unable to load this chapter. Please check your connection and try again."
+                loadingState={<EditorLoadingState />}
+                errorState={<EditorErrorState onBackToStory={navigateToStory} />}
+                emptyState={<EditorEmptyState onBackToStory={navigateToStory} />}
             >
                 {(chapterData) => (
                     <>

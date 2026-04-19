@@ -11,7 +11,7 @@ export default function Error({
         <div className="error-page">
             <h1>Something went wrong</h1>
             <p>
-                {error.message || 'An unexpected error occurred.'}
+                "An unexpected error occurred. Please try again or return to the dashboard."
             </p>
             <button onClick={reset} className="action-link">
                 Try again

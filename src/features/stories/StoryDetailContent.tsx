@@ -4,14 +4,20 @@ import StoryDetailHeader from "@/components/stories/StoryDetailHeader/StoryDetai
 import ChapterPreview from "@/features/chapters/ChapterPreview/ChapterPreview";
 import styles from './StoryDetailContent.module.css';
 import { useStoryDetail } from '@/features/stories/hooks/useStoryDetail';
-import { ClipLoader } from 'react-spinners';
 import { useToast } from "@/shared/providers/ToastProvider";
 import { useCallback } from "react";
+import { AsyncBoundary } from '@/components/common';
+import StoryLoadingState from './components/StoryLoadingState';
+import StoryErrorState from './components/StoryErrorState';
+import StoryEmptyState from './components/StoryEmptyState';
+import ChapterLoadingState from './components/ChapterLoadingState';
+import ChapterEmptyState from './components/ChapterEmptyState';
 
 export default function StoryDetailContent() {
     const {
         storyId,
         isLoading,
+        isError,
         storyInfo,
         chaptersToShow,
         title,
@@ -29,49 +35,51 @@ export default function StoryDetailContent() {
     const onShowErrorToast = useCallback((msg: string) => showToast(msg, "error"), [showToast])
     const onShowSuccessToast = useCallback((msg: string) => showToast(msg, "success"), [showToast])
 
-    if (isLoading) {
-        return (
-            <div className={styles['centered']}>
-                <ClipLoader size={50} color="#00d4ff" />
-                <h1>Loading...</h1>
-            </div>
-        );
-    }
-
     return (
-        <div className={styles['story-detail-page']}>
-            <StoryDetailHeader 
-                storyId={storyId} 
-                title={title} 
-                onCreateChapter={onCreateChapter}
-                isCreating={isCreating}
-                creationSuccess={creationSuccess}
-                onShowSuccessToast={onShowSuccessToast}
-            />
-            <div className={styles['story-content-layout']}>
-                <StoryDetailSidebar
-                    storyInfo={storyInfo}
-                    chapters={chaptersToShow}
-                    onFilterChange={onFilterChange}
-                />
-                {isLoadingChapter ? (
-                    <div className={styles['centered']}>
-                        <ClipLoader size={50} color="#00d4ff" />
-                        <h1>Loading chapter...</h1>
-                    </div>
-                ) : selectedChapter ? (
-                    <ChapterPreview 
-                        {...selectedChapter} 
-                        onStatusUpdate={handleChapterStatusUpdate}
-                        onShowErrorToast={onShowErrorToast}
+        <AsyncBoundary
+            data={storyInfo}
+            isLoading={isLoading}
+            isError={isError}
+            errorMessage="Unable to load this story. Please check your connection and try again."
+            loadingState={<StoryLoadingState />}
+            errorState={<StoryErrorState />}
+            emptyState={<StoryEmptyState />}
+        >
+            {() => (
+                <div className={styles['story-detail-page']}>
+                    <StoryDetailHeader 
+                        storyId={storyId} 
+                        title={title} 
+                        onCreateChapter={onCreateChapter}
+                        isCreating={isCreating}
+                        creationSuccess={creationSuccess}
                         onShowSuccessToast={onShowSuccessToast}
                     />
-                ) : (
-                    <div className={styles['centered']}>
-                        <h1>Select a chapter to preview</h1>
+                    <div className={styles['story-content-layout']}>
+                        <StoryDetailSidebar
+                            storyInfo={storyInfo}
+                            chapters={chaptersToShow}
+                            onFilterChange={onFilterChange}
+                        />
+                        <AsyncBoundary
+                            data={selectedChapter}
+                            isLoading={isLoadingChapter}
+                            isError={false}
+                            loadingState={<ChapterLoadingState />}
+                            emptyState={<ChapterEmptyState />}
+                        >
+                            {(chapter) => (
+                                <ChapterPreview 
+                                    {...chapter} 
+                                    onStatusUpdate={handleChapterStatusUpdate}
+                                    onShowErrorToast={onShowErrorToast}
+                                    onShowSuccessToast={onShowSuccessToast}
+                                />
+                            )}
+                        </AsyncBoundary>
                     </div>
-                )}
-            </div>
-        </div>
+                </div>
+            )}
+        </AsyncBoundary>
     );
 }

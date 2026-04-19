@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useChapters } from '@/data/hooks/useChapters';
 import { useSelectedChapter } from '@/data/hooks/useSelectedChapter';
 import { CreateChapterRequest } from '@/data/types';
@@ -7,7 +7,6 @@ import { toStoryInfoCardProps, toChapterListItemProps } from '@/compatability/tr
 import { useToast } from '@/shared/providers/ToastProvider';
 
 export function useStoryDetail() {
-    const router = useRouter();
     const params = useParams();
     const storyId = params?.id as string;
     const { showToast } = useToast();
@@ -33,13 +32,6 @@ export function useStoryDetail() {
 
      const stableChapterSelect = useCallback((chapterId: string) => selectChapter(chapterId), [selectChapter])
      const stableClearSelection = useCallback(() => clearSelection(), [clearSelection])
-
-    useEffect(() => {
-        if (isError) {
-            showToast(`Error fetching chapters for story: ${storyId}. The server might be experiencing issues`, 'error');
-            router.push('/dashboard');
-        }
-    }, [isError, router, storyId, showToast]);
 
     useEffect(() => {
           if (creationError) {
@@ -86,6 +78,7 @@ export function useStoryDetail() {
     return {
         storyId,
         isLoading: isLoadingChapters || !storyId,
+        isError,
         storyInfo,
         chaptersToShow: chapters,
         title: chapterData?.storyTitle,

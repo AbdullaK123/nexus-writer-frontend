@@ -9,16 +9,15 @@ export const useJobProgress = (jobId: string | null | undefined) => {
     const [progressPercent, setProgressPercent] = useState(0)
     const [statusMessage, setStatusMessage] = useState("")
 
-    const { data: jobStatus } = useQuery<JobStatusResponse>({
+    const { data: jobStatus } = useQuery<JobStatusResponse | null>({
         queryKey: ['jobs', jobId],
-        queryFn: () => queryClient.getQueryData<JobStatusResponse>(['jobs', jobId]),
+        queryFn: () => queryClient.getQueryData<JobStatusResponse>(['jobs', jobId]) ?? null,
+        enabled: jobId != null,
         refetchInterval: 1000
     })
 
     useEffect(() => {
         if (!jobStatus) return
-
-        setProgressPercent(jobStatus.progress?.percent ?? 0)
 
         // Update status message (simplified)
         if (jobStatus.message) {

@@ -14,7 +14,10 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     const [socket, setSocket] = useState<Socket | null>(null);
     
     useEffect(() => {
-        socketRef.current = io(`${API_URL}/analytics`);
+        socketRef.current = io(`${API_URL}/writing`, {
+            reconnectionAttempts: 3,
+            timeout: 5000,
+        });
         setSocket(socketRef.current);  
         
         return () => {

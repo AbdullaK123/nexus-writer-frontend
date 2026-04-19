@@ -1,24 +1,8 @@
-import { transformStoryAnalyticResponse, transformTarget, transformStory, transformStoryListItemResponse, TransformedStory } from '@/compatability/transformers';
+import { transformTarget, transformStory, transformStoryListItemResponse, TransformedStory } from '@/compatability/transformers';
 import fetchApi from './client';
-import { ApiStory, ApiStoryAnalyticsResponse, ApiStoryListItemResponse, ApiTargetResponse, Frequency, StoryAnalytics, StoryCreateRequest, StoryListItemResponse, StoryUpdateRequest, Result, ApiError, mapResult } from '@/data/types';
+import { ApiStory, ApiStoryListItemResponse, ApiTargetResponse, StoryCreateRequest, StoryListItemResponse, StoryUpdateRequest, Result, ApiError, mapResult } from '@/data/types';
 
 export type { TransformedStory } from '@/compatability/transformers';
-
-export const getStoryAnalytics = async (
-    storyId: string, 
-    frequency: Frequency, 
-    fromDate?: string, 
-    toDate?: string
-): Promise<Result<StoryAnalytics, ApiError>> => {
-    let baseUrl = `/stories/${storyId}/analytics?frequency=${frequency}`
-    if (fromDate) {
-        baseUrl += `&from_date=${fromDate}`
-    }
-    if (toDate) {
-        baseUrl += `&to_date=${toDate}`
-    }
-    return mapResult(await fetchApi<ApiStoryAnalyticsResponse>(baseUrl), transformStoryAnalyticResponse);
-}
 
 export const getStories = async (): Promise<Result<TransformedStory[], ApiError>> => {
     return mapResult(

@@ -1,7 +1,6 @@
-// src/app/hooks/useStories.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as storyService from '@/infrastructure/api/stories';
-import { Frequency, StoryCreateRequest, StoryUpdateRequest, unwrapResult } from "@/data/types";
+import { StoryCreateRequest, StoryUpdateRequest, unwrapResult } from "@/data/types";
 
 export function useStories() {
     const queryClient = useQueryClient();
@@ -24,17 +23,6 @@ export function useStories() {
     } = useQuery({
         queryKey: ['stories', 'targets'],
         queryFn: () => storyService.getStoriesWithTargets().then(unwrapResult)
-    })
-
-    const useStoryAnalytics = (
-        storyId: string,
-        frequency: Frequency,
-        fromDate: string,
-        toDate: string,
-    ) => useQuery({
-        queryKey: ['stories', storyId, 'analytics', frequency, fromDate, toDate],
-        queryFn: () => storyService.getStoryAnalytics(storyId, frequency, fromDate, toDate).then(unwrapResult),
-        enabled: !!storyId
     })
 
     const useStory = (storyId: string) => useQuery({
@@ -61,7 +49,6 @@ export function useStories() {
     return {
         stories,
         useStory,
-        useStoryAnalytics,
         create: createStoryMutation.mutate,
         update: updateStoryMutation.mutate,
         updatedStory: updateStoryMutation.data,

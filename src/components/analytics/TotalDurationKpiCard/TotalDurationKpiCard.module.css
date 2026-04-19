@@ -1,7 +1,0 @@
-/* All styles moved to globals.css .kpi-card, .kpi-title, .kpi-value, .kpi-label, .kpi-metrics */
-
-.metrics-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}

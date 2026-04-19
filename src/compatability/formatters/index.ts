@@ -1,4 +1,3 @@
-import { DailyWordsWrittenRecord, Frequency, MonthlyWordsWrittenRecord, WeeklyWordsWrittenRecord, WordsWrittenTimeSeries } from "@/data/types";
 import { formatDistanceToNow } from "date-fns";
 
 export const getBadgeCss = (status: string) => {
@@ -31,30 +30,4 @@ export const getDuration = (date: Date | string) => {
 export const formatDate = (dateString: string | Date) => {
     const date = typeof dateString === 'string' ? new Date(dateString) : dateString;
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
-export const getChartData = (data: WordsWrittenTimeSeries, frequency: Frequency) => {
-    if (frequency === "Daily")  {
-        const dailyData = data as DailyWordsWrittenRecord[];
-        return dailyData.map((record: DailyWordsWrittenRecord) => ({
-            name: formatDate(record.date),
-            words: record.totalWords
-        }))
-    }
-    if (frequency === "Weekly")  {
-        const weeklyData = data as WeeklyWordsWrittenRecord[];
-        return weeklyData.map((record: WeeklyWordsWrittenRecord) => ({
-            name: `Week ${record.weekNum}`,
-            words: record.totalWords
-        }))
-    }
-    if (frequency === "Monthly")  {
-        const monthlyData = data as MonthlyWordsWrittenRecord[];
-        return monthlyData.map((record: MonthlyWordsWrittenRecord) => ({
-            name: record.monthName,
-            words: record.totalWords
-        }))
-    }
-    // Default fallback
-    return []
 }

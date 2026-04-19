@@ -27,7 +27,6 @@ export default function StoryCard({
 
     const {
         getBtnProps,
-        goToInsights,
     } = useStoryNavigation(id, latestChapterId)
 
     const {
@@ -84,7 +83,6 @@ export default function StoryCard({
             </ContextMenuTrigger>
             <StoryCardContextMenu 
                 onDelete={() => handleOnAction('delete')}
-                onInsightsNavigate={goToInsights}
             />
         </ContextMenuRoot>
     )

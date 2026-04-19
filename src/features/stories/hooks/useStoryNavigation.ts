@@ -1,15 +1,6 @@
 import { useRouter } from "next/navigation"
 import { useChapters } from "@/data/hooks/useChapters"
-import { useEffect, useCallback } from "react"
-
-export type InsightsSection = 'characters' | 'plot' | 'structure' | 'world';
-
-export const insightsSections: { key: InsightsSection; label: string; icon: string }[] = [
-    { key: 'characters', label: 'Characters', icon: '👤' },
-    { key: 'plot',       label: 'Plot',       icon: '📖' },
-    { key: 'structure',  label: 'Structure',  icon: '🏗' },
-    { key: 'world',      label: 'World',      icon: '🌍' },
-];
+import { useEffect } from "react"
 
 export function useStoryNavigation(storyId: string, latestChapterId: string) {
 
@@ -42,16 +33,6 @@ export function useStoryNavigation(storyId: string, latestChapterId: string) {
         }
     }
 
-    const goToInsights = useCallback((section: InsightsSection) => {
-        router.push(`/stories/${storyId}/insights/${section}`)
-    }, [router, storyId])
-
-    const prefetchInsights = useCallback(() => {
-        insightsSections.forEach(({ key }) => {
-            router.prefetch(`/stories/${storyId}/insights/${key}`)
-        })
-    }, [router, storyId])
-
     useEffect(() => {
         if (creationSuccess && createdChapter.id) {
             router.push(`/chapters/${storyId}/${createdChapter.id}`)
@@ -69,15 +50,16 @@ export function useStoryNavigation(storyId: string, latestChapterId: string) {
                 ]
             case 'On Hiatus':
                 return [
-                    { text: 'Resume', variant: 'primary' as const, onClick: goToLatestChapter, onMouseEnter: handlePrefetch }
+                    { text: 'Resume', variant: 'primary' as const, onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
+                    { text: 'Chapters', variant: 'secondary' as const, onClick: goToStoryPage, onMouseEnter: undefined }
                     // { text: 'Outline', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
                     // { text: 'Research', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
                     // { text: 'AI', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined }
                 ]
             default:
                 return [
-                    { text: 'Continue', variant: 'primary' as const, onClick: goToLatestChapter, onMouseEnter: handlePrefetch }
-                    // { text: 'Chapters', variant: 'secondary' as const, onClick: goToStoryPage, onMouseEnter: undefined },
+                    { text: 'Continue', variant: 'primary' as const, onClick: goToLatestChapter, onMouseEnter: handlePrefetch },
+                    { text: 'Chapters', variant: 'secondary' as const, onClick: goToStoryPage, onMouseEnter: undefined }
                     // { text: 'Settings', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined },
                     // { text: 'AI', variant: 'secondary' as const, onClick: undefined, onMouseEnter: undefined  }
                 ]
@@ -87,8 +69,6 @@ export function useStoryNavigation(storyId: string, latestChapterId: string) {
     return {
         goToStoryPage,
         goToLatestChapter,
-        goToInsights,
-        prefetchInsights,
         handlePrefetch,
         getBtnProps
     }

@@ -3,6 +3,12 @@ import { env } from '@/infrastructure/config/env';
 
 const API_URL = env.apiUrl;
 
+function normalizePath(path: string): string {
+    const [base, query] = path.split('?', 2);
+    const normalized = base.endsWith('/') ? base : `${base}/`;
+    return query ? `${normalized}?${query}` : normalized;
+}
+
 async function fetchApi<T = void>(path: string, options: RequestInit = {}): Promise<Result<T, ApiError>> {
     const defaultOptions: RequestInit = {
         credentials: 'include',
@@ -13,8 +19,9 @@ async function fetchApi<T = void>(path: string, options: RequestInit = {}): Prom
     };
 
     let response: Response;
+    const url = `${API_URL}${normalizePath(path)}`;
     try {
-        response = await fetch(`${API_URL}${path}`, {
+        response = await fetch(url, {
             ...defaultOptions,
             ...options,
         });

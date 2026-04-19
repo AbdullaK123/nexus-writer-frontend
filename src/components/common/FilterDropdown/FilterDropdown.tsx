@@ -7,11 +7,17 @@ type FilterDropdownProps = {
     filterOptions: { label: string; value: string }[]
 }
 
+const ALL_VALUE = '__all__'
+
 export default function FilterDropdown({ onFilterChange, filterOptions }: FilterDropdownProps) {
+    const handleChange = (value: string) => {
+        onFilterChange(value === ALL_VALUE ? '' : value)
+    }
+
     return (
         <div className={styles.container}>
             <label htmlFor='filter' className={styles.label}>Filter by: </label>
-            <Select.Root defaultValue="" onValueChange={onFilterChange}>
+            <Select.Root defaultValue={ALL_VALUE} onValueChange={handleChange}>
                 <Select.Trigger className={styles.trigger} id="filter">
                     <Select.Value placeholder={filterOptions[0]?.label ?? 'Select...'} />
                     <Select.Icon className={styles.icon}>▾</Select.Icon>
@@ -21,8 +27,8 @@ export default function FilterDropdown({ onFilterChange, filterOptions }: Filter
                         <Select.Viewport className="select-viewport">
                             {filterOptions.map((option) => (
                                 <Select.Item 
-                                    key={option.value} 
-                                    value={option.value} 
+                                    key={option.value || ALL_VALUE} 
+                                    value={option.value || ALL_VALUE} 
                                     className="select-item"
                                 >
                                     <Select.ItemText>{option.label}</Select.ItemText>

@@ -1,8 +1,16 @@
 import { useWebsocket } from "@/shared/providers/SocketProvider";
-import { AnalyticsEvent } from "@/data/types";
 import { v4 } from 'uuid'
 import { useRef, useEffect } from "react";
 import { Editor } from "@tiptap/react";
+
+type WritingSessionEvent = {
+    sessionId: string;
+    storyId: string;
+    chapterId: string;
+    userId: string;
+    timestamp: string;
+    wordCount: number;
+}
 
 const getWordCount = (text: string) => {
   return text.trim() === '' ? 0 : text.trim().split(/\s+/).length
@@ -35,7 +43,7 @@ export function useWritingSessionTracking(
             userId,
             timestamp: new Date().toISOString(),
             wordCount: getWordCount(editor.getText())
-          } as AnalyticsEvent)
+          } as WritingSessionEvent)
         }
         
         // Reset timer
@@ -52,7 +60,7 @@ export function useWritingSessionTracking(
             userId,
             timestamp: new Date().toISOString(),
             wordCount: getWordCount(editor.getText())
-          } as AnalyticsEvent)
+          } as WritingSessionEvent)
         }, 2000)
       }
       

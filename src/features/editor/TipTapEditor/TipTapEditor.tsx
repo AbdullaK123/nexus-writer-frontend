@@ -1,20 +1,20 @@
 'use client'
 import {useEditor, EditorContent, Editor} from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import styles from './TipTapEditor.module.css'
 import { WordCounter } from './extensions/WordCounter';
 import { useWritingSessionTracking } from '@/features/editor/hooks/useWritingSessionTracking';
 import { ClipLoader } from "react-spinners"
-import { ChapterEdit } from '@/data/types';
+import { ChapterEdit, FlowEvent } from '@/data/types';
 import { AiEdit } from './marks/AiEdit';
 import { AiSuggestion } from './bubble-menus/AiSuggestion/AiSuggestion';
 import { useBackgroundJobs } from '@/features/jobs/hooks/useBackgroundJobs';
 import { useToast } from '@/shared/providers/ToastProvider';
 import { Button } from '@/components/common/Button';
-import { useJobCache } from '@/data/hooks/useJobCache';
-import { useJobProgress } from '@/data/hooks/useJobProgress';
 import { useChapterJobs } from '@/features/jobs/hooks/useChapterJobs';
+import { useQuery } from '@tanstack/react-query';
+import { drainJobEvents } from '@/infrastructure/api/jobs';
 
 type TipTapEditorProps = {
     storyId: string;
@@ -38,6 +38,7 @@ export default function TipTapEditor({
 }: TipTapEditorProps) {
 
     const [wordCount, setWordCount] = useState(0)
+    const [editBtnText, setEditBtnText] = useState("Generate Edits")
 
     const editor = useEditor({
         extensions: [
@@ -77,7 +78,7 @@ export default function TipTapEditor({
         isEditing
     } = useChapterJobs(chapterId)
 
-    const lineEditJob = chapterJobs.find((job) => job.jobType === "line-edit")    
+    const { showToast } = useToast()
 
     useEffect(() => {
         if (!editor || !edits?.edits?.length) return
@@ -115,6 +116,46 @@ export default function TipTapEditor({
 
     useWritingSessionTracking(editor, storyId, chapterId, userId)
 
+    const handleMessage = useCallback((e: FlowEvent) => {
+        setEditBtnText(`${e.message} (${(100 * (e.step ?? 0) / (e.totalSteps ?? 1)).toFixed(0)}%)`)
+
+        switch (e.eventType) {
+            case 'flow_started':
+                showToast(e.message ?? 'Edit generation started', 'info')
+                break
+            case 'flow_complete':
+                showToast(e.message ?? 'Edits generated successfully', 'success')
+                setEditBtnText('Generate Edits')
+                break
+            case 'flow_failed':
+                showToast(e.message ?? 'Edit generation failed', 'error')
+                setEditBtnText('Generate Edits')
+                break
+            case 'task_failed':
+                showToast(e.message ?? 'A task failed', 'warning')
+                break
+        }
+    }, [showToast])
+
+    // Poll for job events every 2s via TanStack Query
+    const { data: jobEvents } = useQuery({
+        queryKey: ['job-events'],
+        queryFn: drainJobEvents,
+        refetchInterval: 2000,
+    })
+
+    const processedRef = useRef(0)
+    useEffect(() => {
+        if (!jobEvents?.length) return
+        // Only process newly returned events (each drain is fresh from server,
+        // but React Query may re-deliver the same data reference until next fetch)
+        if (jobEvents.length === processedRef.current) return
+        processedRef.current = jobEvents.length
+        for (const event of jobEvents) {
+            handleMessage(event)
+        }
+    }, [jobEvents, handleMessage])
+
     return (
         <div className={styles['tiptap-editor-container']}>
             <div className={styles['flex-end-container']}>
@@ -123,7 +164,7 @@ export default function TipTapEditor({
                     onClick={() => queueBackgroundEditsJob(editor, chapterId)}
                     disabled={queueBackgroundEdits.isPending || isEditing}
                 >
-                    {isEditing ? `Generating edits...` : "Start background edits"}
+                    {editBtnText}
                 </Button>
                 <h3>
                     {isSaving && <ClipLoader size={16} color={"#00d4ff"} /> }

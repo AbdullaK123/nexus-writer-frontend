@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // ─── Enum Schemas ────────────────────────────────────────────
 
-const JobStatusSchema = z.enum(["pending", "queued", "starting", "progress", "success", "failure", "retry"]);
+const JobStatusSchema = z.enum(["pending", "queued", "progress", "success", "failure"]);
 
 const FlowEventTypeSchema = z.enum([
     "task_started",
@@ -34,26 +34,24 @@ export const ExtractionProgressSchema = z.object({
 export const JobStatusResponseSchema = z.object({
     job_id: z.string(),
     status: JobStatusSchema,
-    queued_at: z.string().optional(),
-    started_at: z.string().optional(),
-    completed_at: z.string().optional(),
-    progress: ExtractionProgressSchema.optional(),
-    result: z.record(z.any()).optional(),
-    error: z.string().optional(),
-    message: z.string().optional(),
+    queued_at: z.string().nullable().optional(),
+    started_at: z.string().nullable().optional(),
+    completed_at: z.string().nullable().optional(),
+    result: z.record(z.any()).nullable().optional(),
+    error: z.string().nullable().optional(),
+    message: z.string().nullable().optional(),
 }).transform((dto) => {
     const isTerminal = dto.status === "success" || dto.status === "failure";
-    const isRunning = dto.status === "starting" || dto.status === "progress";
+    const isRunning = dto.status === "progress";
     return {
         jobId: dto.job_id,
         status: dto.status,
-        queuedAt: dto.queued_at ? new Date(dto.queued_at + 'Z') : undefined,
-        startedAt: dto.started_at ? new Date(dto.started_at + 'Z') : undefined,
-        completedAt: dto.completed_at ? new Date(dto.completed_at + 'Z') : undefined,
-        progress: dto.progress,
-        result: dto.result,
-        error: dto.error,
-        message: dto.message,
+        queuedAt: dto.queued_at ? new Date(dto.queued_at) : undefined,
+        startedAt: dto.started_at ? new Date(dto.started_at) : undefined,
+        completedAt: dto.completed_at ? new Date(dto.completed_at) : undefined,
+        result: dto.result ?? undefined,
+        error: dto.error ?? undefined,
+        message: dto.message ?? undefined,
         isTerminal,
         isRunning,
     };
@@ -65,15 +63,15 @@ export const JobQueuedResponseSchema = z.object({
     job_type: z.string(),
     started_at: z.string(),
     status: JobStatusSchema,
-    chapter_id: z.string().optional(),
-    chapter_number: z.number().optional(),
-    chapters_to_extract: z.number().optional(),
-    estimated_duration_seconds: z.number().optional(),
+    chapter_id: z.string().nullable(),
+    chapter_number: z.number().nullable(),
+    chapters_to_extract: z.number().nullable(),
+    estimated_duration_seconds: z.number().nullable(),
 }).transform((dto) => ({
     jobId: dto.job_id,
     jobName: dto.job_name,
     jobType: dto.job_type,
-    startedAt: new Date(dto.started_at + 'Z'),
+    startedAt: new Date(dto.started_at),
     status: dto.status,
     chapterId: dto.chapter_id,
     chapterNumber: dto.chapter_number,
@@ -157,7 +155,7 @@ export const FlowEventSchema = z.object({
     step: z.number().optional().nullable(),
     total_steps: z.number().optional().nullable(),
     duration_ms: z.number().optional().nullable(),
-    timestamp: z.string().optional(),
+    timestamp: z.string().optional().nullable(),
 }).transform((dto) => ({
     jobRunId: dto.job_run_id,
     userId: dto.user_id,
@@ -206,7 +204,7 @@ export type ReextractionEventData = ChapterStartedData | ReextractionProgressDat
 
 // ─── Transform Functions ─────────────────────────────────────
 
-export const transformExtractionProgress = (data: ApiExtractionProgress) => ExtractionProgressSchema.parse(data);
-export const transformJobStatusResponse = (data: ApiJobStatusResponse) => JobStatusResponseSchema.parse(data);
-export const transformJobQueuedResponse = (data: ApiJobQueuedResponse) => JobQueuedResponseSchema.parse(data);
-export const transformFlowEvent = (data: ApiFlowEvent) => FlowEventSchema.parse(data);
+export const toExtractionProgress = (data: ApiExtractionProgress) => ExtractionProgressSchema.parse(data);
+export const toJobStatusResponse = (data: ApiJobStatusResponse) => JobStatusResponseSchema.parse(data);
+export const toJobQueuedResponse = (data: ApiJobQueuedResponse) => JobQueuedResponseSchema.parse(data);
+export const toFlowEvent = (data: ApiFlowEvent) => FlowEventSchema.parse(data);

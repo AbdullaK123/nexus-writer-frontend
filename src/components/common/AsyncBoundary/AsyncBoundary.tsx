@@ -9,8 +9,10 @@ interface AsyncBoundaryProps<T> {
     data: T | undefined
     isLoading: boolean
     isError: boolean
+    errorState?: React.ReactNode
+    emptyState?: React.ReactNode
+    loadingState?: React.ReactNode
     errorMessage?: string
-    emptyMessage?: string
     children: (data: T) => React.ReactNode
 }
 
@@ -21,14 +23,42 @@ function isEmpty(value: unknown): boolean {
     return false
 }
 
+const DefaultErrorState = () => {
+    return (
+        <div className={styles.error}>
+            <h3>Error</h3>
+            <p>Something went wrong. Please try again later.</p>
+        </div>
+    )
+}
+
+const DefaultEmptyState = () => {
+    return (
+        <div className={styles.empty}>
+            <p>No data available.</p>
+        </div>
+    )
+}
+
+const DefaultLoadingState = () => {
+    return (
+        <div className={styles.loading}>
+            <ClipLoader color="#00d4ff" size={40} />
+        </div>
+    )
+}
+
 export default function AsyncBoundary<T>({
     data,
     isLoading,
     isError,
-    errorMessage = 'Something went wrong. Please try again later.',
-    emptyMessage = 'No data available.',
+    errorState = <DefaultErrorState/>,
+    emptyState = <DefaultEmptyState/>,
+    loadingState = <DefaultLoadingState/>,
+    errorMessage = "Something went wrong. Please try again later.",
     children,
 }: AsyncBoundaryProps<T>) {
+
     const { showToast } = useToast()
     const hasToasted = useRef(false)
 
@@ -42,29 +72,16 @@ export default function AsyncBoundary<T>({
         }
     }, [isError, errorMessage, showToast])
 
-    if (isLoading) {
-        return (
-            <div className={styles.loading}>
-                <ClipLoader color="#00d4ff" size={40} />
-            </div>
-        )
+    if (isError) {
+        return errorState
     }
 
-    if (isError) {
-        return (
-            <div className={styles.error}>
-                <h3>Error</h3>
-                <p>{errorMessage}</p>
-            </div>
-        )
+    if (isLoading) {
+        return loadingState
     }
 
     if (data === undefined || isEmpty(data)) {
-        return (
-            <div className={styles.empty}>
-                <p>{emptyMessage}</p>
-            </div>
-        )
+        return emptyState
     }
 
     return <>{children(data)}</>

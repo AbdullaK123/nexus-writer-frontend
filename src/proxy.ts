@@ -3,23 +3,50 @@ import type { NextRequest } from 'next/server'
 
 const PROTECTED_ROUTES = ['/dashboard', '/stories', '/chapters']
 const AUTH_ROUTES = ['/login', '/register']
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_DOMAIN
 
-export function proxy(request: NextRequest) {
+async function isSessionValid(sessionCookie: string): Promise<boolean> {
+    try {
+        const res = await fetch(`${API_URL}/auth/me`, {
+            headers: { Cookie: `session_id=${sessionCookie}` },
+        })
+        return res.ok
+    } catch {
+        return false
+    }
+}
+
+export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl
-    const hasSession = request.cookies.has('session_id')
+    const sessionCookie = request.cookies.get('session_id')?.value
+    const hasSession = !!sessionCookie
 
-    // Unauthenticated user trying to access protected routes → redirect to login
     const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route))
-    if (isProtected && !hasSession) {
-        const loginUrl = new URL('/login', request.url)
-        return NextResponse.redirect(loginUrl)
+    const isAuthRoute = AUTH_ROUTES.some(route => pathname.startsWith(route))
+
+    // No cookie → simple check
+    if (!hasSession) {
+        if (isProtected) {
+            return NextResponse.redirect(new URL('/login', request.url))
+        }
+        return NextResponse.next()
     }
 
-    // Authenticated user trying to access login/register → redirect to dashboard
-    const isAuthRoute = AUTH_ROUTES.some(route => pathname.startsWith(route))
-    if (isAuthRoute && hasSession) {
-        const dashboardUrl = new URL('/dashboard', request.url)
-        return NextResponse.redirect(dashboardUrl)
+    // Has cookie → validate it with the backend
+    const valid = await isSessionValid(sessionCookie)
+
+    if (!valid) {
+        // Stale/expired session — clear the cookie
+        const response = isProtected
+            ? NextResponse.redirect(new URL('/login', request.url))
+            : NextResponse.next()
+        response.cookies.delete('session_id')
+        return response
+    }
+
+    // Valid session on auth routes → redirect to dashboard
+    if (isAuthRoute) {
+        return NextResponse.redirect(new URL('/dashboard', request.url))
     }
 
     return NextResponse.next()
